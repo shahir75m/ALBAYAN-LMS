@@ -1,0 +1,89 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ALBAYAN LIBRARY MANAGMENT | Professional LMS</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Google Identity Services -->
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+    <style>
+      body {
+        font-family: 'Inter', sans-serif;
+        background-color: #09090b;
+        color: #f4f4f5;
+        margin: 0;
+        overflow-x: hidden;
+      }
+      ::-webkit-scrollbar {
+        width: 8px;
+      }
+      ::-webkit-scrollbar-track {
+        background: #09090b;
+      }
+      ::-webkit-scrollbar-thumb {
+        background: #27272a;
+        border-radius: 4px;
+      }
+      ::-webkit-scrollbar-thumb:hover {
+        background: #10b981;
+      }
+      .no-scrollbar::-webkit-scrollbar {
+        display: none;
+      }
+      .no-scrollbar {
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+      }
+      /* Scanner Styles Override */
+      #barcode-reader__dashboard {
+        background-color: transparent !important;
+        border: none !important;
+        padding: 0 !important;
+      }
+      #barcode-reader__camera_selection {
+        background: #18181b !important;
+        color: white !important;
+        border: 1px solid #27272a !important;
+        border-radius: 8px !important;
+        padding: 4px !important;
+        font-size: 12px !important;
+      }
+      #barcode-reader button {
+        background: #10b981 !important;
+        color: white !important;
+        border: none !important;
+        padding: 8px 16px !important;
+        border-radius: 12px !important;
+        font-weight: 700 !important;
+        text-transform: uppercase !important;
+        font-size: 10px !important;
+        letter-spacing: 0.05em !important;
+        cursor: pointer !important;
+      }
+      #barcode-reader video {
+        border-radius: 16px !important;
+      }
+    </style>
+    <script type="importmap">
+    {
+      "imports": {
+        "react-dom/": "https://esm.sh/react-dom@^19.2.3/",
+        "react/": "https://esm.sh/react@^19.2.3/",
+        "react": "https://esm.sh/react@^19.2.3",
+        "jwt-decode": "https://esm.sh/jwt-decode@4.0.0",
+        "@google/genai": "https://esm.sh/@google/genai",
+        "html5-qrcode": "https://esm.sh/html5-qrcode"
+      }
+    }
+    </script>
+  <link rel="stylesheet" href="/index.css">
+</head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="index.tsx"></script>
+  <script type="module" src="/index.tsx"></script>
+</body>
+</html>

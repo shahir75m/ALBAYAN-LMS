@@ -1,0 +1,8 @@
+
+{
+  "name": "ALBAYAN LIBRARY MANAGMENT",
+  "description": "A professional, dark-themed LMS with role-based dashboards for admins and students, featuring book management, borrow requests, and real-time status tracking.",
+  "requestFramePermissions": [
+    "camera"
+  ]
+}
