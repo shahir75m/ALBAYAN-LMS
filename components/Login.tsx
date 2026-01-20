@@ -94,12 +94,7 @@ const Login: React.FC<LoginProps> = ({ onLogin, onIdentify, initialIdentity, onC
     return (
       <div className="min-h-screen bg-zinc-950 flex flex-col items-center justify-center p-6 animate-in fade-in duration-500">
         <div className="text-center mb-12">
-          <div className="flex items-center justify-center gap-4 mb-6">
-            <div className="w-10 h-10 bg-emerald-500/10 border border-emerald-500/20 rounded-full flex items-center justify-center">
-              <div className="w-2 h-2 bg-emerald-500 rounded-full animate-ping"></div>
-            </div>
-            <p className="text-sm font-bold text-zinc-400">Identity: <span className="text-white">{initialIdentity.id === storedAdminPass ? '••••••••' : initialIdentity.id}</span></p>
-          </div>
+
           <h2 className="text-3xl font-black text-white uppercase tracking-tighter">Choose Portal</h2>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 w-full max-w-4xl">
