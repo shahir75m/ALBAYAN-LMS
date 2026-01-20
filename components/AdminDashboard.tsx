@@ -418,7 +418,7 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
                           {user.avatarUrl ? <img src={user.avatarUrl} className="w-full h-full object-cover" /> : user.name.charAt(0)}
                         </div>
                       </td>
-                      <td className="px-8 py-5 font-mono text-zinc-600">{user.id === storedAdminPass ? 'ENCRYPTED' : user.id}</td>
+                      <td className="px-8 py-5 font-mono text-zinc-600">{user.id === storedAdminPass ? '••••••••' : user.id}</td>
                       <td className="px-8 py-5 font-bold text-zinc-200">{user.name}</td>
                       <td className="px-8 py-5"><span className={`px-3 py-1 rounded-full text-[9px] font-black tracking-widest ${user.role === 'ADMIN' ? 'bg-purple-500/10 text-purple-400 border border-purple-500/20' : 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20'}`}>{user.role}</span></td>
                       <td className="px-8 py-5 text-zinc-500 italic">{user.class || '---'}</td>

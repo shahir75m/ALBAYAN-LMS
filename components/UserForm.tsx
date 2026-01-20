@@ -88,7 +88,7 @@ const UserForm: React.FC<UserFormProps> = ({ onClose, onSubmit, initialData }) =
             <input
               required
               className="w-full bg-zinc-950 border border-zinc-800 rounded-lg px-4 py-2 text-sm focus:ring-1 focus:ring-emerald-500 outline-none font-mono text-white"
-              value={formData.id === storedAdminPass ? 'ENCRYPTED' : formData.id}
+              value={formData.id === storedAdminPass ? '••••••••' : formData.id}
               onChange={e => setFormData({ ...formData, id: e.target.value })}
               disabled={!!initialData}
             />

@@ -75,7 +75,7 @@ const Login: React.FC<LoginProps> = ({ onLogin, onIdentify, initialIdentity, onC
           <div className="space-y-6">
             <form onSubmit={handleManualIdentify} className="space-y-4">
               <input
-                type="text" placeholder="Enter Identity / Admin ID"
+                type="password" placeholder="Enter Identity / Admin ID"
                 className="w-full bg-zinc-950 border border-zinc-800 rounded-2xl px-6 py-4 text-sm text-white outline-none focus:ring-1 focus:ring-emerald-500/50"
                 value={manualEmail} onChange={(e) => setManualEmail(e.target.value)} required
               />
@@ -162,7 +162,7 @@ const Login: React.FC<LoginProps> = ({ onLogin, onIdentify, initialIdentity, onC
                 </div>
                 <div className="min-w-0">
                   <p className="font-bold text-white truncate">{user.name}</p>
-                  <p className="text-[10px] font-black text-zinc-600 uppercase tracking-widest truncate">{user.id === storedAdminPass ? 'ENCRYPTED' : user.id}</p>
+                  <p className="text-[10px] font-black text-zinc-600 uppercase tracking-widest truncate">{user.id === storedAdminPass ? '••••••••' : user.id}</p>
                 </div>
               </button>
             ))}
