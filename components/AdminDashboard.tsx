@@ -1,5 +1,7 @@
 
 import React, { useState, useMemo, useRef } from 'react';
+// Retrieve stored admin password or default
+const storedAdminPass = typeof window !== 'undefined' ? localStorage.getItem('adminPassword') || 'admin@484' : 'admin@484';
 import { Book, User, BorrowRequest, HistoryRecord } from '../types';
 import BookForm from './BookForm';
 import UserForm from './UserForm';
@@ -37,6 +39,10 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
 
   // Return Search state
   const [returnSearch, setReturnSearch] = useState('');
+
+  // Password Change State
+  const [showPassModal, setShowPassModal] = useState(false);
+  const [newPass, setNewPass] = useState('');
 
   // Analytics State
   const [dateRange, setDateRange] = useState({
@@ -170,7 +176,16 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
     return (
       <div className="space-y-10 animate-in fade-in duration-700">
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
-          <h2 className="text-xl font-black text-zinc-400 uppercase tracking-widest">Library Overview</h2>
+          <div className="flex items-center gap-4">
+            <h2 className="text-xl font-black text-zinc-400 uppercase tracking-widest">Library Overview</h2>
+            <button
+              onClick={() => setShowPassModal(true)}
+              className="p-2 bg-zinc-900 border border-zinc-800 rounded-xl hover:bg-zinc-800 transition-all text-zinc-500 hover:text-white"
+              title="Change Admin Password"
+            >
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" /><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" /></svg>
+            </button>
+          </div>
           <div className="flex items-center gap-2 bg-zinc-900 p-2 rounded-2xl border border-zinc-800 shadow-2xl">
             <span className="text-[10px] font-black text-zinc-600 px-3 uppercase">Range</span>
             <input
@@ -428,8 +443,8 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
                       <td className="px-8 py-5 text-zinc-400 italic font-medium">{req.bookTitle}</td>
                       <td className="px-8 py-5">
                         <span className={`px-3 py-1 rounded-full text-[9px] font-black tracking-widest border ${req.status === 'PENDING' ? 'bg-amber-500/10 text-amber-500 border-amber-500/20' :
-                            req.status === 'APPROVED' ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20' :
-                              'bg-red-500/10 text-red-500 border-red-500/20'
+                          req.status === 'APPROVED' ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20' :
+                            'bg-red-500/10 text-red-500 border-red-500/20'
                           }`}>{req.status}</span>
                       </td>
                       <td className="px-8 py-5 text-right">
@@ -463,6 +478,51 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
           </table>
         </div>
         {showUserForm && <UserForm onClose={() => setShowUserForm(false)} onSubmit={(u) => { editingUser ? onUpdateUser(u) : onAddUser(u); setShowUserForm(false); }} initialData={editingUser} />}
+
+        {/* Password Change Modal */}
+        {showPassModal && (
+          <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-[9999] p-4">
+            <div className="bg-zinc-900 border border-zinc-800 w-full max-w-md rounded-2xl shadow-2xl overflow-hidden animate-in fade-in slide-in-from-bottom-4 duration-200">
+              <div className="px-6 py-4 border-b border-zinc-800 flex justify-between items-center">
+                <h3 className="font-bold text-lg text-white">Advanced Settings</h3>
+                <button onClick={() => setShowPassModal(false)} className="p-2 hover:bg-zinc-800 rounded-full transition-all text-zinc-500 hover:text-white">
+                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /></svg>
+                </button>
+              </div>
+              <div className="p-6 space-y-4">
+                <div>
+                  <label className="block text-[10px] font-black text-zinc-500 uppercase tracking-widest mb-2">Change Master Password</label>
+                  <input
+                    type="password"
+                    placeholder="Enter new master password"
+                    className="w-full bg-zinc-950 border border-zinc-800 rounded-xl px-4 py-3 text-sm text-white outline-none focus:ring-1 focus:ring-emerald-500"
+                    value={newPass}
+                    onChange={(e) => setNewPass(e.target.value)}
+                  />
+                  <p className="text-[10px] text-zinc-600 mt-2 italic">This password will be required for the next admin login.</p>
+                </div>
+                <div className="pt-4 flex justify-end gap-3">
+                  <button onClick={() => setShowPassModal(false)} className="px-6 py-2 text-sm font-bold text-zinc-500 hover:text-white transition-all">Cancel</button>
+                  <button
+                    onClick={() => {
+                      if (newPass.trim()) {
+                        localStorage.setItem('adminPassword', newPass.trim());
+                        alert('Master Admin password updated successfully!');
+                        setShowPassModal(false);
+                        setNewPass('');
+                        // Trigger a reload to ensure the variable in memory is updated across components if needed
+                        window.location.reload();
+                      }
+                    }}
+                    className="bg-emerald-600 hover:bg-emerald-500 text-white px-8 py-2 rounded-lg text-sm font-bold transition-all shadow-lg"
+                  >
+                    Save Changes
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     );
   }

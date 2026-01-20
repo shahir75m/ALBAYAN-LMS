@@ -18,12 +18,13 @@ const Login: React.FC<LoginProps> = ({ onLogin, onIdentify, initialIdentity, onC
   const [userSearch, setUserSearch] = useState('');
   const [error, setError] = useState<string | null>(null);
   const [manualEmail, setManualEmail] = useState('');
+  const storedAdminPass = localStorage.getItem('adminPassword') || 'admin@484';
   const [isSyncing, setIsSyncing] = useState(false);
 
 
   const handleManualIdentify = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!manualEmail.includes('@') && manualEmail !== 'admin@484') {
+    if (!manualEmail.includes('@') && manualEmail !== storedAdminPass) {
       setError("Enter a valid cloud ID or username.");
       return;
     }
@@ -31,7 +32,7 @@ const Login: React.FC<LoginProps> = ({ onLogin, onIdentify, initialIdentity, onC
     setTimeout(() => {
       onIdentify({
         id: manualEmail,
-        name: manualEmail === 'admin@484' ? 'Master Admin' : manualEmail.split('@')[0],
+        name: manualEmail === storedAdminPass ? 'Master Admin' : manualEmail.split('@')[0],
       });
       setIsSyncing(false);
       setStep('PORTAL');
@@ -47,8 +48,8 @@ const Login: React.FC<LoginProps> = ({ onLogin, onIdentify, initialIdentity, onC
   const filteredUsers = useMemo(() => {
     const list = [...availableUsers].filter(u => u.role === selectedRole);
 
-    if (selectedRole === 'ADMIN' && !list.find(u => u.id === 'admin@484')) {
-      list.push({ id: 'admin@484', name: 'Master Admin', role: 'ADMIN', class: 'System' });
+    if (selectedRole === 'ADMIN' && !list.find(u => u.id === storedAdminPass)) {
+      list.push({ id: storedAdminPass, name: 'Master Admin', role: 'ADMIN', class: 'System' });
     }
 
     return list.filter(u =>
