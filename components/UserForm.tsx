@@ -14,6 +14,8 @@ const UserForm: React.FC<UserFormProps> = ({ onClose, onSubmit, initialData }) =
   });
   const fileInputRef = useRef<HTMLInputElement>(null);
 
+  const storedAdminPass = typeof window !== 'undefined' ? localStorage.getItem('adminPassword') || 'admin@484' : 'admin@484';
+
   useEffect(() => {
     if (initialData) setFormData(initialData);
     else setFormData(prev => ({ ...prev, id: `U${Math.floor(Math.random() * 9000) + 1000}` }));
@@ -39,15 +41,15 @@ const UserForm: React.FC<UserFormProps> = ({ onClose, onSubmit, initialData }) =
     <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-[100] p-4">
       <div className="bg-zinc-900 border border-zinc-800 w-full max-w-md rounded-2xl shadow-2xl overflow-hidden animate-in fade-in slide-in-from-bottom-4 duration-200">
         <div className="px-6 py-4 border-b border-zinc-800 flex justify-between items-center">
-          <h3 className="font-bold text-lg">{initialData ? 'Edit Account' : 'Register User'}</h3>
+          <h3 className="font-bold text-lg text-white">{initialData ? 'Edit Account' : 'Register User'}</h3>
           <button onClick={onClose} className="p-2 hover:bg-zinc-800 rounded-full transition-all text-zinc-500 hover:text-white">
             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /></svg>
           </button>
         </div>
-        
+
         <form onSubmit={handleSubmit} className="p-6 space-y-4">
           <div className="flex flex-col items-center mb-4">
-            <div 
+            <div
               onClick={() => fileInputRef.current?.click()}
               className="w-24 h-24 rounded-2xl bg-zinc-950 border-2 border-dashed border-zinc-800 flex items-center justify-center cursor-pointer overflow-hidden group hover:border-emerald-500/50 transition-all shadow-inner"
             >
@@ -63,37 +65,37 @@ const UserForm: React.FC<UserFormProps> = ({ onClose, onSubmit, initialData }) =
                 </div>
               )}
             </div>
-            <input 
-              type="file" 
-              ref={fileInputRef} 
-              className="hidden" 
-              accept="image/*" 
-              onChange={handleFileChange} 
+            <input
+              type="file"
+              ref={fileInputRef}
+              className="hidden"
+              accept="image/*"
+              onChange={handleFileChange}
             />
           </div>
 
           <div>
-            <label className="block text-xs font-bold text-zinc-500 uppercase mb-1.5">Full Name</label>
-            <input 
+            <label className="block text-xs font-bold text-zinc-500 uppercase mb-1.5 text-white">Full Name</label>
+            <input
               required
-              className="w-full bg-zinc-950 border border-zinc-800 rounded-lg px-4 py-2 text-sm focus:ring-1 focus:ring-emerald-500 outline-none"
+              className="w-full bg-zinc-950 border border-zinc-800 rounded-lg px-4 py-2 text-sm focus:ring-1 focus:ring-emerald-500 outline-none text-white"
               value={formData.name}
               onChange={e => setFormData({ ...formData, name: e.target.value })}
             />
           </div>
           <div>
-            <label className="block text-xs font-bold text-zinc-500 uppercase mb-1.5">Unique ID</label>
-            <input 
+            <label className="block text-xs font-bold text-zinc-500 uppercase mb-1.5 text-white">Unique ID</label>
+            <input
               required
-              className="w-full bg-zinc-950 border border-zinc-800 rounded-lg px-4 py-2 text-sm focus:ring-1 focus:ring-emerald-500 outline-none font-mono"
-              value={formData.id}
+              className="w-full bg-zinc-950 border border-zinc-800 rounded-lg px-4 py-2 text-sm focus:ring-1 focus:ring-emerald-500 outline-none font-mono text-white"
+              value={formData.id === storedAdminPass ? 'ENCRYPTED' : formData.id}
               onChange={e => setFormData({ ...formData, id: e.target.value })}
               disabled={!!initialData}
             />
           </div>
           <div>
             <label className="block text-xs font-bold text-zinc-500 uppercase mb-1.5">System Role</label>
-            <select 
+            <select
               className="w-full bg-zinc-950 border border-zinc-800 rounded-lg px-4 py-2 text-sm focus:ring-1 focus:ring-emerald-500 outline-none"
               value={formData.role}
               onChange={e => setFormData({ ...formData, role: e.target.value as Role })}
@@ -104,7 +106,7 @@ const UserForm: React.FC<UserFormProps> = ({ onClose, onSubmit, initialData }) =
           </div>
           <div>
             <label className="block text-xs font-bold text-zinc-500 uppercase mb-1.5">Class / Department</label>
-            <input 
+            <input
               className="w-full bg-zinc-950 border border-zinc-800 rounded-lg px-4 py-2 text-sm focus:ring-1 focus:ring-emerald-500 outline-none"
               placeholder="e.g. 10th Grade / Physics Dept"
               value={formData.class}

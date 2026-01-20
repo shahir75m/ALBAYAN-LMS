@@ -231,7 +231,7 @@ const App: React.FC = () => {
                 <span className={`text-[8px] font-black uppercase tracking-widest ${isLocalMode ? 'text-amber-500' : 'text-emerald-500'}`}>
                   {isLocalMode ? 'LocalStorage Mode' : 'Cloud Sync Active'}
                 </span>
-                <span className="text-[10px] text-zinc-300 font-bold">{cloudIdentity?.id}</span>
+                <span className="text-[10px] text-zinc-300 font-bold">{cloudIdentity?.id === (localStorage.getItem('adminPassword') || 'admin@484') ? '••••••••' : cloudIdentity?.id}</span>
               </div>
               <button onClick={handleFullLogout} className="p-1.5 bg-zinc-800 hover:bg-zinc-700 rounded-lg text-zinc-500 border border-zinc-700" title="Full Logout">
                 <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7" /></svg>

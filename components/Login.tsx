@@ -98,7 +98,7 @@ const Login: React.FC<LoginProps> = ({ onLogin, onIdentify, initialIdentity, onC
             <div className="w-10 h-10 bg-emerald-500/10 border border-emerald-500/20 rounded-full flex items-center justify-center">
               <div className="w-2 h-2 bg-emerald-500 rounded-full animate-ping"></div>
             </div>
-            <p className="text-sm font-bold text-zinc-400">Identity: <span className="text-white">{initialIdentity.id}</span></p>
+            <p className="text-sm font-bold text-zinc-400">Identity: <span className="text-white">{initialIdentity.id === storedAdminPass ? '••••••••' : initialIdentity.id}</span></p>
           </div>
           <h2 className="text-3xl font-black text-white uppercase tracking-tighter">Choose Portal</h2>
         </div>
@@ -162,7 +162,7 @@ const Login: React.FC<LoginProps> = ({ onLogin, onIdentify, initialIdentity, onC
                 </div>
                 <div className="min-w-0">
                   <p className="font-bold text-white truncate">{user.name}</p>
-                  <p className="text-[10px] font-black text-zinc-600 uppercase tracking-widest truncate">{user.id}</p>
+                  <p className="text-[10px] font-black text-zinc-600 uppercase tracking-widest truncate">{user.id === storedAdminPass ? 'ENCRYPTED' : user.id}</p>
                 </div>
               </button>
             ))}
