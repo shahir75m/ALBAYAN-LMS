@@ -42,6 +42,7 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
 
   // Password Change State
   const [showPassModal, setShowPassModal] = useState(false);
+  const [currentPass, setCurrentPass] = useState('');
   const [newPass, setNewPass] = useState('');
 
   // Analytics State
@@ -491,7 +492,17 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
               </div>
               <div className="p-6 space-y-4">
                 <div>
-                  <label className="block text-[10px] font-black text-zinc-500 uppercase tracking-widest mb-2">Change Master Password</label>
+                  <label className="block text-[10px] font-black text-zinc-500 uppercase tracking-widest mb-2">Current Master Password</label>
+                  <input
+                    type="password"
+                    placeholder="Enter current password"
+                    className="w-full bg-zinc-950 border border-zinc-800 rounded-xl px-4 py-3 text-sm text-white outline-none focus:ring-1 focus:ring-emerald-500"
+                    value={currentPass}
+                    onChange={(e) => setCurrentPass(e.target.value)}
+                  />
+                </div>
+                <div>
+                  <label className="block text-[10px] font-black text-zinc-500 uppercase tracking-widest mb-2">New Master Password</label>
                   <input
                     type="password"
                     placeholder="Enter new master password"
@@ -502,17 +513,24 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
                   <p className="text-[10px] text-zinc-600 mt-2 italic">This password will be required for the next admin login.</p>
                 </div>
                 <div className="pt-4 flex justify-end gap-3">
-                  <button onClick={() => setShowPassModal(false)} className="px-6 py-2 text-sm font-bold text-zinc-500 hover:text-white transition-all">Cancel</button>
+                  <button onClick={() => { setShowPassModal(false); setCurrentPass(''); setNewPass(''); }} className="px-6 py-2 text-sm font-bold text-zinc-500 hover:text-white transition-all">Cancel</button>
                   <button
                     onClick={() => {
-                      if (newPass.trim()) {
-                        localStorage.setItem('adminPassword', newPass.trim());
-                        alert('Master Admin password updated successfully!');
-                        setShowPassModal(false);
-                        setNewPass('');
-                        // Trigger a reload to ensure the variable in memory is updated across components if needed
-                        window.location.reload();
+                      if (currentPass !== storedAdminPass) {
+                        alert('Incorrect current password!');
+                        return;
                       }
+                      if (!newPass.trim()) {
+                        alert('New password cannot be empty!');
+                        return;
+                      }
+
+                      localStorage.setItem('adminPassword', newPass.trim());
+                      alert('Master Admin password updated successfully!');
+                      setShowPassModal(false);
+                      setCurrentPass('');
+                      setNewPass('');
+                      window.location.reload();
                     }}
                     className="bg-emerald-600 hover:bg-emerald-500 text-white px-8 py-2 rounded-lg text-sm font-bold transition-all shadow-lg"
                   >
