@@ -1,6 +1,5 @@
 
 import React from 'react';
-import Logo from './Logo';
 
 const Splash: React.FC = () => {
   return (
@@ -8,9 +7,13 @@ const Splash: React.FC = () => {
       <div className="relative group">
         {/* Animated Glow behind Logo */}
         <div className="absolute inset-0 bg-emerald-500/20 blur-[60px] rounded-full animate-pulse"></div>
-        
+
         <div className="relative flex flex-col items-center animate-in fade-in zoom-in duration-1000">
-          <Logo className="w-40 h-40 md:w-56 md:h-56 drop-shadow-[0_0_30px_rgba(16,185,129,0.3)]" />
+          <img
+            src="/icon-logo.png"
+            alt="Albayan Library Logo"
+            className="w-40 h-40 md:w-56 md:h-56 object-contain drop-shadow-[0_0_30px_rgba(16,185,129,0.3)]"
+          />
         </div>
       </div>
 
@@ -22,7 +25,7 @@ const Splash: React.FC = () => {
           Management System
         </p>
       </div>
-      
+
       <div className="mt-16 w-64 h-[2px] bg-zinc-900 rounded-full overflow-hidden">
         <div className="h-full bg-emerald-500 animate-[loading_2s_ease-in-out_infinite]"></div>
       </div>
