@@ -111,7 +111,7 @@ const BookForm: React.FC<BookFormProps> = ({ onClose, onSubmit, initialData }) =
 
   return (
     <div className="fixed inset-0 bg-black/80 backdrop-blur-md flex items-center justify-center z-[100] p-4 overflow-y-auto">
-      <div className="bg-zinc-900 border border-zinc-800 w-full max-w-3xl my-8 rounded-[2.5rem] shadow-2xl overflow-hidden animate-in fade-in zoom-in duration-300">
+      <div className="bg-zinc-900 border border-zinc-800 w-full max-w-6xl my-8 rounded-[2.5rem] shadow-2xl overflow-hidden animate-in fade-in zoom-in duration-300">
         <div className="px-10 py-6 border-b border-zinc-800 flex justify-between items-center bg-zinc-900/50">
           <div>
             <h3 className="font-black text-xl uppercase tracking-tighter text-white">
