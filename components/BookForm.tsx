@@ -113,9 +113,9 @@ const BookForm: React.FC<BookFormProps> = ({ onClose, onSubmit, initialData }) =
     <div className="fixed inset-0 z-[9999]" aria-labelledby="modal-title" role="dialog" aria-modal="true">
       <div className="fixed inset-0 bg-black/80 backdrop-blur-md transition-opacity" onClick={onClose}></div>
 
-      <div className="fixed inset-0 z-10 overflow-y-auto bg-zinc-950">
-        <div className="flex min-h-screen items-start justify-center text-center sm:items-start sm:p-0">
-          <div className="relative transform overflow-hidden bg-zinc-950 text-left shadow-2xl transition-all w-full min-h-screen flex flex-col">
+      <div className="fixed inset-0 z-10 overflow-y-auto">
+        <div className="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
+          <div className="relative transform overflow-hidden rounded-[2.5rem] bg-zinc-900 border border-zinc-800 text-left shadow-2xl transition-all sm:my-8 w-full max-w-2xl">
             <div className="px-10 py-6 border-b border-zinc-800 flex justify-between items-center bg-zinc-900/50 shrink-0 sticky top-0 z-50 backdrop-blur-xl">
               <div>
                 <h3 className="font-black text-xl uppercase tracking-tighter text-white">
@@ -128,7 +128,7 @@ const BookForm: React.FC<BookFormProps> = ({ onClose, onSubmit, initialData }) =
               </button>
             </div>
 
-            <div className="p-10 space-y-8 flex-1 max-w-5xl mx-auto w-full">
+            <div className="p-8 space-y-6 flex-1 w-full">
               {/* Camera Scanner Section */}
               <div className="relative group w-full">
                 {!isScanning ? (
