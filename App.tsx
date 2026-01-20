@@ -13,10 +13,10 @@ const App: React.FC = () => {
   const [loading, setLoading] = useState(true);
   const [isSyncing, setIsSyncing] = useState(false);
   const [isLocalMode, setIsLocalMode] = useState(false);
-  
-  const [cloudIdentity, setCloudIdentity] = useState<{id: string, name: string, avatarUrl?: string} | null>(null);
+
+  const [cloudIdentity, setCloudIdentity] = useState<{ id: string, name: string, avatarUrl?: string } | null>(null);
   const [currentUser, setCurrentUser] = useState<User | null>(null);
-  
+
   const [books, setBooks] = useState<Book[]>([]);
   const [users, setUsers] = useState<User[]>([]);
   const [requests, setRequests] = useState<BorrowRequest[]>([]);
@@ -37,7 +37,7 @@ const App: React.FC = () => {
       setUsers(u || []);
       setRequests(r || []);
       setHistory(h || []);
-      
+
       setIsLocalMode(api.isUsingFallback());
     } catch (err: any) {
       console.warn("Cloud Sync Interaction:", err.message);
@@ -58,17 +58,17 @@ const App: React.FC = () => {
       if (savedSession) {
         setCurrentUser(JSON.parse(savedSession));
       }
-      
+
       await refreshAllData();
       const interval = setInterval(refreshAllData, 5000);
-      
+
       setTimeout(() => setLoading(false), 2000);
       return () => clearInterval(interval);
     };
     init();
   }, [refreshAllData]);
 
-  const handleIdentify = (identity: {id: string, name: string, avatarUrl?: string}) => {
+  const handleIdentify = (identity: { id: string, name: string, avatarUrl?: string }) => {
     setCloudIdentity(identity);
     localStorage.setItem('albayan_cloud_identity', JSON.stringify(identity));
   };
@@ -182,11 +182,11 @@ const App: React.FC = () => {
   };
 
   if (loading) return <Splash />;
-  
+
   if (!currentUser) {
     return (
-      <Login 
-        onLogin={handleLogin} 
+      <Login
+        onLogin={handleLogin}
         onIdentify={handleIdentify}
         initialIdentity={cloudIdentity}
         onClearIdentity={handleFullLogout}
@@ -197,19 +197,19 @@ const App: React.FC = () => {
 
   return (
     <div className="flex h-screen bg-zinc-950 text-zinc-100 selection:bg-emerald-500/30 overflow-hidden">
-      <Sidebar 
-        role={currentUser.role} 
-        activeTab={activeTab} 
+      <Sidebar
+        role={currentUser.role}
+        activeTab={activeTab}
         setActiveTab={(tab) => {
           setActiveTab(tab);
           setIsMobileMenuOpen(false);
-        }} 
+        }}
         onLogout={handleSwitchPortal}
         user={currentUser}
         isMobileOpen={isMobileMenuOpen}
         onCloseMobile={() => setIsMobileMenuOpen(false)}
       />
-      
+
       <main className="flex-1 overflow-y-auto relative flex flex-col">
         <div className="md:hidden bg-zinc-900 border-b border-zinc-800 p-4 flex items-center justify-between shrink-0 sticky top-0 z-40">
           <button onClick={() => setIsMobileMenuOpen(true)} className="p-2 bg-zinc-800 rounded-xl border border-zinc-700 text-zinc-400">
@@ -227,15 +227,15 @@ const App: React.FC = () => {
         <div className="flex-1 p-4 md:p-8">
           <div className="fixed top-20 md:top-4 right-4 md:right-8 z-50 flex flex-col items-end gap-2">
             <div className="flex items-center gap-3 bg-zinc-900/80 border border-zinc-800 px-4 py-2 rounded-2xl backdrop-blur-md shadow-2xl">
-               <div className="flex flex-col items-end">
-                  <span className={`text-[8px] font-black uppercase tracking-widest ${isLocalMode ? 'text-amber-500' : 'text-emerald-500'}`}>
-                    {isLocalMode ? 'LocalStorage Mode' : 'Cloud Sync Active'}
-                  </span>
-                  <span className="text-[10px] text-zinc-300 font-bold">{cloudIdentity?.id}</span>
-               </div>
-               <button onClick={handleFullLogout} className="p-1.5 bg-zinc-800 hover:bg-zinc-700 rounded-lg text-zinc-500 border border-zinc-700" title="Full Logout">
-                 <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7" /></svg>
-               </button>
+              <div className="flex flex-col items-end">
+                <span className={`text-[8px] font-black uppercase tracking-widest ${isLocalMode ? 'text-amber-500' : 'text-emerald-500'}`}>
+                  {isLocalMode ? 'LocalStorage Mode' : 'Cloud Sync Active'}
+                </span>
+                <span className="text-[10px] text-zinc-300 font-bold">{cloudIdentity?.id}</span>
+              </div>
+              <button onClick={handleFullLogout} className="p-1.5 bg-zinc-800 hover:bg-zinc-700 rounded-lg text-zinc-500 border border-zinc-700" title="Full Logout">
+                <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7" /></svg>
+              </button>
             </div>
             {isSyncing && (
               <div className="flex items-center gap-2 bg-emerald-500/10 border border-emerald-500/20 px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-tighter text-emerald-400 animate-pulse">
@@ -250,7 +250,7 @@ const App: React.FC = () => {
             )}
           </div>
 
-          <div className="max-w-7xl mx-auto">
+          <div className="w-full">
             <header className="mb-10">
               <h1 className="text-4xl font-black text-white tracking-tighter uppercase">
                 {activeTab.replace('-', ' ')}
@@ -261,14 +261,14 @@ const App: React.FC = () => {
             </header>
 
             {currentUser.role === 'ADMIN' ? (
-              <AdminDashboard 
+              <AdminDashboard
                 activeTab={activeTab} books={books} users={users} requests={requests} history={history}
                 onAddBook={handleAddOrUpdateBook} onUpdateBook={handleAddOrUpdateBook} onDeleteBook={handleDeleteBook}
                 onAddUser={handleAddOrUpdateUser} onUpdateUser={handleAddOrUpdateUser} onDeleteUser={handleDeleteUser}
                 onHandleRequest={handleRequestAction} onReturnBook={handleReturnBook}
               />
             ) : (
-              <StudentDashboard 
+              <StudentDashboard
                 activeTab={activeTab} books={books} requests={requests} history={history} currentUser={currentUser} onBorrow={handleBorrowRequest}
               />
             )}

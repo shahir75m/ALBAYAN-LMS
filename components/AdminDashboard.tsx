@@ -20,8 +20,8 @@ interface AdminDashboardProps {
   onReturnBook: (bid: string, uid: string) => void;
 }
 
-const AdminDashboard: React.FC<AdminDashboardProps> = ({ 
-  activeTab, books, users, requests, history, 
+const AdminDashboard: React.FC<AdminDashboardProps> = ({
+  activeTab, books, users, requests, history,
   onAddBook, onUpdateBook, onDeleteBook,
   onAddUser, onUpdateUser, onDeleteUser,
   onHandleRequest, onReturnBook
@@ -34,24 +34,24 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
   const [filter, setFilter] = useState('All');
   const importBooksInputRef = useRef<HTMLInputElement>(null);
   const importUsersInputRef = useRef<HTMLInputElement>(null);
-  
+
   // Return Search state
   const [returnSearch, setReturnSearch] = useState('');
-  
+
   // Analytics State
   const [dateRange, setDateRange] = useState({
     start: new Date(new Date().setDate(new Date().getDate() - 30)).toISOString().split('T')[0],
     end: new Date().toISOString().split('T')[0]
   });
 
-  const filteredBooks = books.filter(b => 
+  const filteredBooks = books.filter(b =>
     (filter === 'All' || b.category === filter) &&
-    (b.title.toLowerCase().includes(search.toLowerCase()) || 
-     b.author.toLowerCase().includes(search.toLowerCase()) ||
-     b.id.toLowerCase().includes(search.toLowerCase()))
+    (b.title.toLowerCase().includes(search.toLowerCase()) ||
+      b.author.toLowerCase().includes(search.toLowerCase()) ||
+      b.id.toLowerCase().includes(search.toLowerCase()))
   );
 
-  const filteredUsers = users.filter(u => 
+  const filteredUsers = users.filter(u =>
     u.name.toLowerCase().includes(search.toLowerCase()) || u.id.toLowerCase().includes(search.toLowerCase())
   );
 
@@ -67,12 +67,12 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
       const text = event.target?.result as string;
       const lines = text.split('\n');
       const headers = lines[0].split(',').map(h => h.trim().toLowerCase());
-      
+
       for (let i = 1; i < lines.length; i++) {
         if (!lines[i].trim()) continue;
         const values = lines[i].split(',').map(v => v.trim());
         const bookData: any = {};
-        
+
         headers.forEach((header, index) => {
           bookData[header] = values[index];
         });
@@ -110,12 +110,12 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
       const text = event.target?.result as string;
       const lines = text.split('\n');
       const headers = lines[0].split(',').map(h => h.trim().toLowerCase());
-      
+
       for (let i = 1; i < lines.length; i++) {
         if (!lines[i].trim()) continue;
         const values = lines[i].split(',').map(v => v.trim());
         const userData: any = {};
-        
+
         headers.forEach((header, index) => {
           userData[header] = values[index];
         });
@@ -148,14 +148,14 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
 
     const rangeHistory = history.filter(h => h.borrowDate >= start && h.borrowDate <= end);
     const counts: Record<string, { count: number; name: string }> = {};
-    
+
     rangeHistory.forEach(h => {
-      counts[h.userId] = { 
-        count: (counts[h.userId]?.count || 0) + 1, 
-        name: h.userName 
+      counts[h.userId] = {
+        count: (counts[h.userId]?.count || 0) + 1,
+        name: h.userName
       };
     });
-    
+
     return Object.values(counts).sort((a, b) => b.count - a.count)[0] || { name: 'N/A', count: 0 };
   }, [history, dateRange]);
 
@@ -173,15 +173,15 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
           <h2 className="text-xl font-black text-zinc-400 uppercase tracking-widest">Library Overview</h2>
           <div className="flex items-center gap-2 bg-zinc-900 p-2 rounded-2xl border border-zinc-800 shadow-2xl">
             <span className="text-[10px] font-black text-zinc-600 px-3 uppercase">Range</span>
-            <input 
-              type="date" value={dateRange.start} 
-              onChange={e => setDateRange({...dateRange, start: e.target.value})}
+            <input
+              type="date" value={dateRange.start}
+              onChange={e => setDateRange({ ...dateRange, start: e.target.value })}
               className="bg-zinc-800 border-none rounded-xl text-xs text-white px-3 py-1.5 outline-none focus:ring-1 focus:ring-emerald-500"
             />
             <span className="text-zinc-700 text-xs">→</span>
-            <input 
-              type="date" value={dateRange.end} 
-              onChange={e => setDateRange({...dateRange, end: e.target.value})}
+            <input
+              type="date" value={dateRange.end}
+              onChange={e => setDateRange({ ...dateRange, end: e.target.value })}
               className="bg-zinc-800 border-none rounded-xl text-xs text-white px-3 py-1.5 outline-none focus:ring-1 focus:ring-emerald-500"
             />
           </div>
@@ -210,13 +210,13 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
                     <p className="text-xs text-zinc-500 mt-1">Requested: <span className="text-zinc-300 font-medium italic">{req.bookTitle}</span></p>
                   </div>
                   <div className="flex gap-3">
-                    <button 
+                    <button
                       onClick={() => onHandleRequest(req.id, 'APPROVE')}
                       className="px-5 py-2 bg-emerald-600 hover:bg-emerald-500 rounded-xl text-[10px] font-black uppercase text-white transition-all shadow-xl shadow-emerald-900/20 active:scale-95"
                     >
                       Approve
                     </button>
-                    <button 
+                    <button
                       onClick={() => onHandleRequest(req.id, 'DENY')}
                       className="px-5 py-2 bg-zinc-800 hover:bg-zinc-700 text-zinc-300 rounded-xl text-[10px] font-black uppercase transition-all active:scale-95"
                     >
@@ -232,14 +232,14 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
           </div>
 
           <div className="bg-zinc-900 border border-zinc-800 rounded-3xl overflow-hidden shadow-2xl">
-             <div className="px-8 py-4 border-b border-zinc-800 bg-zinc-900/50 flex items-center justify-between">
+            <div className="px-8 py-4 border-b border-zinc-800 bg-zinc-900/50 flex items-center justify-between">
               <h3 className="font-black text-sm uppercase tracking-widest text-zinc-200 flex items-center gap-3 shrink-0">
                 <span className="w-2 h-2 bg-blue-500 rounded-full"></span>
                 Returns
               </h3>
               <div className="relative w-48 ml-4">
-                <input 
-                  type="text" 
+                <input
+                  type="text"
                   placeholder="Find book/user..."
                   value={returnSearch}
                   onChange={(e) => setReturnSearch(e.target.value)}
@@ -254,7 +254,7 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
                     <p className="font-bold text-zinc-100 truncate">{h.bookTitle}</p>
                     <p className="text-xs text-zinc-500 mt-1">Holder: <span className="text-zinc-300">{h.userName}</span></p>
                   </div>
-                  <button 
+                  <button
                     onClick={() => onReturnBook(h.bookId, h.userId)}
                     className="shrink-0 px-4 py-2 border border-emerald-500/30 text-emerald-500 hover:bg-emerald-500 hover:text-white rounded-xl text-[10px] font-black uppercase transition-all active:scale-95"
                   >
@@ -279,16 +279,16 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
     return (
       <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
         <div className="flex flex-col md:flex-row gap-6 items-center justify-between">
-          <div className="flex gap-3 items-center w-full md:w-auto">
-            <div className="relative w-full md:w-80">
+          <div className="flex gap-3 items-center w-full md:w-auto flex-1">
+            <div className="relative w-full md:w-96 lg:w-[32rem]">
               <svg className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-zinc-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>
-              <input 
-                type="text" placeholder="Search ID, ISBN, Title..." 
+              <input
+                type="text" placeholder="Search ID, ISBN, Title..."
                 value={search} onChange={(e) => setSearch(e.target.value)}
                 className="bg-zinc-900 border border-zinc-800 rounded-2xl pl-12 pr-6 py-3 text-sm focus:ring-2 focus:ring-emerald-500/50 outline-none w-full shadow-2xl"
               />
             </div>
-            <select 
+            <select
               value={filter} onChange={(e) => setFilter(e.target.value)}
               className="bg-zinc-900 border border-zinc-800 rounded-2xl px-5 py-3 text-sm focus:ring-2 focus:ring-emerald-500/50 outline-none text-zinc-300 shadow-2xl"
             >
@@ -296,21 +296,21 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
             </select>
           </div>
           <div className="flex gap-3">
-            <input 
-              type="file" 
-              ref={importBooksInputRef} 
-              className="hidden" 
-              accept=".csv" 
-              onChange={handleBulkBookImport} 
+            <input
+              type="file"
+              ref={importBooksInputRef}
+              className="hidden"
+              accept=".csv"
+              onChange={handleBulkBookImport}
             />
-            <button 
+            <button
               onClick={() => importBooksInputRef.current?.click()}
               className="w-full md:w-auto border border-zinc-800 hover:bg-zinc-800 text-zinc-400 font-black uppercase text-[10px] tracking-widest py-3 px-8 rounded-2xl flex items-center justify-center gap-3 transition-all active:scale-95 shadow-2xl"
             >
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" /></svg>
               Import CSV
             </button>
-            <button 
+            <button
               onClick={() => { setEditingBook(null); setShowBookForm(true); }}
               className="w-full md:w-auto bg-emerald-600 hover:bg-emerald-500 text-white font-black uppercase text-[10px] tracking-widest py-3 px-8 rounded-2xl flex items-center justify-center gap-3 transition-all active:scale-95 shadow-2xl shadow-emerald-900/40"
             >
@@ -335,7 +335,7 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
                   <h4 className="font-bold text-white text-lg leading-tight line-clamp-2 group-hover:text-emerald-400 transition-colors">{book.title}</h4>
                   <p className="text-xs text-zinc-500 mt-1 font-medium italic line-clamp-1">by {book.author}</p>
                   <p className="text-[10px] text-emerald-500/80 font-bold mt-1">${book.price?.toFixed(2) || '0.00'}</p>
-                  
+
                   <div className="mt-auto pt-5 flex justify-between items-end border-t border-zinc-800/50">
                     <div>
                       <p className="text-[9px] text-zinc-600 uppercase font-black tracking-widest">Available</p>
@@ -345,7 +345,7 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
                     </div>
                     <div className="flex gap-1">
                       <button onClick={() => { setEditingBook(book); setShowBookForm(true); }} className="p-2.5 text-zinc-500 hover:text-emerald-400 hover:bg-emerald-500/10 rounded-xl transition-all"><svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" /></svg></button>
-                      <button onClick={() => { if(confirm('Permanently delete book?')) onDeleteBook(book.id) }} className="p-2.5 text-zinc-500 hover:text-red-400 hover:bg-red-400/10 rounded-xl transition-all"><svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg></button>
+                      <button onClick={() => { if (confirm('Permanently delete book?')) onDeleteBook(book.id) }} className="p-2.5 text-zinc-500 hover:text-red-400 hover:bg-red-400/10 rounded-xl transition-all"><svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg></button>
                     </div>
                   </div>
                 </div>
@@ -366,26 +366,26 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
     return (
       <div className="bg-zinc-900 border border-zinc-800 rounded-3xl overflow-hidden shadow-2xl animate-in fade-in slide-in-from-bottom-2 duration-500">
         <div className="p-8 border-b border-zinc-800 bg-zinc-900/50 flex justify-between items-center">
-            <h3 className="font-black text-xs uppercase tracking-widest text-zinc-400">Library Ledger</h3>
-            {activeTab === 'users' && (
-               <div className="flex gap-3">
-                 <input 
-                    type="file" 
-                    ref={importUsersInputRef} 
-                    className="hidden" 
-                    accept=".csv" 
-                    onChange={handleBulkUserImport} 
-                  />
-                  <button 
-                    onClick={() => importUsersInputRef.current?.click()}
-                    className="border border-zinc-800 hover:bg-zinc-800 text-zinc-400 font-black uppercase text-[9px] tracking-widest py-2 px-6 rounded-xl transition-all flex items-center gap-2"
-                  >
-                    <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" /></svg>
-                    Bulk Import
-                  </button>
-                  <button onClick={() => { setEditingUser(null); setShowUserForm(true); }} className="bg-emerald-600 hover:bg-emerald-500 text-white font-black uppercase text-[9px] tracking-widest py-2 px-6 rounded-xl transition-all">Add User</button>
-               </div>
-            )}
+          <h3 className="font-black text-xs uppercase tracking-widest text-zinc-400">Library Ledger</h3>
+          {activeTab === 'users' && (
+            <div className="flex gap-3">
+              <input
+                type="file"
+                ref={importUsersInputRef}
+                className="hidden"
+                accept=".csv"
+                onChange={handleBulkUserImport}
+              />
+              <button
+                onClick={() => importUsersInputRef.current?.click()}
+                className="border border-zinc-800 hover:bg-zinc-800 text-zinc-400 font-black uppercase text-[9px] tracking-widest py-2 px-6 rounded-xl transition-all flex items-center gap-2"
+              >
+                <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" /></svg>
+                Bulk Import
+              </button>
+              <button onClick={() => { setEditingUser(null); setShowUserForm(true); }} className="bg-emerald-600 hover:bg-emerald-500 text-white font-black uppercase text-[9px] tracking-widest py-2 px-6 rounded-xl transition-all">Add User</button>
+            </div>
+          )}
         </div>
         <div className="overflow-x-auto">
           <table className="w-full text-left text-sm">
@@ -408,7 +408,7 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
                       <td className="px-8 py-5 text-zinc-500 italic">{user.class || '---'}</td>
                       <td className="px-8 py-5 text-right flex justify-end gap-2">
                         <button onClick={() => { setEditingUser(user); setShowUserForm(true); }} className="p-2 text-zinc-600 hover:text-emerald-500 hover:bg-emerald-500/10 rounded-xl transition-all"><svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" /></svg></button>
-                        <button onClick={() => { if(confirm('Remove user access?')) onDeleteUser(user.id) }} className="p-2 text-zinc-600 hover:text-red-400 hover:bg-red-400/10 rounded-xl transition-all"><svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg></button>
+                        <button onClick={() => { if (confirm('Remove user access?')) onDeleteUser(user.id) }} className="p-2 text-zinc-600 hover:text-red-400 hover:bg-red-400/10 rounded-xl transition-all"><svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg></button>
                       </td>
                     </tr>
                   ))}
@@ -427,11 +427,10 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
                       <td className="px-8 py-5 font-bold text-zinc-200">{req.userName}</td>
                       <td className="px-8 py-5 text-zinc-400 italic font-medium">{req.bookTitle}</td>
                       <td className="px-8 py-5">
-                        <span className={`px-3 py-1 rounded-full text-[9px] font-black tracking-widest border ${
-                          req.status === 'PENDING' ? 'bg-amber-500/10 text-amber-500 border-amber-500/20' :
-                          req.status === 'APPROVED' ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20' :
-                          'bg-red-500/10 text-red-500 border-red-500/20'
-                        }`}>{req.status}</span>
+                        <span className={`px-3 py-1 rounded-full text-[9px] font-black tracking-widest border ${req.status === 'PENDING' ? 'bg-amber-500/10 text-amber-500 border-amber-500/20' :
+                            req.status === 'APPROVED' ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20' :
+                              'bg-red-500/10 text-red-500 border-red-500/20'
+                          }`}>{req.status}</span>
                       </td>
                       <td className="px-8 py-5 text-right">
                         {req.status === 'PENDING' && (
