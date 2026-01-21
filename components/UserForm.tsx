@@ -101,10 +101,10 @@ const UserForm: React.FC<UserFormProps> = ({ onClose, onSubmit, initialData }) =
                 </select>
               </div>
               <div>
-                <label className="block text-[10px] font-medium text-zinc-500 uppercase tracking-wider mb-2">Classification</label>
+                <label className="block text-[10px] font-medium text-zinc-500 uppercase tracking-wider mb-2">Class</label>
                 <input
                   className="w-full bg-[#09090b] border border-zinc-900 rounded-xl px-4 py-2.5 text-sm focus:border-zinc-700 outline-none text-white/90 transition-all"
-                  placeholder="e.g. Science Dept"
+                  placeholder="e.g. Grade 10A"
                   value={formData.class}
                   onChange={e => setFormData({ ...formData, class: e.target.value })}
                 />
