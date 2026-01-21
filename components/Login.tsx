@@ -13,36 +13,54 @@ interface LoginProps {
 
 
 const Login: React.FC<LoginProps> = ({ onLogin, onIdentify, initialIdentity, onClearIdentity, availableUsers }) => {
-  const [step, setStep] = useState<'IDENTIFY' | 'PORTAL' | 'USER_PICK'>(initialIdentity ? 'PORTAL' : 'IDENTIFY');
+  const [step, setStep] = useState<'IDENTIFY' | 'PORTAL' | 'USER_PICK' | 'ADMIN_AUTH'>(initialIdentity ? 'PORTAL' : 'IDENTIFY');
   const [selectedRole, setSelectedRole] = useState<Role | null>(null);
   const [userSearch, setUserSearch] = useState('');
   const [error, setError] = useState<string | null>(null);
   const [manualEmail, setManualEmail] = useState('');
+  const [adminPassInput, setAdminPassInput] = useState('');
   const storedAdminPass = localStorage.getItem('adminPassword') || 'admin@484';
   const [isSyncing, setIsSyncing] = useState(false);
 
 
   const handleManualIdentify = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!manualEmail.includes('@') && manualEmail !== storedAdminPass) {
-      setError("Enter a valid cloud ID or username.");
+    if (!manualEmail.trim()) {
+      setError("Please enter your User ID or Name.");
       return;
     }
     setIsSyncing(true);
     setTimeout(() => {
       onIdentify({
         id: manualEmail,
-        name: manualEmail === storedAdminPass ? 'Master Admin' : manualEmail.split('@')[0],
+        name: manualEmail.includes('@') ? manualEmail.split('@')[0] : manualEmail,
       });
       setIsSyncing(false);
       setStep('PORTAL');
+      setError(null);
     }, 600);
+  };
+
+  const handleAdminVerify = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (adminPassInput === storedAdminPass) {
+      setStep('USER_PICK');
+      setError(null);
+    } else {
+      setError("Incorrect Admin Password.");
+    }
   };
 
   const handleRoleCardClick = (role: Role) => {
     setSelectedRole(role);
-    setStep('USER_PICK');
-    setUserSearch('');
+    if (role === 'ADMIN') {
+      setStep('ADMIN_AUTH');
+      setAdminPassInput('');
+    } else {
+      setStep('USER_PICK');
+      setUserSearch('');
+    }
+    setError(null);
   };
 
   const filteredUsers = useMemo(() => {
@@ -72,15 +90,15 @@ const Login: React.FC<LoginProps> = ({ onLogin, onIdentify, initialIdentity, onC
               <Logo className="w-12 h-12" />
             </div>
             <h2 className="text-xl font-semibold tracking-tight text-white">Library Access</h2>
-            <p className="text-zinc-500 text-xs mt-2 text-center">Verify your identity to proceed to portals</p>
+            <p className="text-zinc-500 text-xs mt-2 text-center">Enter your ID to proceed to portals</p>
           </div>
           <div className="space-y-6">
             <form onSubmit={handleManualIdentify} className="space-y-4">
               <div className="space-y-2">
-                <label className="text-[10px] font-medium uppercase tracking-wider text-zinc-500 ml-1">Identity Key</label>
+                <label className="text-[10px] font-medium uppercase tracking-wider text-zinc-500 ml-1">User ID</label>
                 <input
-                  type="password"
-                  placeholder="••••••••"
+                  type="text"
+                  placeholder="e.g. library_user_123"
                   className="w-full bg-[#09090b] border border-zinc-800 rounded-xl px-5 py-3.5 text-sm text-white outline-none focus:ring-1 focus:ring-emerald-500/30 focus:border-emerald-500/40 transition-all"
                   value={manualEmail}
                   onChange={(e) => setManualEmail(e.target.value)}
@@ -93,6 +111,53 @@ const Login: React.FC<LoginProps> = ({ onLogin, onIdentify, initialIdentity, onC
                 className="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-medium text-sm py-3.5 rounded-xl transition-all shadow-lg shadow-emerald-900/20 active:scale-[0.98]"
               >
                 {isSyncing ? "Verifying..." : "Continue"}
+              </button>
+            </form>
+            {error && (
+              <p className="text-red-400 text-[10px] font-medium text-center bg-red-500/5 py-3 rounded-lg border border-red-500/10">
+                {error}
+              </p>
+            )}
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  if (step === 'ADMIN_AUTH') {
+    return (
+      <div className="min-h-screen bg-[#09090b] flex items-center justify-center p-4">
+        <div className="w-full max-w-[400px] bg-[#0c0c0e] border border-zinc-900 rounded-3xl p-8 md:p-10 shadow-3xl relative overflow-hidden">
+          <div className="absolute top-0 right-0 w-32 h-32 bg-emerald-500/5 blur-[60px] rounded-full"></div>
+          <div className="mb-8">
+            <button onClick={() => setStep('PORTAL')} className="text-zinc-500 hover:text-zinc-300 flex items-center gap-2 transition-all text-xs mb-6">
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+              </svg>
+              Back to Portals
+            </button>
+            <h2 className="text-xl font-semibold tracking-tight text-white">Admin Verification</h2>
+            <p className="text-zinc-500 text-xs mt-2">Enter your administration password</p>
+          </div>
+          <div className="space-y-6">
+            <form onSubmit={handleAdminVerify} className="space-y-4">
+              <div className="space-y-2">
+                <label className="text-[10px] font-medium uppercase tracking-wider text-zinc-500 ml-1">Password</label>
+                <input
+                  autoFocus
+                  type="password"
+                  placeholder="••••••••"
+                  className="w-full bg-[#09090b] border border-zinc-800 rounded-xl px-5 py-3.5 text-sm text-white outline-none focus:ring-1 focus:ring-emerald-500/30 focus:border-emerald-500/40 transition-all"
+                  value={adminPassInput}
+                  onChange={(e) => setAdminPassInput(e.target.value)}
+                  required
+                />
+              </div>
+              <button
+                type="submit"
+                className="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-medium text-sm py-3.5 rounded-xl transition-all shadow-lg shadow-emerald-900/20 active:scale-[0.98]"
+              >
+                Access Admin Portal
               </button>
             </form>
             {error && (
