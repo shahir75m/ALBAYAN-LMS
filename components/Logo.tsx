@@ -9,18 +9,13 @@ const Logo: React.FC<LogoProps> = ({ className = "w-10 h-10" }) => {
   return (
     <svg
       viewBox="0 0 24 24"
-      fill="none"
+      fill="currentColor"
       xmlns="http://www.w3.org/2000/svg"
       className={className}
     >
-      {/* Refined Book Design */}
-      <path
-        d="M12 21V7M12 7C12 7 10 5 5 5V17C10 17 12 19 12 19M12 7C12 7 14 5 19 5V17C14 17 12 19 12 19"
-        stroke="currentColor"
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
+      <path d="M11 4L5 6V20L11 18V4Z" opacity="0.8" />
+      <path d="M13 4L19 6V20L13 18V4Z" />
+      <path d="M11 4H13V18H11V4Z" opacity="0.4" />
     </svg>
   );
 };
