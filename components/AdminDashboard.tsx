@@ -204,17 +204,17 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
   return (
     <div className="relative">
       {/* Global Status Message Banner */}
-      {statusMsg && !showPassModal && !showFineModal && (
-        <div className={`sticky top-4 z-50 mb-8 px-8 py-5 rounded-[2rem] border backdrop-blur-md shadow-xl animate-in fade-in slide-in-from-top-4 duration-500 flex items-center justify-between gap-4 ${statusMsg.type === 'success'
+      {statusMsg && (
+        <div className={`sticky top-6 z-[12000] mb-10 px-10 py-6 rounded-[2.5rem] border backdrop-blur-xl shadow-2xl animate-in fade-in slide-in-from-top-6 duration-700 flex items-center justify-between gap-6 ${statusMsg.type === 'success'
           ? 'bg-emerald-500/10 border-emerald-500/20 text-emerald-400'
           : 'bg-red-500/10 border-red-500/20 text-red-400'
           }`}>
-          <div className="flex items-center gap-4">
-            <div className={`w-3 h-3 rounded-full ${statusMsg.type === 'success' ? 'bg-emerald-500' : 'bg-red-500'} shadow-[0_0_12px_rgba(16,185,129,0.4)] animate-pulse`}></div>
-            <span className="text-xs font-black uppercase tracking-[0.2em]">{statusMsg.text}</span>
+          <div className="flex items-center gap-5">
+            <div className={`w-3.5 h-3.5 rounded-full ${statusMsg.type === 'success' ? 'bg-emerald-500' : 'bg-red-500'} shadow-[0_0_15px_rgba(16,185,129,0.5)] animate-pulse`}></div>
+            <span className="text-sm font-black uppercase tracking-[0.25em]">{statusMsg.text}</span>
           </div>
-          <button onClick={() => globalStatus.set('')} className="p-1 hover:bg-white/5 rounded-full transition-colors">
-            <svg className="w-4 h-4 opacity-50" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /></svg>
+          <button onClick={() => globalStatus.set('')} className="p-2 hover:bg-white/10 rounded-full transition-all group">
+            <svg className="w-5 h-5 opacity-40 group-hover:opacity-100 transition-opacity" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M6 18L18 6M6 6l12 12" /></svg>
           </button>
         </div>
       )}
@@ -259,9 +259,9 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
             <div className="bg-[#0c0c0e] border border-zinc-900 rounded-2xl overflow-hidden shadow-sm">
               <div className="px-6 py-4 border-b border-zinc-900 flex justify-between items-center bg-zinc-900/20">
-                <h3 className="font-semibold text-xs text-zinc-300 flex items-center gap-2">
+                <h3 className="font-semibold text-xs text-zinc-300 flex items-center gap-2 uppercase tracking-widest">
                   <span className="w-1.5 h-1.5 bg-amber-500 rounded-full"></span>
-                  Borrow Queue
+                  Confirmations
                 </h3>
               </div>
               <div className="divide-y divide-zinc-900 max-h-[400px] overflow-y-auto no-scrollbar">
