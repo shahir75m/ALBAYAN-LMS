@@ -282,13 +282,6 @@ const App: React.FC = () => {
                 Backend Unreachable
               </div>
             )}
-            {statusMsg && (
-              <div className={`px-6 py-4 rounded-2xl border backdrop-blur-md shadow-2xl animate-in fade-in slide-in-from-top-4 duration-500 flex items-center gap-3 ${statusMsg.type === 'success' ? 'bg-emerald-500/10 border-emerald-500/20 text-emerald-400' : 'bg-red-500/10 border-red-500/20 text-red-400'
-                }`}>
-                <div className={`w-2 h-2 rounded-full ${statusMsg.type === 'success' ? 'bg-emerald-500' : 'bg-red-500'} animate-pulse`}></div>
-                <span className="text-xs font-black uppercase tracking-widest">{statusMsg.text}</span>
-              </div>
-            )}
           </div>
 
           <div className="w-full">
