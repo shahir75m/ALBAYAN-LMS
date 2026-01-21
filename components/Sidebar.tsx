@@ -50,12 +50,12 @@ const Sidebar: React.FC<SidebarProps> = ({
         <div className="p-6 flex-1 overflow-y-auto no-scrollbar">
           <div className="flex items-center justify-between mb-10">
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 bg-zinc-900 rounded-xl border border-zinc-800 flex items-center justify-center shadow-sm">
-                <Logo className="w-6 h-6" />
+              <div className="w-10 h-10 bg-emerald-500/10 rounded-xl border border-emerald-500/20 flex items-center justify-center shadow-lg shadow-emerald-900/10 text-emerald-500">
+                <Logo className="w-5 h-5" />
               </div>
               <div>
-                <span className="block text-white font-semibold tracking-tight text-base leading-none">ALBAYAN</span>
-                <span className="text-[10px] text-zinc-500 font-medium uppercase tracking-wider mt-1 block">Library Repository</span>
+                <span className="block text-white font-black tracking-tighter text-lg leading-none">ALBAYAN</span>
+                <span className="text-[10px] text-zinc-600 font-bold uppercase tracking-widest mt-1 block">LMS Repository</span>
               </div>
             </div>
             {/* Mobile Close Button */}
