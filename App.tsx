@@ -129,11 +129,11 @@ const App: React.FC = () => {
     try {
       if (action === 'APPROVE') {
         const book = books.find(b => b.id === req.bookId);
-        if (book && book.availableCopies > 0) {
+        if (book && (book.availableCopies || 0) > 0) {
           const updatedBook = {
             ...book,
-            availableCopies: book.availableCopies - 1,
-            currentBorrowers: [...book.currentBorrowers, { userId: req.userId, userName: req.userName }]
+            availableCopies: Number(book.availableCopies || 0) - 1,
+            currentBorrowers: [...(book.currentBorrowers || []), { userId: req.userId, userName: req.userName }]
           };
           await api.saveBook(updatedBook);
           await api.addHistoryRecord({
@@ -156,10 +156,12 @@ const App: React.FC = () => {
   const handleReturnBook = async (bookId: string, userId: string, fine?: { amount: number, reason: string }) => {
     const book = books.find(b => b.id === bookId);
     if (book) {
+      const currentAvailable = Number(book.availableCopies || 0);
+      const total = Number(book.totalCopies || 1);
       const updatedBook = {
         ...book,
-        availableCopies: Math.min(book.totalCopies, book.availableCopies + 1),
-        currentBorrowers: book.currentBorrowers.filter(cb => cb.userId !== userId)
+        availableCopies: Math.min(total, currentAvailable + 1),
+        currentBorrowers: (book.currentBorrowers || []).filter(cb => cb.userId !== userId)
       };
       await api.saveBook(updatedBook);
       const record = history.find(h => h.bookId === bookId && h.userId === userId && !h.returnDate);

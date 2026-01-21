@@ -250,8 +250,15 @@ const BookForm: React.FC<BookFormProps> = ({ onClose, onSubmit, initialData }) =
                   className="w-full bg-[#09090b] border border-zinc-900 rounded-xl px-4 py-2.5 text-sm focus:border-zinc-700 outline-none text-white/90 transition-all"
                   value={formData.totalCopies}
                   onChange={e => {
-                    const val = parseInt(e.target.value) || 0;
-                    setFormData({ ...formData, totalCopies: val, availableCopies: initialData ? formData.availableCopies : val });
+                    const newVal = parseInt(e.target.value) || 0;
+                    const oldTotal = formData.totalCopies || 0;
+                    const diff = newVal - oldTotal;
+
+                    setFormData({
+                      ...formData,
+                      totalCopies: newVal,
+                      availableCopies: initialData ? Math.max(0, (formData.availableCopies || 0) + diff) : newVal
+                    });
                   }}
                 />
               </div>
