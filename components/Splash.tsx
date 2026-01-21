@@ -3,12 +3,12 @@ import React from 'react';
 
 const Splash: React.FC = () => {
   return (
-    <div className="fixed inset-0 bg-[#09090b] flex flex-col items-center justify-center z-50 p-6">
+    <div className="fixed inset-0 bg-black flex flex-col items-center justify-center z-50 p-6">
       <div className="relative flex flex-col items-center animate-in fade-in zoom-in duration-700">
         <img
           src="/logo.png"
           alt="Albayan Library Logo"
-          className="relative w-28 h-28 md:w-40 md:h-40 object-contain"
+          className="relative w-28 h-28 md:w-40 md:h-40 object-contain rounded-3xl"
         />
       </div>
 

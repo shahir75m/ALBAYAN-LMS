@@ -10,7 +10,7 @@ const Logo: React.FC<LogoProps> = ({ className = "w-10 h-10" }) => {
     <img
       src="/logo.png"
       alt="LMS Logo"
-      className={`relative object-contain ${className}`}
+      className={`relative object-contain rounded-xl ${className}`}
     />
   );
 };
