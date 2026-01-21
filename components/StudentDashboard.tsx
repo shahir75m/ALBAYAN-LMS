@@ -242,6 +242,47 @@ const StudentDashboard: React.FC<StudentDashboardProps> = ({
     );
   }
 
+  if (activeTab === 'my-fines') {
+    return (
+      <div className="bg-[#0c0c0e] border border-zinc-900 rounded-2xl overflow-hidden shadow-sm animate-in fade-in duration-700">
+        <div className="p-6 border-b border-zinc-900 bg-zinc-900/20">
+          <h3 className="font-semibold text-xs text-zinc-400 uppercase tracking-widest">Your Outstanding & Past Fines</h3>
+        </div>
+        <div className="overflow-x-auto no-scrollbar">
+          <table className="w-full text-left text-sm">
+            <thead>
+              <tr className="bg-[#09090b] border-b border-zinc-900 text-zinc-500 text-[10px] font-medium tracking-wide">
+                <th className="px-6 py-4">Date Issued</th>
+                <th className="px-6 py-4">Book Title</th>
+                <th className="px-6 py-4">Reason</th>
+                <th className="px-6 py-4 text-right">Amount</th>
+                <th className="px-6 py-4">Status</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-zinc-900/50">
+              {myFines.map(fine => (
+                <tr key={fine.id} className="hover:bg-zinc-900/30 transition-all">
+                  <td className="px-6 py-4 text-zinc-600 text-[11px]">{new Date(fine.timestamp).toLocaleDateString()}</td>
+                  <td className="px-6 py-4 font-medium text-white/90">{fine.bookTitle}</td>
+                  <td className="px-6 py-4 text-xs text-zinc-500">{fine.reason}</td>
+                  <td className="px-6 py-4 text-right font-mono text-emerald-500 font-bold">₹{fine.amount}</td>
+                  <td className="px-6 py-4">
+                    <span className={`px-2.5 py-0.5 rounded-full text-[10px] font-medium border ${fine.status === 'PAID' ? 'bg-emerald-500/5 text-emerald-400 border-emerald-500/10' : 'bg-red-500/5 text-red-500 border-red-500/10'}`}>
+                      {fine.status}
+                    </span>
+                  </td>
+                </tr>
+              ))}
+              {myFines.length === 0 && (
+                <tr><td colSpan={5} className="px-6 py-16 text-center text-zinc-600 text-xs italic">You have no recorded fines. Happy reading!</td></tr>
+              )}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    );
+  }
+
   return null;
 };
 
