@@ -79,20 +79,33 @@ const BookForm: React.FC<BookFormProps> = ({ onClose, onSubmit, initialData }) =
 
   const startScanner = () => {
     setIsScanning(true);
+    setScanStatus('idle');
     setTimeout(() => {
+      // Optimized for 1D Barcodes (ISBN)
       scannerRef.current = new Html5QrcodeScanner(
         "barcode-reader",
-        { fps: 10, qrbox: { width: 250, height: 150 } },
-        false
+        {
+          fps: 20,
+          qrbox: { width: 280, height: 150 },
+          aspectRatio: 1.0,
+          showTorchButtonIfSupported: true,
+          experimentalFeatures: {
+            useBarCodeDetectorIfSupported: true
+          }
+        },
+        /* verbose= */ false
       );
       scannerRef.current.render((decodedText) => {
+        // Success
         if (scannerRef.current) {
           scannerRef.current.clear().catch(console.error);
         }
         setIsScanning(false);
         setFormData(prev => ({ ...prev, isbn: decodedText }));
         fetchBookDetails(decodedText);
-      }, (error) => { });
+      }, (errorMessage) => {
+        // Silently handle scan errors (common during focus)
+      });
     }, 100);
   };
 
@@ -144,12 +157,27 @@ const BookForm: React.FC<BookFormProps> = ({ onClose, onSubmit, initialData }) =
                 </div>
               </button>
             ) : (
-              <div className="w-full bg-[#09090b] border border-zinc-900 rounded-xl overflow-hidden p-4">
+              <div className="w-full bg-[#09090b] border border-zinc-900 rounded-xl overflow-hidden p-4 relative">
                 <div className="flex justify-between items-center mb-4">
-                  <p className="text-[10px] font-medium text-emerald-500 uppercase tracking-wider">Awaiting Scan...</p>
-                  <button onClick={stopScanner} className="text-[10px] font-medium text-zinc-500 hover:text-white transition-colors">Cancel</button>
+                  <div className="flex items-center gap-2">
+                    <span className="w-1.5 h-1.5 bg-emerald-500 rounded-full animate-pulse shadow-[0_0_8px_rgba(16,185,129,0.5)]"></span>
+                    <p className="text-[10px] font-medium text-emerald-500/90 uppercase tracking-wider">Scanner Active</p>
+                  </div>
+                  <button onClick={stopScanner} className="text-[10px] font-medium text-zinc-500 hover:text-white transition-colors">Close Camera</button>
                 </div>
-                <div id="barcode-reader" className="overflow-hidden rounded-lg grayscale invert hue-rotate-180"></div>
+
+                <div className="relative">
+                  <div id="barcode-reader" className="overflow-hidden rounded-lg grayscale invert hue-rotate-180 brightness-110 contrast-125 border border-zinc-800"></div>
+                  {/* Visual Guide Line */}
+                  <div className="absolute top-1/2 left-0 right-0 h-[1px] bg-emerald-500/30 shadow-[0_0_8px_rgba(16,185,129,0.5)] z-10 pointer-events-none"></div>
+                </div>
+
+                <div className="mt-4 text-center">
+                  <p className="text-[9px] text-zinc-600 leading-relaxed italic">
+                    Place the book barcode clearly inside the frame.<br />
+                    Ensure good lighting and avoid reflections.
+                  </p>
+                </div>
               </div>
             )}
           </div>
