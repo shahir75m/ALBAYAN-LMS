@@ -10,10 +10,11 @@ interface StudentDashboardProps {
   fines: Fine[];
   currentUser: User;
   onBorrow: (bookId: string) => void;
+  globalStatus: { msg: { text: string, type: 'success' | 'error' } | null, set: (text: string, type?: 'success' | 'error') => void };
 }
 
 const StudentDashboard: React.FC<StudentDashboardProps> = ({
-  activeTab, books, requests, history, fines, currentUser, onBorrow
+  activeTab, books, requests, history, fines, currentUser, onBorrow, globalStatus
 }) => {
   const [search, setSearch] = useState('');
   const [filter, setFilter] = useState('All');
@@ -31,12 +32,9 @@ const StudentDashboard: React.FC<StudentDashboardProps> = ({
   const myFines = fines.filter(f => f.userId === currentUser.id);
   const myPendingFines = myFines.filter(f => f.status === 'PENDING');
 
-  // Inline Status Message
-  const [statusMsg, setStatusMsgState] = useState<{ text: string, type: 'success' | 'error' } | null>(null);
-  const setStatusMsg = (text: string, type: 'success' | 'error' = 'success') => {
-    setStatusMsgState({ text, type });
-    setTimeout(() => setStatusMsgState(null), 5000);
-  };
+  // Inline Status Message logic moved to App.tsx
+  const statusMsg = globalStatus.msg;
+  const setStatusMsg = globalStatus.set;
 
   const handleNotify = (title: string) => {
     setStatusMsg(`Priority Notification Set: You will be alerted when "${title}" returns.`);

@@ -22,13 +22,15 @@ interface AdminDashboardProps {
   onHandleRequest: (id: string, action: 'APPROVE' | 'DENY') => void;
   onReturnBook: (bid: string, uid: string, fine?: { amount: number, reason: string }) => void;
   onPayFine: (id: string) => void;
+  globalStatus: { msg: { text: string, type: 'success' | 'error' } | null, set: (text: string, type?: 'success' | 'error') => void };
 }
 
 const AdminDashboard: React.FC<AdminDashboardProps> = ({
   activeTab, books, users, requests, history, fines,
   onAddBook, onUpdateBook, onDeleteBook,
   onAddUser, onUpdateUser, onDeleteUser,
-  onHandleRequest, onReturnBook, onPayFine
+  onHandleRequest, onReturnBook, onPayFine,
+  globalStatus
 }) => {
   const [showBookForm, setShowBookForm] = useState(false);
   const [editingBook, setEditingBook] = useState<Book | null>(null);
@@ -60,12 +62,9 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
     end: new Date().toISOString().split('T')[0]
   });
 
-  // Inline Status Message
-  const [statusMsg, setStatusMsgState] = useState<{ text: string, type: 'success' | 'error' } | null>(null);
-  const setStatusMsg = (text: string, type: 'success' | 'error' = 'success') => {
-    setStatusMsgState({ text, type });
-    setTimeout(() => setStatusMsgState(null), 5000);
-  };
+  // Inline Status Message logic moved to App.tsx (globalStatus)
+  const statusMsg = globalStatus.msg;
+  const setStatusMsg = globalStatus.set;
 
   const filteredBooks = books.filter(b =>
     (filter === 'All' || b.category === filter) &&

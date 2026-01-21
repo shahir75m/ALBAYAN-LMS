@@ -24,6 +24,13 @@ const BookForm: React.FC<BookFormProps> = ({ onClose, onSubmit, initialData }) =
   const scannerRef = useRef<Html5QrcodeScanner | null>(null);
   const isbnInputRef = useRef<HTMLInputElement>(null);
 
+  // local status logic for the modal
+  const [statusMsg, setStatusMsgState] = useState<{ text: string, type: 'success' | 'error' } | null>(null);
+  const setStatusMsg = (text: string, type: 'success' | 'error' = 'success') => {
+    setStatusMsgState({ text, type });
+    setTimeout(() => setStatusMsgState(null), 5000);
+  };
+
   useEffect(() => {
     if (initialData) {
       setFormData(initialData);
@@ -60,7 +67,7 @@ const BookForm: React.FC<BookFormProps> = ({ onClose, onSubmit, initialData }) =
         setScanStatus('success');
       } else {
         setScanStatus('error');
-        alert("No metadata found for this ISBN. Please enter details manually.");
+        setStatusMsg("No metadata found for this ISBN. Enter details manually.", 'error');
       }
     } catch (error) {
       console.error("Error fetching book details:", error);
@@ -131,6 +138,14 @@ const BookForm: React.FC<BookFormProps> = ({ onClose, onSubmit, initialData }) =
             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M6 18L18 6M6 6l12 12" /></svg>
           </button>
         </div>
+
+        {statusMsg && (
+          <div className={`mx-6 mt-4 p-3 rounded-xl border flex items-center gap-2 animate-in slide-in-from-top-2 duration-300 ${statusMsg.type === 'success' ? 'bg-emerald-500/10 border-emerald-500/20 text-emerald-400' : 'bg-red-500/10 border-red-500/20 text-red-400'
+            }`}>
+            <div className={`w-1.5 h-1.5 rounded-full ${statusMsg.type === 'success' ? 'bg-emerald-500' : 'bg-red-500'} animate-pulse`}></div>
+            <span className="text-[10px] font-bold uppercase tracking-tight">{statusMsg.text}</span>
+          </div>
+        )}
 
         <div className="p-6 overflow-y-auto no-scrollbar">
           {/* Scanner Option */}
@@ -301,8 +316,9 @@ const BookForm: React.FC<BookFormProps> = ({ onClose, onSubmit, initialData }) =
                             setIsFetching(true);
                             const url = await import('../api').then(m => m.api.uploadImage(file));
                             setFormData({ ...formData, coverUrl: url });
-                          } catch (err) {
-                            alert("Upload failed: " + err);
+                            setStatusMsg("Cover image uploaded successfully!");
+                          } catch (err: any) {
+                            setStatusMsg("Upload failed: " + err.message, 'error');
                           } finally {
                             setIsFetching(false);
                           }

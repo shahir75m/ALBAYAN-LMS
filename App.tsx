@@ -25,6 +25,13 @@ const App: React.FC = () => {
   const [activeTab, setActiveTab] = useState('dashboard');
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
+  // Global Status Message
+  const [statusMsg, setStatusMsgState] = useState<{ text: string, type: 'success' | 'error' } | null>(null);
+  const setStatusMsg = (text: string, type: 'success' | 'error' = 'success') => {
+    setStatusMsgState({ text, type });
+    setTimeout(() => setStatusMsgState(null), 5000);
+  };
+
   const refreshAllData = useCallback(async () => {
     setIsSyncing(true);
     try {
@@ -147,9 +154,10 @@ const App: React.FC = () => {
         }
       }
       await api.updateRequestStatus(requestId, action === 'APPROVE' ? 'APPROVED' : 'DENIED');
+      setStatusMsg(`Request ${action === 'APPROVE' ? 'Approved' : 'Denied'} successfully`);
       await refreshAllData();
-    } catch (err) {
-      alert("Action failed: " + err);
+    } catch (err: any) {
+      setStatusMsg("Action failed: " + err.message, 'error');
     }
   };
 
@@ -274,6 +282,13 @@ const App: React.FC = () => {
                 Backend Unreachable
               </div>
             )}
+            {statusMsg && (
+              <div className={`px-6 py-4 rounded-2xl border backdrop-blur-md shadow-2xl animate-in fade-in slide-in-from-top-4 duration-500 flex items-center gap-3 ${statusMsg.type === 'success' ? 'bg-emerald-500/10 border-emerald-500/20 text-emerald-400' : 'bg-red-500/10 border-red-500/20 text-red-400'
+                }`}>
+                <div className={`w-2 h-2 rounded-full ${statusMsg.type === 'success' ? 'bg-emerald-500' : 'bg-red-500'} animate-pulse`}></div>
+                <span className="text-xs font-black uppercase tracking-widest">{statusMsg.text}</span>
+              </div>
+            )}
           </div>
 
           <div className="w-full">
@@ -292,10 +307,12 @@ const App: React.FC = () => {
                 onAddBook={handleAddOrUpdateBook} onUpdateBook={handleAddOrUpdateBook} onDeleteBook={handleDeleteBook}
                 onAddUser={handleAddOrUpdateUser} onUpdateUser={handleAddOrUpdateUser} onDeleteUser={handleDeleteUser}
                 onHandleRequest={handleRequestAction} onReturnBook={handleReturnBook} onPayFine={handlePayFine}
+                globalStatus={{ msg: statusMsg, set: setStatusMsg }}
               />
             ) : (
               <StudentDashboard
                 activeTab={activeTab} books={books} requests={requests} history={history} fines={fines} currentUser={currentUser} onBorrow={handleBorrowRequest}
+                globalStatus={{ msg: statusMsg, set: setStatusMsg }}
               />
             )}
           </div>
