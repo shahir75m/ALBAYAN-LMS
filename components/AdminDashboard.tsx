@@ -60,6 +60,13 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
     end: new Date().toISOString().split('T')[0]
   });
 
+  // Inline Status Message
+  const [statusMsg, setStatusMsgState] = useState<{ text: string, type: 'success' | 'error' } | null>(null);
+  const setStatusMsg = (text: string, type: 'success' | 'error' = 'success') => {
+    setStatusMsgState({ text, type });
+    setTimeout(() => setStatusMsgState(null), 5000);
+  };
+
   const filteredBooks = books.filter(b =>
     (filter === 'All' || b.category === filter) &&
     (b.title.toLowerCase().includes(search.toLowerCase()) ||
@@ -110,7 +117,7 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
           onAddBook(newBook);
         }
       }
-      alert('Books bulk import complete!');
+      setStatusMsg('Books bulk import complete!');
       e.target.value = '';
     };
     reader.readAsText(file);
@@ -147,7 +154,7 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
           onAddUser(newUser);
         }
       }
-      alert('Users bulk import complete!');
+      setStatusMsg('Users bulk import complete!');
       e.target.value = '';
     };
     reader.readAsText(file);
@@ -185,6 +192,13 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
   if (activeTab === 'dashboard') {
     return (
       <div className="space-y-10 animate-in fade-in duration-700">
+        {statusMsg && (
+          <div className={`fixed top-24 right-8 z-[10000] px-6 py-4 rounded-2xl border backdrop-blur-md shadow-2xl animate-in fade-in slide-in-from-top-4 duration-500 flex items-center gap-3 ${statusMsg.type === 'success' ? 'bg-emerald-500/10 border-emerald-500/20 text-emerald-400' : 'bg-red-500/10 border-red-500/20 text-red-400'
+            }`}>
+            <div className={`w-2 h-2 rounded-full ${statusMsg.type === 'success' ? 'bg-emerald-500' : 'bg-red-500'} animate-pulse`}></div>
+            <span className="text-xs font-black uppercase tracking-widest">{statusMsg.text}</span>
+          </div>
+        )}
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
           <div className="flex items-center gap-4">
             <h2 className="text-xl font-black text-zinc-400 uppercase tracking-widest">Library Overview</h2>
@@ -590,20 +604,20 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
                   <button
                     onClick={() => {
                       if (currentPass !== storedAdminPass) {
-                        alert('Incorrect current password!');
+                        setStatusMsg('Incorrect current password!', 'error');
                         return;
                       }
                       if (!newPass.trim()) {
-                        alert('New password cannot be empty!');
+                        setStatusMsg('New password cannot be empty!', 'error');
                         return;
                       }
 
                       localStorage.setItem('adminPassword', newPass.trim());
-                      alert('Master Admin password updated successfully!');
+                      setStatusMsg('Master Admin password updated successfully!');
                       setShowPassModal(false);
                       setCurrentPass('');
                       setNewPass('');
-                      window.location.reload();
+                      setTimeout(() => window.location.reload(), 2000);
                     }}
                     className="bg-emerald-600 hover:bg-emerald-500 text-white px-8 py-2 rounded-lg text-sm font-bold transition-all shadow-lg"
                   >

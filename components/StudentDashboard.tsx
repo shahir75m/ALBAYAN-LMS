@@ -31,13 +31,27 @@ const StudentDashboard: React.FC<StudentDashboardProps> = ({
   const myFines = fines.filter(f => f.userId === currentUser.id);
   const myPendingFines = myFines.filter(f => f.status === 'PENDING');
 
+  // Inline Status Message
+  const [statusMsg, setStatusMsgState] = useState<{ text: string, type: 'success' | 'error' } | null>(null);
+  const setStatusMsg = (text: string, type: 'success' | 'error' = 'success') => {
+    setStatusMsgState({ text, type });
+    setTimeout(() => setStatusMsgState(null), 5000);
+  };
+
   const handleNotify = (title: string) => {
-    alert(`Priority Notification Set: You will be alerted via dashboard when "${title}" returns to circulation.`);
+    setStatusMsg(`Priority Notification Set: You will be alerted when "${title}" returns.`);
   };
 
   if (activeTab === 'dashboard') {
     return (
       <div className="space-y-8 animate-in fade-in duration-700">
+        {statusMsg && (
+          <div className={`fixed top-24 right-8 z-[10000] px-6 py-4 rounded-2xl border backdrop-blur-md shadow-2xl animate-in fade-in slide-in-from-top-4 duration-500 flex items-center gap-3 ${statusMsg.type === 'success' ? 'bg-emerald-500/10 border-emerald-500/20 text-emerald-400' : 'bg-red-500/10 border-red-500/20 text-red-400'
+            }`}>
+            <div className={`w-2 h-2 rounded-full ${statusMsg.type === 'success' ? 'bg-emerald-500' : 'bg-red-500'} animate-pulse`}></div>
+            <span className="text-xs font-black uppercase tracking-widest">{statusMsg.text}</span>
+          </div>
+        )}
         <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
           <StatCompact title="Active Holds" value={myActiveBorrows.length} color="emerald" />
           <StatCompact title="Queue Position" value={myRequests.filter(r => r.status === 'PENDING').length} color="amber" />
