@@ -1,18 +1,19 @@
 
 import React, { useState } from 'react';
-import { Book, User, BorrowRequest, HistoryRecord } from '../types';
+import { Book, User, BorrowRequest, HistoryRecord, Fine } from '../types';
 
 interface StudentDashboardProps {
   activeTab: string;
   books: Book[];
   requests: BorrowRequest[];
   history: HistoryRecord[];
+  fines: Fine[];
   currentUser: User;
   onBorrow: (bookId: string) => void;
 }
 
 const StudentDashboard: React.FC<StudentDashboardProps> = ({
-  activeTab, books, requests, history, currentUser, onBorrow
+  activeTab, books, requests, history, fines, currentUser, onBorrow
 }) => {
   const [search, setSearch] = useState('');
   const [filter, setFilter] = useState('All');
@@ -27,6 +28,8 @@ const StudentDashboard: React.FC<StudentDashboardProps> = ({
   const myHistory = history.filter(h => h.userId === currentUser.id);
   const myRequests = requests.filter(r => r.userId === currentUser.id);
   const myActiveBorrows = history.filter(h => h.userId === currentUser.id && !h.returnDate);
+  const myFines = fines.filter(f => f.userId === currentUser.id);
+  const myPendingFines = myFines.filter(f => f.status === 'PENDING');
 
   const handleNotify = (title: string) => {
     alert(`Priority Notification Set: You will be alerted via dashboard when "${title}" returns to circulation.`);
@@ -35,9 +38,10 @@ const StudentDashboard: React.FC<StudentDashboardProps> = ({
   if (activeTab === 'dashboard') {
     return (
       <div className="space-y-8 animate-in fade-in duration-700">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
           <StatCompact title="Active Holds" value={myActiveBorrows.length} color="emerald" />
           <StatCompact title="Queue Position" value={myRequests.filter(r => r.status === 'PENDING').length} color="amber" />
+          <StatCompact title="Active Fines" value={myPendingFines.length} color="red" />
           <StatCompact title="Lifetime Reads" value={myHistory.filter(h => h.returnDate).length} color="blue" />
         </div>
 
@@ -245,6 +249,7 @@ const StatCompact = ({ title, value, color }: any) => {
   const colorMap: Record<string, string> = {
     emerald: 'text-emerald-500 bg-emerald-500/5 border-emerald-500/10',
     amber: 'text-amber-500 bg-amber-500/5 border-amber-500/10',
+    red: 'text-red-500 bg-red-500/5 border-red-500/10',
     blue: 'text-blue-500 bg-blue-500/5 border-blue-500/10',
   };
   return (

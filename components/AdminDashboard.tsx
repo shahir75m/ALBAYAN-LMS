@@ -2,7 +2,7 @@
 import React, { useState, useMemo, useRef } from 'react';
 // Retrieve stored admin password or default
 const storedAdminPass = typeof window !== 'undefined' ? localStorage.getItem('adminPassword') || 'admin@484' : 'admin@484';
-import { Book, User, BorrowRequest, HistoryRecord } from '../types';
+import { Book, User, BorrowRequest, HistoryRecord, Fine } from '../types';
 import BookForm from './BookForm';
 import UserForm from './UserForm';
 
@@ -12,6 +12,7 @@ interface AdminDashboardProps {
   users: User[];
   requests: BorrowRequest[];
   history: HistoryRecord[];
+  fines: Fine[];
   onAddBook: (b: Book) => void;
   onUpdateBook: (b: Book) => void;
   onDeleteBook: (id: string) => void;
@@ -19,14 +20,15 @@ interface AdminDashboardProps {
   onUpdateUser: (u: User) => void;
   onDeleteUser: (id: string) => void;
   onHandleRequest: (id: string, action: 'APPROVE' | 'DENY') => void;
-  onReturnBook: (bid: string, uid: string) => void;
+  onReturnBook: (bid: string, uid: string, fine?: { amount: number, reason: string }) => void;
+  onPayFine: (id: string) => void;
 }
 
 const AdminDashboard: React.FC<AdminDashboardProps> = ({
-  activeTab, books, users, requests, history,
+  activeTab, books, users, requests, history, fines,
   onAddBook, onUpdateBook, onDeleteBook,
   onAddUser, onUpdateUser, onDeleteUser,
-  onHandleRequest, onReturnBook
+  onHandleRequest, onReturnBook, onPayFine
 }) => {
   const [showBookForm, setShowBookForm] = useState(false);
   const [editingBook, setEditingBook] = useState<Book | null>(null);
@@ -44,6 +46,13 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
   const [showPassModal, setShowPassModal] = useState(false);
   const [currentPass, setCurrentPass] = useState('');
   const [newPass, setNewPass] = useState('');
+
+  // Fine Modal State
+  const [showFineModal, setShowFineModal] = useState(false);
+  const [selectedReturn, setSelectedReturn] = useState<HistoryRecord | null>(null);
+  const [fineAmount, setFineAmount] = useState<number>(0);
+  const [fineReason, setFineReason] = useState<string>('');
+  const [hasIssue, setHasIssue] = useState<boolean>(false);
 
   // Analytics State
   const [dateRange, setDateRange] = useState({
@@ -207,7 +216,7 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
           <StatCard title="Total Volume" value={totalBooks} icon="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" color="emerald" />
           <StatCard title="Books Issued" value={issuedBooksCount} icon="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" color="blue" />
           <StatCard title="New Requests" value={pendingRequestsCount} icon="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" color="amber" />
-          <StatCard title="Star Reader" value={topReader.name} subtitle={`${topReader.count} books in range`} icon="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" color="purple" />
+          <StatCard title="Active Fines" value={fines.filter(f => f.status === 'PENDING').length} icon="M12 8c-1.657 0-3 1.343-3 3s1.343 3 3 3 3-1.343 3-3-1.343-3-3-3z M12 2C6.477 2 2 6.477 2 12s4.477 10 10 10 10-4.477 10-10S17.523 2 12 2z M12 20c-4.411 0-8-3.589-8-8s3.589-8 8-8 8 3.589 8 8-3.589 8-8 8z" color="red" />
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
@@ -271,7 +280,13 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
                     <p className="text-[11px] text-zinc-500 mt-0.5">Holder: <span className="text-zinc-400">{h.userName}</span></p>
                   </div>
                   <button
-                    onClick={() => onReturnBook(h.bookId, h.userId)}
+                    onClick={() => {
+                      setSelectedReturn(h);
+                      setShowFineModal(true);
+                      setHasIssue(false);
+                      setFineAmount(0);
+                      setFineReason('');
+                    }}
                     className="shrink-0 px-3 py-1.5 border border-zinc-800 text-zinc-400 hover:text-emerald-500 hover:border-emerald-500/30 rounded-lg text-xs font-medium transition-all active:scale-95"
                   >
                     Return
@@ -387,7 +402,7 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
   }
 
   // Other tabs...
-  if (activeTab === 'users' || activeTab === 'requests' || activeTab === 'history') {
+  if (activeTab === 'users' || activeTab === 'requests' || activeTab === 'history' || activeTab === 'fines') {
     return (
       <div className="bg-[#0c0c0e] border border-zinc-900 rounded-2xl overflow-hidden shadow-sm animate-in fade-in slide-in-from-bottom-2 duration-500">
         <div className="p-6 border-b border-zinc-900 bg-zinc-900/20 flex justify-between items-center">
@@ -506,6 +521,34 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
                 </tbody>
               </>
             )}
+            {activeTab === 'fines' && (
+              <>
+                <thead className="bg-[#09090b] border-b border-zinc-900 text-zinc-500 text-[10px] font-medium tracking-wide">
+                  <tr><th className="px-6 py-4">Date</th><th className="px-6 py-4">User</th><th className="px-6 py-4">Book</th><th className="px-6 py-4">Reason</th><th className="px-6 py-4 text-right">Amount</th><th className="px-6 py-4">Status</th><th className="px-6 py-4 text-right">Actions</th></tr>
+                </thead>
+                <tbody className="divide-y divide-zinc-900/50">
+                  {fines.map(fine => (
+                    <tr key={fine.id} className="hover:bg-zinc-900/20 transition-all">
+                      <td className="px-6 py-4 text-zinc-600 text-[11px]">{new Date(fine.timestamp).toLocaleDateString()}</td>
+                      <td className="px-6 py-4 font-medium text-white/90">{fine.userName}</td>
+                      <td className="px-6 py-4 text-xs text-zinc-500">{fine.bookTitle}</td>
+                      <td className="px-6 py-4 text-xs text-zinc-500">{fine.reason}</td>
+                      <td className="px-6 py-4 text-right font-mono text-xs text-emerald-500">₹{fine.amount}</td>
+                      <td className="px-6 py-4">
+                        <span className={`px-2.5 py-0.5 rounded-full text-[10px] font-medium border ${fine.status === 'PAID' ? 'bg-emerald-500/5 text-emerald-400 border-emerald-500/10' : 'bg-red-500/5 text-red-500 border-red-500/10'}`}>
+                          {fine.status}
+                        </span>
+                      </td>
+                      <td className="px-6 py-4 text-right">
+                        {fine.status === 'PENDING' && (
+                          <button onClick={() => onPayFine(fine.id)} className="px-3 py-1 bg-emerald-600/90 hover:bg-emerald-600 rounded-lg text-[10px] font-bold text-white transition-all active:scale-95 uppercase tracking-tighter">Mark Paid</button>
+                        )}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </>
+            )}
           </table>
         </div>
         {showUserForm && <UserForm onClose={() => setShowUserForm(false)} onSubmit={(u) => { editingUser ? onUpdateUser(u) : onAddUser(u); setShowUserForm(false); }} initialData={editingUser} />}
@@ -565,6 +608,75 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
                     className="bg-emerald-600 hover:bg-emerald-500 text-white px-8 py-2 rounded-lg text-sm font-bold transition-all shadow-lg"
                   >
                     Save Changes
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Fine Modal */}
+        {showFineModal && selectedReturn && (
+          <div className="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center z-[9999] p-4">
+            <div className="bg-zinc-900 border border-zinc-800 w-full max-w-md rounded-3xl shadow-2xl overflow-hidden animate-in zoom-in-95 duration-200">
+              <div className="px-8 py-6 border-b border-zinc-800">
+                <h3 className="text-xl font-black text-white uppercase tracking-tight">Confirm Return</h3>
+                <p className="text-xs text-zinc-500 mt-1">{selectedReturn.bookTitle} - {selectedReturn.userName}</p>
+              </div>
+              <div className="p-8 space-y-6">
+                <div className="flex items-center justify-between p-4 bg-zinc-950 rounded-2xl border border-zinc-800">
+                  <span className="text-sm font-bold text-zinc-300">Are there any issues?</span>
+                  <button
+                    onClick={() => setHasIssue(!hasIssue)}
+                    className={`w-12 h-6 rounded-full transition-all relative ${hasIssue ? 'bg-red-600' : 'bg-zinc-800'}`}
+                  >
+                    <div className={`absolute top-1 w-4 h-4 bg-white rounded-full transition-all ${hasIssue ? 'left-7' : 'left-1'}`}></div>
+                  </button>
+                </div>
+
+                {hasIssue && (
+                  <div className="space-y-4 animate-in fade-in slide-in-from-top-2 duration-300">
+                    <div>
+                      <label className="block text-[10px] font-black text-zinc-500 uppercase tracking-widest mb-2">Fine Amount (₹)</label>
+                      <input
+                        type="number"
+                        value={fineAmount}
+                        onChange={(e) => setFineAmount(Number(e.target.value))}
+                        className="w-full bg-zinc-950 border border-zinc-800 rounded-xl px-4 py-3 text-sm text-white outline-none focus:ring-1 focus:ring-red-500"
+                        placeholder="0.00"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-[10px] font-black text-zinc-500 uppercase tracking-widest mb-2">Reason for Fine</label>
+                      <textarea
+                        value={fineReason}
+                        onChange={(e) => setFineReason(e.target.value)}
+                        className="w-full bg-zinc-950 border border-zinc-800 rounded-xl px-4 py-3 text-sm text-white outline-none focus:ring-1 focus:ring-red-500 h-24 resize-none"
+                        placeholder="e.g., Damaged cover, missing pages..."
+                      />
+                    </div>
+                  </div>
+                )}
+
+                <div className="pt-4 flex gap-3">
+                  <button
+                    onClick={() => setShowFineModal(false)}
+                    className="flex-1 py-3 text-sm font-bold text-zinc-500 hover:text-white transition-all bg-zinc-800/50 hover:bg-zinc-800 rounded-xl"
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    onClick={() => {
+                      onReturnBook(
+                        selectedReturn.bookId,
+                        selectedReturn.userId,
+                        hasIssue ? { amount: fineAmount, reason: fineReason } : undefined
+                      );
+                      setShowFineModal(false);
+                    }}
+                    className="flex-1 bg-emerald-600 hover:bg-emerald-500 text-white py-3 rounded-xl text-sm font-bold transition-all shadow-lg shadow-emerald-900/20"
+                  >
+                    Confirm Return
                   </button>
                 </div>
               </div>

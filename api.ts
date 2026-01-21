@@ -1,5 +1,5 @@
 
-import { Book, User, BorrowRequest, HistoryRecord } from './types';
+import { Book, User, BorrowRequest, HistoryRecord, Fine } from './types';
 
 // Detect environment and set base URL
 const isLocalhost = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
@@ -128,6 +128,9 @@ class ApiService {
   async getHistory(): Promise<HistoryRecord[]> { return this.request<HistoryRecord[]>('/history'); }
   async addHistoryRecord(record: HistoryRecord): Promise<void> { await this.request<void>('/history', { method: 'POST', body: JSON.stringify(record) }); }
   async updateHistoryRecord(record: HistoryRecord): Promise<void> { await this.request<void>(`/history/${record.id}`, { method: 'PATCH', body: JSON.stringify({ returnDate: record.returnDate }) }); }
+  async getFines(): Promise<Fine[]> { return this.request<Fine[]>('/fines'); }
+  async createFine(fine: Fine): Promise<Fine> { return this.request<Fine>('/fines', { method: 'POST', body: JSON.stringify(fine) }); }
+  async updateFineStatus(id: string, status: 'PENDING' | 'PAID'): Promise<void> { await this.request<void>(`/fines/${id}`, { method: 'PATCH', body: JSON.stringify({ status }) }); }
   async uploadImage(file: File): Promise<string> {
     const formData = new FormData();
     formData.append('image', file);

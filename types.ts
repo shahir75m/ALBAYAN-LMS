@@ -44,3 +44,17 @@ export interface HistoryRecord {
   borrowDate: number;
   returnDate?: number;
 }
+
+export type FineStatus = 'PENDING' | 'PAID';
+
+export interface Fine {
+  id: string;
+  userId: string;
+  userName: string;
+  bookId: string;
+  bookTitle: string;
+  amount: number;
+  reason: string;
+  status: FineStatus;
+  timestamp: number;
+}

@@ -82,10 +82,23 @@ const historySchema = new mongoose.Schema({
   returnDate: Number
 });
 
+const fineSchema = new mongoose.Schema({
+  id: { type: String, required: true, unique: true },
+  userId: { type: String, required: true },
+  userName: String,
+  bookId: { type: String, required: true },
+  bookTitle: String,
+  amount: { type: Number, required: true },
+  reason: String,
+  status: { type: String, enum: ['PENDING', 'PAID'], default: 'PENDING' },
+  timestamp: { type: Number, default: Date.now }
+});
+
 const Book = mongoose.model('Book', bookSchema);
 const User = mongoose.model('User', userSchema);
 const BorrowRequest = mongoose.model('BorrowRequest', requestSchema);
 const History = mongoose.model('History', historySchema);
+const Fine = mongoose.model('Fine', fineSchema);
 
 // --- Admin Config ---
 const ADMIN_EMAILS = ['admin@484', 'admin@albayan.edu'];
@@ -169,6 +182,18 @@ app.post('/api/history', async (req, res) => {
 
 app.patch('/api/history/:id', async (req, res) => {
   try { const record = await History.findOneAndUpdate({ id: req.params.id }, { returnDate: req.body.returnDate }, { new: true }); res.json(record); } catch (err) { res.status(400).json({ message: err.message }); }
+});
+
+app.get('/api/fines', async (req, res) => {
+  try { const fines = await Fine.find().sort({ timestamp: -1 }); res.json(fines); } catch (err) { res.status(500).json({ message: err.message }); }
+});
+
+app.post('/api/fines', async (req, res) => {
+  try { const fine = new Fine(req.body); await fine.save(); res.status(201).json(fine); } catch (err) { res.status(400).json({ message: err.message }); }
+});
+
+app.patch('/api/fines/:id', async (req, res) => {
+  try { const fine = await Fine.findOneAndUpdate({ id: req.params.id }, { status: req.body.status }, { new: true }); res.json(fine); } catch (err) { res.status(400).json({ message: err.message }); }
 });
 
 // --- Static Frontend Serving ---

@@ -1,6 +1,6 @@
 
 import React, { useState, useEffect, useCallback } from 'react';
-import { Book, User, BorrowRequest, HistoryRecord } from './types';
+import { Book, User, BorrowRequest, HistoryRecord, Fine } from './types';
 import Splash from './components/Splash';
 import Login from './components/Login';
 import Sidebar from './components/Sidebar';
@@ -21,22 +21,25 @@ const App: React.FC = () => {
   const [users, setUsers] = useState<User[]>([]);
   const [requests, setRequests] = useState<BorrowRequest[]>([]);
   const [history, setHistory] = useState<HistoryRecord[]>([]);
+  const [fines, setFines] = useState<Fine[]>([]);
   const [activeTab, setActiveTab] = useState('dashboard');
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   const refreshAllData = useCallback(async () => {
     setIsSyncing(true);
     try {
-      const [b, u, r, h] = await Promise.all([
+      const [b, u, r, h, f] = await Promise.all([
         api.getBooks(),
         api.getUsers(),
         api.getRequests(),
-        api.getHistory()
+        api.getHistory(),
+        api.getFines()
       ]);
       setBooks(b || []);
       setUsers(u || []);
       setRequests(r || []);
       setHistory(h || []);
+      setFines(f || []);
 
       setIsLocalMode(api.isUsingFallback());
     } catch (err: any) {
@@ -150,7 +153,7 @@ const App: React.FC = () => {
     }
   };
 
-  const handleReturnBook = async (bookId: string, userId: string) => {
+  const handleReturnBook = async (bookId: string, userId: string, fine?: { amount: number, reason: string }) => {
     const book = books.find(b => b.id === bookId);
     if (book) {
       const updatedBook = {
@@ -160,8 +163,29 @@ const App: React.FC = () => {
       };
       await api.saveBook(updatedBook);
       const record = history.find(h => h.bookId === bookId && h.userId === userId && !h.returnDate);
-      if (record) await api.updateHistoryRecord({ ...record, id: record.id, returnDate: Date.now() });
+      if (record) {
+        await api.updateHistoryRecord({ ...record, id: record.id, returnDate: Date.now() });
+
+        if (fine && fine.amount > 0) {
+          await api.createFine({
+            id: `F${Date.now()}`,
+            userId,
+            userName: record.userName,
+            bookId,
+            bookTitle: record.bookTitle,
+            amount: fine.amount,
+            reason: fine.reason,
+            status: 'PENDING',
+            timestamp: Date.now()
+          });
+        }
+      }
     }
+    await refreshAllData();
+  };
+
+  const handlePayFine = async (fineId: string) => {
+    await api.updateFineStatus(fineId, 'PAID');
     await refreshAllData();
   };
 
@@ -262,14 +286,14 @@ const App: React.FC = () => {
 
             {currentUser.role === 'ADMIN' ? (
               <AdminDashboard
-                activeTab={activeTab} books={books} users={users} requests={requests} history={history}
+                activeTab={activeTab} books={books} users={users} requests={requests} history={history} fines={fines}
                 onAddBook={handleAddOrUpdateBook} onUpdateBook={handleAddOrUpdateBook} onDeleteBook={handleDeleteBook}
                 onAddUser={handleAddOrUpdateUser} onUpdateUser={handleAddOrUpdateUser} onDeleteUser={handleDeleteUser}
-                onHandleRequest={handleRequestAction} onReturnBook={handleReturnBook}
+                onHandleRequest={handleRequestAction} onReturnBook={handleReturnBook} onPayFine={handlePayFine}
               />
             ) : (
               <StudentDashboard
-                activeTab={activeTab} books={books} requests={requests} history={history} currentUser={currentUser} onBorrow={handleBorrowRequest}
+                activeTab={activeTab} books={books} requests={requests} history={history} fines={fines} currentUser={currentUser} onBorrow={handleBorrowRequest}
               />
             )}
           </div>
