@@ -5,11 +5,10 @@ const Splash: React.FC = () => {
   return (
     <div className="fixed inset-0 bg-[#09090b] flex flex-col items-center justify-center z-50 p-6">
       <div className="relative flex flex-col items-center animate-in fade-in zoom-in duration-700">
-        <div className="absolute inset-0 bg-emerald-500/10 blur-[40px] rounded-full scale-150"></div>
         <img
-          src="/icon-logo.png"
+          src="/logo.png"
           alt="Albayan Library Logo"
-          className="relative w-24 h-24 md:w-32 md:h-32 object-contain filter grayscale invert brightness-200 contrast-200"
+          className="relative w-28 h-28 md:w-40 md:h-40 object-contain"
         />
       </div>
 
