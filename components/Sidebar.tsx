@@ -51,7 +51,7 @@ const Sidebar: React.FC<SidebarProps> = ({
           <div className="flex items-center justify-between mb-10">
             <div className="flex items-center gap-4">
               <div className="w-10 h-10 bg-emerald-500/5 rounded-2xl border border-emerald-500/10 flex items-center justify-center shadow-inner text-emerald-500/80">
-                <Logo className="w-4.5 h-4.5" />
+                <Logo className="w-6 h-6" />
               </div>
               <div>
                 <span className="block text-white font-black tracking-tight text-xl leading-none">ALBAYAN</span>
