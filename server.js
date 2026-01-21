@@ -148,10 +148,10 @@ app.get('/api/users', async (req, res) => {
 
 app.post('/api/users', async (req, res) => {
   try {
-    const { id, name, avatarUrl, role: requestedRole } = req.body;
+    const { id, name, avatarUrl, class: userClass, role: requestedRole } = req.body;
     let finalRole = requestedRole || 'STUDENT';
     if (ADMIN_EMAILS.includes(id)) finalRole = 'ADMIN';
-    const user = await User.findOneAndUpdate({ id: id }, { name, avatarUrl, role: finalRole }, { upsert: true, new: true });
+    const user = await User.findOneAndUpdate({ id: id }, { name, avatarUrl, class: userClass, role: finalRole }, { upsert: true, new: true });
     res.status(201).json(user);
   } catch (err) { res.status(400).json({ message: err.message }); }
 });
