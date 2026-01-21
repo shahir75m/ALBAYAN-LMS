@@ -203,38 +203,38 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
           </div>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           <StatCard title="Total Volume" value={totalBooks} icon="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" color="emerald" />
           <StatCard title="Books Issued" value={issuedBooksCount} icon="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" color="blue" />
           <StatCard title="New Requests" value={pendingRequestsCount} icon="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" color="amber" />
           <StatCard title="Star Reader" value={topReader.name} subtitle={`${topReader.count} books in range`} icon="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" color="purple" />
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
-          <div className="bg-zinc-900 border border-zinc-800 rounded-3xl overflow-hidden shadow-2xl">
-            <div className="px-8 py-6 border-b border-zinc-800 flex justify-between items-center bg-zinc-900/50">
-              <h3 className="font-black text-sm uppercase tracking-widest text-zinc-200 flex items-center gap-3">
-                <span className="w-2 h-2 bg-amber-500 rounded-full"></span>
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+          <div className="bg-[#0c0c0e] border border-zinc-900 rounded-2xl overflow-hidden shadow-sm">
+            <div className="px-6 py-4 border-b border-zinc-900 flex justify-between items-center bg-zinc-900/20">
+              <h3 className="font-semibold text-xs text-zinc-300 flex items-center gap-2">
+                <span className="w-1.5 h-1.5 bg-amber-500 rounded-full"></span>
                 Borrow Queue
               </h3>
             </div>
-            <div className="divide-y divide-zinc-800 max-h-[400px] overflow-y-auto">
+            <div className="divide-y divide-zinc-900 max-h-[400px] overflow-y-auto no-scrollbar">
               {requests.filter(r => r.status === 'PENDING').map(req => (
-                <div key={req.id} className="p-6 flex items-center justify-between hover:bg-white/[0.02] transition-colors">
+                <div key={req.id} className="p-5 flex items-center justify-between hover:bg-zinc-900/30 transition-colors">
                   <div>
-                    <p className="font-bold text-zinc-100">{req.userName}</p>
-                    <p className="text-xs text-zinc-500 mt-1">Requested: <span className="text-zinc-300 font-medium italic">{req.bookTitle}</span></p>
+                    <p className="text-sm font-medium text-white/90">{req.userName}</p>
+                    <p className="text-[11px] text-zinc-500 mt-0.5">Requested: <span className="text-zinc-400">{req.bookTitle}</span></p>
                   </div>
-                  <div className="flex gap-3">
+                  <div className="flex gap-2">
                     <button
                       onClick={() => onHandleRequest(req.id, 'APPROVE')}
-                      className="px-5 py-2 bg-emerald-600 hover:bg-emerald-500 rounded-xl text-[10px] font-black uppercase text-white transition-all shadow-xl shadow-emerald-900/20 active:scale-95"
+                      className="px-4 py-1.5 bg-emerald-600/90 hover:bg-emerald-600 rounded-lg text-xs font-medium text-white transition-all active:scale-95"
                     >
                       Approve
                     </button>
                     <button
                       onClick={() => onHandleRequest(req.id, 'DENY')}
-                      className="px-5 py-2 bg-zinc-800 hover:bg-zinc-700 text-zinc-300 rounded-xl text-[10px] font-black uppercase transition-all active:scale-95"
+                      className="px-4 py-1.5 bg-zinc-800 hover:bg-zinc-700 text-zinc-400 rounded-lg text-xs font-medium transition-all active:scale-95"
                     >
                       Deny
                     </button>
@@ -242,45 +242,45 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
                 </div>
               ))}
               {requests.filter(r => r.status === 'PENDING').length === 0 && (
-                <div className="p-20 text-center text-zinc-600 italic text-sm font-medium">No pending requests</div>
+                <div className="p-16 text-center text-zinc-600 text-xs italic font-medium">No pending requests</div>
               )}
             </div>
           </div>
 
-          <div className="bg-zinc-900 border border-zinc-800 rounded-3xl overflow-hidden shadow-2xl">
-            <div className="px-8 py-4 border-b border-zinc-800 bg-zinc-900/50 flex items-center justify-between">
-              <h3 className="font-black text-sm uppercase tracking-widest text-zinc-200 flex items-center gap-3 shrink-0">
-                <span className="w-2 h-2 bg-blue-500 rounded-full"></span>
+          <div className="bg-[#0c0c0e] border border-zinc-900 rounded-2xl overflow-hidden shadow-sm">
+            <div className="px-6 py-4 border-b border-zinc-900 bg-zinc-900/20 flex items-center justify-between">
+              <h3 className="font-semibold text-xs text-zinc-300 flex items-center gap-2 shrink-0">
+                <span className="w-1.5 h-1.5 bg-blue-500 rounded-full"></span>
                 Returns
               </h3>
-              <div className="relative w-48 ml-4">
+              <div className="relative w-40 ml-4">
                 <input
                   type="text"
                   placeholder="Find book/user..."
                   value={returnSearch}
                   onChange={(e) => setReturnSearch(e.target.value)}
-                  className="w-full bg-zinc-950 border border-zinc-800 rounded-xl px-4 py-1.5 text-[10px] text-zinc-300 focus:ring-1 focus:ring-emerald-500/50 outline-none"
+                  className="w-full bg-[#09090b] border border-zinc-800 rounded-lg px-3 py-1 text-[10px] text-zinc-400 focus:border-zinc-700 outline-none transition-all"
                 />
               </div>
             </div>
-            <div className="divide-y divide-zinc-800 max-h-[400px] overflow-y-auto">
+            <div className="divide-y divide-zinc-900 max-h-[400px] overflow-y-auto no-scrollbar">
               {activeCirculation.map(h => (
-                <div key={h.id} className="p-6 flex items-center justify-between hover:bg-white/[0.02] transition-colors">
+                <div key={h.id} className="p-5 flex items-center justify-between hover:bg-zinc-900/30 transition-colors">
                   <div className="overflow-hidden pr-4">
-                    <p className="font-bold text-zinc-100 truncate">{h.bookTitle}</p>
-                    <p className="text-xs text-zinc-500 mt-1">Holder: <span className="text-zinc-300">{h.userName}</span></p>
+                    <p className="text-sm font-medium text-white/90 truncate">{h.bookTitle}</p>
+                    <p className="text-[11px] text-zinc-500 mt-0.5">Holder: <span className="text-zinc-400">{h.userName}</span></p>
                   </div>
                   <button
                     onClick={() => onReturnBook(h.bookId, h.userId)}
-                    className="shrink-0 px-4 py-2 border border-emerald-500/30 text-emerald-500 hover:bg-emerald-500 hover:text-white rounded-xl text-[10px] font-black uppercase transition-all active:scale-95"
+                    className="shrink-0 px-3 py-1.5 border border-zinc-800 text-zinc-400 hover:text-emerald-500 hover:border-emerald-500/30 rounded-lg text-xs font-medium transition-all active:scale-95"
                   >
                     Return
                   </button>
                 </div>
               ))}
               {activeCirculation.length === 0 && (
-                <div className="p-20 text-center text-zinc-600 italic text-sm font-medium">
-                  {returnSearch ? 'No matching circulation found' : 'All books are in stock'}
+                <div className="p-16 text-center text-zinc-600 text-xs italic font-medium">
+                  {returnSearch ? 'No matching circulation' : 'All books are in stock'}
                 </div>
               )}
             </div>
@@ -293,25 +293,27 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
   // Filter & Search Views
   if (activeTab === 'books') {
     return (
-      <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
-        <div className="flex flex-col md:flex-row gap-6 items-center justify-between">
-          <div className="flex gap-3 items-center w-full md:w-auto flex-1">
-            <div className="relative w-full md:w-96 lg:w-[32rem]">
-              <svg className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-zinc-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>
+      <div className="space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-500">
+        <div className="flex flex-col md:flex-row gap-4 items-center justify-between">
+          <div className="flex gap-2 items-center w-full md:w-auto flex-1">
+            <div className="relative w-full md:w-80 lg:w-[28rem]">
+              <svg className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-zinc-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+              </svg>
               <input
-                type="text" placeholder="Search ID, ISBN, Title..."
+                type="text" placeholder="Search title, author or ISBN..."
                 value={search} onChange={(e) => setSearch(e.target.value)}
-                className="bg-zinc-900 border border-zinc-800 rounded-2xl pl-12 pr-6 py-3 text-sm focus:ring-2 focus:ring-emerald-500/50 outline-none w-full shadow-2xl"
+                className="bg-[#0c0c0e] border border-zinc-900 rounded-xl pl-10 pr-4 py-2.5 text-sm text-white/90 focus:border-zinc-700 outline-none w-full transition-all"
               />
             </div>
             <select
               value={filter} onChange={(e) => setFilter(e.target.value)}
-              className="bg-zinc-900 border border-zinc-800 rounded-2xl px-5 py-3 text-sm focus:ring-2 focus:ring-emerald-500/50 outline-none text-zinc-300 shadow-2xl"
+              className="bg-[#0c0c0e] border border-zinc-900 rounded-xl px-4 py-2.5 text-sm focus:border-zinc-700 outline-none text-zinc-400 transition-all cursor-pointer"
             >
               {categories.map(c => <option key={c} value={c}>{c}</option>)}
             </select>
           </div>
-          <div className="flex gap-3">
+          <div className="flex gap-2 w-full md:w-auto">
             <input
               type="file"
               ref={importBooksInputRef}
@@ -321,47 +323,54 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
             />
             <button
               onClick={() => importBooksInputRef.current?.click()}
-              className="w-full md:w-auto border border-zinc-800 hover:bg-zinc-800 text-zinc-400 font-black uppercase text-[10px] tracking-widest py-3 px-8 rounded-2xl flex items-center justify-center gap-3 transition-all active:scale-95 shadow-2xl"
+              className="flex-1 md:flex-initial border border-zinc-900 hover:border-zinc-800 text-zinc-400 font-medium text-xs py-2.5 px-6 rounded-xl flex items-center justify-center gap-2 transition-all active:scale-[0.98]"
             >
-              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" /></svg>
-              Import CSV
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" /></svg>
+              Import
             </button>
             <button
               onClick={() => { setEditingBook(null); setShowBookForm(true); }}
-              className="w-full md:w-auto bg-emerald-600 hover:bg-emerald-500 text-white font-black uppercase text-[10px] tracking-widest py-3 px-8 rounded-2xl flex items-center justify-center gap-3 transition-all active:scale-95 shadow-2xl shadow-emerald-900/40"
+              className="flex-1 md:flex-initial bg-emerald-600 hover:bg-emerald-500 text-white font-medium text-xs py-2.5 px-6 rounded-xl flex items-center justify-center gap-2 transition-all active:scale-[0.98] shadow-lg shadow-emerald-900/10"
             >
-              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M12 4v16m8-8H4" /></svg>
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" /></svg>
               Add Book
             </button>
           </div>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
           {filteredBooks.map(book => (
-            <div key={book.id} className="bg-zinc-900 border border-zinc-800 rounded-3xl overflow-hidden group hover:border-emerald-500/40 transition-all hover:shadow-2xl hover:shadow-emerald-500/10">
-              <div className="flex h-52">
-                <div className="w-2/5 overflow-hidden bg-zinc-800">
-                  <img src={book.coverUrl} alt={book.title} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
+            <div key={book.id} className="bg-[#0c0c0e] border border-zinc-900 rounded-2xl overflow-hidden group hover:border-zinc-800 transition-all shadow-sm">
+              <div className="flex h-48">
+                <div className="w-[35%] overflow-hidden bg-zinc-900/50">
+                  <img src={book.coverUrl} alt={book.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
                 </div>
-                <div className="w-3/5 p-6 flex flex-col">
-                  <div className="flex justify-between items-start mb-3">
-                    <span className="text-[9px] uppercase font-black tracking-widest text-emerald-500 bg-emerald-500/10 px-2 py-0.5 rounded border border-emerald-500/20">{book.category}</span>
-                    <p className="text-[10px] text-zinc-600 font-mono">#{book.id}</p>
+                <div className="w-[65%] p-5 flex flex-col">
+                  <div className="flex justify-between items-start mb-2">
+                    <span className="text-[9px] font-semibold text-emerald-500/80 bg-emerald-500/5 px-2 py-0.5 rounded border border-emerald-500/10">{book.category}</span>
+                    <p className="text-[9px] text-zinc-700 font-medium">#{book.id}</p>
                   </div>
-                  <h4 className="font-bold text-white text-lg leading-tight line-clamp-2 group-hover:text-emerald-400 transition-colors">{book.title}</h4>
-                  <p className="text-xs text-zinc-500 mt-1 font-medium italic line-clamp-1">by {book.author}</p>
-                  <p className="text-[10px] text-emerald-500/80 font-bold mt-1">${book.price?.toFixed(2) || '0.00'}</p>
+                  <h4 className="text-sm font-semibold text-white/90 leading-snug line-clamp-2">{book.title}</h4>
+                  <p className="text-[11px] text-zinc-500 mt-1 truncate">by {book.author}</p>
 
-                  <div className="mt-auto pt-5 flex justify-between items-end border-t border-zinc-800/50">
+                  <div className="mt-auto pt-4 flex justify-between items-end border-t border-zinc-900/50">
                     <div>
-                      <p className="text-[9px] text-zinc-600 uppercase font-black tracking-widest">Available</p>
-                      <p className={`text-sm font-black mt-1 ${book.availableCopies === 0 ? 'text-red-500' : 'text-zinc-100'}`}>
+                      <p className="text-[10px] text-zinc-600 font-medium">Availability</p>
+                      <p className={`text-xs font-semibold mt-0.5 ${book.availableCopies === 0 ? 'text-red-400' : 'text-zinc-300'}`}>
                         {book.availableCopies} <span className="text-zinc-600 font-normal">/ {book.totalCopies}</span>
                       </p>
                     </div>
                     <div className="flex gap-1">
-                      <button onClick={() => { setEditingBook(book); setShowBookForm(true); }} className="p-2.5 text-zinc-500 hover:text-emerald-400 hover:bg-emerald-500/10 rounded-xl transition-all"><svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" /></svg></button>
-                      <button onClick={() => { if (confirm('Permanently delete book?')) onDeleteBook(book.id) }} className="p-2.5 text-zinc-500 hover:text-red-400 hover:bg-red-400/10 rounded-xl transition-all"><svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg></button>
+                      <button onClick={() => { setEditingBook(book); setShowBookForm(true); }} className="p-2 text-zinc-600 hover:text-emerald-500 hover:bg-emerald-500/5 rounded-lg transition-all" title="Edit">
+                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
+                        </svg>
+                      </button>
+                      <button onClick={() => { if (confirm('Delete book?')) onDeleteBook(book.id) }} className="p-2 text-zinc-600 hover:text-red-400 hover:bg-red-400/5 rounded-lg transition-all" title="Delete">
+                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                        </svg>
+                      </button>
                     </div>
                   </div>
                 </div>
@@ -380,11 +389,11 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
   // Other tabs...
   if (activeTab === 'users' || activeTab === 'requests' || activeTab === 'history') {
     return (
-      <div className="bg-zinc-900 border border-zinc-800 rounded-3xl overflow-hidden shadow-2xl animate-in fade-in slide-in-from-bottom-2 duration-500">
-        <div className="p-8 border-b border-zinc-800 bg-zinc-900/50 flex justify-between items-center">
-          <h3 className="font-black text-xs uppercase tracking-widest text-zinc-400">Library Ledger</h3>
+      <div className="bg-[#0c0c0e] border border-zinc-900 rounded-2xl overflow-hidden shadow-sm animate-in fade-in slide-in-from-bottom-2 duration-500">
+        <div className="p-6 border-b border-zinc-900 bg-zinc-900/20 flex justify-between items-center">
+          <h3 className="font-semibold text-xs text-zinc-400">Library Records</h3>
           {activeTab === 'users' && (
-            <div className="flex gap-3">
+            <div className="flex gap-2">
               <input
                 type="file"
                 ref={importUsersInputRef}
@@ -394,37 +403,51 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
               />
               <button
                 onClick={() => importUsersInputRef.current?.click()}
-                className="border border-zinc-800 hover:bg-zinc-800 text-zinc-400 font-black uppercase text-[9px] tracking-widest py-2 px-6 rounded-xl transition-all flex items-center gap-2"
+                className="border border-zinc-900 hover:border-zinc-800 text-zinc-500 font-medium text-[10px] py-1.5 px-4 rounded-lg transition-all flex items-center gap-1.5 active:scale-[0.98]"
               >
-                <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" /></svg>
-                Bulk Import
+                <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" /></svg>
+                Import
               </button>
-              <button onClick={() => { setEditingUser(null); setShowUserForm(true); }} className="bg-emerald-600 hover:bg-emerald-500 text-white font-black uppercase text-[9px] tracking-widest py-2 px-6 rounded-xl transition-all">Add User</button>
+              <button onClick={() => { setEditingUser(null); setShowUserForm(true); }} className="bg-emerald-600 hover:bg-emerald-500 text-white font-medium text-[10px] py-1.5 px-4 rounded-lg transition-all active:scale-[0.98]">Add User</button>
             </div>
           )}
         </div>
-        <div className="overflow-x-auto">
+        <div className="overflow-x-auto no-scrollbar">
           <table className="w-full text-left text-sm">
             {activeTab === 'users' && (
               <>
-                <thead className="bg-zinc-950/50 border-b border-zinc-800 text-zinc-600 uppercase text-[9px] font-black tracking-widest">
-                  <tr><th className="px-8 py-5">Profile</th><th className="px-8 py-5">ID</th><th className="px-8 py-5">Name</th><th className="px-8 py-5">Role</th><th className="px-8 py-5">Class/Dept</th><th className="px-8 py-5 text-right">Actions</th></tr>
+                <thead className="bg-[#09090b] border-b border-zinc-900 text-zinc-500 text-[10px] font-medium tracking-wide">
+                  <tr><th className="px-6 py-4">Profile</th><th className="px-6 py-4">ID</th><th className="px-6 py-4">Name</th><th className="px-6 py-4">Role</th><th className="px-6 py-4">Class/Dept</th><th className="px-6 py-4 text-right">Actions</th></tr>
                 </thead>
-                <tbody className="divide-y divide-zinc-800">
+                <tbody className="divide-y divide-zinc-900/50">
                   {filteredUsers.map(user => (
-                    <tr key={user.id} className="hover:bg-white/[0.01] transition-all">
-                      <td className="px-8 py-5">
-                        <div className="w-10 h-10 rounded-xl bg-zinc-950 border border-zinc-800 overflow-hidden flex items-center justify-center text-[10px] font-black">
+                    <tr key={user.id} className="hover:bg-zinc-900/20 transition-all group">
+                      <td className="px-6 py-4">
+                        <div className="w-9 h-9 rounded-lg bg-zinc-900 border border-zinc-800 overflow-hidden flex items-center justify-center text-[10px] font-medium text-zinc-500">
                           {user.avatarUrl ? <img src={user.avatarUrl} className="w-full h-full object-cover" /> : user.name.charAt(0)}
                         </div>
                       </td>
-                      <td className="px-8 py-5 font-mono text-zinc-600">{user.id === storedAdminPass ? '••••••••' : user.id}</td>
-                      <td className="px-8 py-5 font-bold text-zinc-200">{user.name}</td>
-                      <td className="px-8 py-5"><span className={`px-3 py-1 rounded-full text-[9px] font-black tracking-widest ${user.role === 'ADMIN' ? 'bg-purple-500/10 text-purple-400 border border-purple-500/20' : 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20'}`}>{user.role}</span></td>
-                      <td className="px-8 py-5 text-zinc-500 italic">{user.class || '---'}</td>
-                      <td className="px-8 py-5 text-right flex justify-end gap-2">
-                        <button onClick={() => { setEditingUser(user); setShowUserForm(true); }} className="p-2 text-zinc-600 hover:text-emerald-500 hover:bg-emerald-500/10 rounded-xl transition-all"><svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" /></svg></button>
-                        <button onClick={() => { if (confirm('Remove user access?')) onDeleteUser(user.id) }} className="p-2 text-zinc-600 hover:text-red-400 hover:bg-red-400/10 rounded-xl transition-all"><svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg></button>
+                      <td className="px-6 py-4 font-mono text-xs text-zinc-600">{user.id === storedAdminPass ? '••••••••' : user.id}</td>
+                      <td className="px-6 py-4 font-medium text-white/90">{user.name}</td>
+                      <td className="px-6 py-4">
+                        <span className={`px-2.5 py-0.5 rounded-full text-[10px] font-medium border ${user.role === 'ADMIN' ? 'bg-purple-500/5 text-purple-400 border-purple-500/10' : 'bg-emerald-500/5 text-emerald-400 border-emerald-500/10'}`}>
+                          {user.role}
+                        </span>
+                      </td>
+                      <td className="px-6 py-4 text-xs text-zinc-500">{user.class || '---'}</td>
+                      <td className="px-6 py-4 text-right">
+                        <div className="flex justify-end gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                          <button onClick={() => { setEditingUser(user); setShowUserForm(true); }} className="p-2 text-zinc-600 hover:text-emerald-500 hover:bg-emerald-500/5 rounded-lg transition-all" title="Edit">
+                            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
+                            </svg>
+                          </button>
+                          <button onClick={() => { if (confirm('Remove user access?')) onDeleteUser(user.id) }} className="p-2 text-zinc-600 hover:text-red-400 hover:bg-red-400/5 rounded-lg transition-all" title="Delete">
+                            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                            </svg>
+                          </button>
+                        </div>
                       </td>
                     </tr>
                   ))}
@@ -433,24 +456,27 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
             )}
             {activeTab === 'requests' && (
               <>
-                <thead className="bg-zinc-950/50 border-b border-zinc-800 text-zinc-600 uppercase text-[9px] font-black tracking-widest">
-                  <tr><th className="px-8 py-5">Date</th><th className="px-8 py-5">User</th><th className="px-8 py-5">Book</th><th className="px-8 py-5">Status</th><th className="px-8 py-5 text-right">Actions</th></tr>
+                <thead className="bg-[#09090b] border-b border-zinc-900 text-zinc-500 text-[10px] font-medium tracking-wide">
+                  <tr><th className="px-6 py-4">Date</th><th className="px-6 py-4">User</th><th className="px-6 py-4">Book</th><th className="px-6 py-4">Status</th><th className="px-6 py-4 text-right">Actions</th></tr>
                 </thead>
-                <tbody className="divide-y divide-zinc-800">
+                <tbody className="divide-y divide-zinc-900/50">
                   {requests.map(req => (
-                    <tr key={req.id} className="hover:bg-white/[0.01] transition-all">
-                      <td className="px-8 py-5 text-zinc-600 font-mono text-[10px]">{new Date(req.timestamp).toLocaleString()}</td>
-                      <td className="px-8 py-5 font-bold text-zinc-200">{req.userName}</td>
-                      <td className="px-8 py-5 text-zinc-400 italic font-medium">{req.bookTitle}</td>
-                      <td className="px-8 py-5">
-                        <span className={`px-3 py-1 rounded-full text-[9px] font-black tracking-widest border ${req.status === 'PENDING' ? 'bg-amber-500/10 text-amber-500 border-amber-500/20' :
-                          req.status === 'APPROVED' ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20' :
-                            'bg-red-500/10 text-red-500 border-red-500/20'
+                    <tr key={req.id} className="hover:bg-zinc-900/20 transition-all">
+                      <td className="px-6 py-4 text-zinc-600 text-[11px]">{new Date(req.timestamp).toLocaleDateString()}</td>
+                      <td className="px-6 py-4 font-medium text-white/90">{req.userName}</td>
+                      <td className="px-6 py-4 text-xs text-zinc-500">{req.bookTitle}</td>
+                      <td className="px-6 py-4">
+                        <span className={`px-2.5 py-0.5 rounded-full text-[10px] font-medium border ${req.status === 'PENDING' ? 'bg-amber-500/5 text-amber-500 border-amber-500/10' :
+                          req.status === 'APPROVED' ? 'bg-emerald-500/5 text-emerald-400 border-emerald-500/10' :
+                            'bg-red-500/5 text-red-500 border-red-500/10'
                           }`}>{req.status}</span>
                       </td>
-                      <td className="px-8 py-5 text-right">
+                      <td className="px-6 py-4 text-right">
                         {req.status === 'PENDING' && (
-                          <div className="flex justify-end gap-2"><button onClick={() => onHandleRequest(req.id, 'APPROVE')} className="px-4 py-1.5 bg-emerald-600 hover:bg-emerald-500 rounded-xl text-[9px] font-black uppercase text-white shadow-lg active:scale-95">Approve</button><button onClick={() => onHandleRequest(req.id, 'DENY')} className="px-4 py-1.5 bg-zinc-800 hover:bg-zinc-700 text-zinc-300 rounded-xl text-[9px] font-black uppercase active:scale-95">Deny</button></div>
+                          <div className="flex justify-end gap-2">
+                            <button onClick={() => onHandleRequest(req.id, 'APPROVE')} className="px-3 py-1 bg-emerald-600/90 hover:bg-emerald-600 rounded-lg text-xs font-medium text-white transition-all active:scale-95">Approve</button>
+                            <button onClick={() => onHandleRequest(req.id, 'DENY')} className="px-3 py-1 bg-zinc-800 hover:bg-zinc-700 text-zinc-400 rounded-lg text-xs font-medium transition-all active:scale-95">Deny</button>
+                          </div>
                         )}
                       </td>
                     </tr>
@@ -460,17 +486,21 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
             )}
             {activeTab === 'history' && (
               <>
-                <thead className="bg-zinc-950/50 border-b border-zinc-800 text-zinc-600 uppercase text-[9px] font-black tracking-widest">
-                  <tr><th className="px-8 py-5">Borrowed</th><th className="px-8 py-5">User</th><th className="px-8 py-5">Book</th><th className="px-8 py-5">Returned</th><th className="px-8 py-5">Status</th></tr>
+                <thead className="bg-[#09090b] border-b border-zinc-900 text-zinc-500 text-[10px] font-medium tracking-wide">
+                  <tr><th className="px-6 py-4">Borrowed</th><th className="px-6 py-4">User</th><th className="px-6 py-4">Book</th><th className="px-6 py-4">Returned</th><th className="px-6 py-4">Status</th></tr>
                 </thead>
-                <tbody className="divide-y divide-zinc-800">
+                <tbody className="divide-y divide-zinc-900/50">
                   {history.map(record => (
-                    <tr key={record.id} className="hover:bg-white/[0.01] transition-all">
-                      <td className="px-8 py-5 text-zinc-600 font-mono text-[10px]">{new Date(record.borrowDate).toLocaleString()}</td>
-                      <td className="px-8 py-5 font-bold text-zinc-200">{record.userName}</td>
-                      <td className="px-8 py-5 text-zinc-400 italic">{record.bookTitle}</td>
-                      <td className="px-8 py-5 text-zinc-600 font-mono text-[10px]">{record.returnDate ? new Date(record.returnDate).toLocaleString() : '---'}</td>
-                      <td className="px-8 py-5"><span className={`px-3 py-1 rounded-full text-[9px] font-black tracking-widest border ${record.returnDate ? 'bg-zinc-800 text-zinc-600 border-zinc-700' : 'bg-blue-500/10 text-blue-500 border-blue-500/20'}`}>{record.returnDate ? 'CLOSED' : 'OPEN'}</span></td>
+                    <tr key={record.id} className="hover:bg-zinc-900/20 transition-all">
+                      <td className="px-6 py-4 text-zinc-600 text-[11px]">{new Date(record.borrowDate).toLocaleDateString()}</td>
+                      <td className="px-6 py-4 font-medium text-white/90">{record.userName}</td>
+                      <td className="px-6 py-4 text-xs text-zinc-500">{record.bookTitle}</td>
+                      <td className="px-6 py-4 text-zinc-600 text-[11px]">{record.returnDate ? new Date(record.returnDate).toLocaleDateString() : '---'}</td>
+                      <td className="px-6 py-4">
+                        <span className={`px-2.5 py-0.5 rounded-full text-[10px] font-medium border ${record.returnDate ? 'bg-zinc-800/30 text-zinc-600 border-zinc-800' : 'bg-blue-500/5 text-blue-500 border-blue-500/10'}`}>
+                          {record.returnDate ? 'Returned' : 'In Use'}
+                        </span>
+                      </td>
                     </tr>
                   ))}
                 </tbody>
@@ -550,23 +580,27 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
 
 const StatCard = ({ title, value, subtitle, icon, color }: any) => {
   const colorClasses: Record<string, string> = {
-    emerald: 'text-emerald-500 bg-emerald-500/10 border-emerald-500/20 shadow-emerald-500/10',
-    blue: 'text-blue-500 bg-blue-500/10 border-blue-500/20 shadow-blue-500/10',
-    amber: 'text-amber-500 bg-amber-500/10 border-amber-500/20 shadow-amber-500/10',
-    purple: 'text-purple-500 bg-purple-500/10 border-purple-500/20 shadow-purple-500/10',
+    emerald: 'text-emerald-500 bg-emerald-500/5 border-emerald-500/20',
+    blue: 'text-blue-500 bg-blue-500/5 border-blue-500/20',
+    amber: 'text-amber-500 bg-amber-500/5 border-amber-500/20',
+    purple: 'text-purple-500 bg-purple-500/5 border-purple-500/20',
   };
 
   return (
-    <div className="bg-zinc-900 border border-zinc-800 p-8 rounded-[2rem] shadow-2xl transition-all hover:-translate-y-1 hover:shadow-emerald-500/5">
-      <div className="flex justify-between items-start mb-6">
-        <div className={`p-4 rounded-2xl border ${colorClasses[color]} shadow-2xl`}>
-          <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d={icon} /></svg>
+    <div className="bg-[#0c0c0e] border border-zinc-900 p-6 rounded-2xl shadow-sm transition-all hover:border-zinc-800">
+      <div className="flex items-center gap-4">
+        <div className={`p-3 rounded-xl border ${colorClasses[color]}`}>
+          <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d={icon} />
+          </svg>
         </div>
-      </div>
-      <div>
-        <p className="text-[10px] font-black text-zinc-500 uppercase tracking-[0.2em]">{title}</p>
-        <p className="text-3xl font-black text-white mt-2 leading-none">{value}</p>
-        {subtitle && <p className="text-[10px] text-zinc-600 mt-3 font-bold uppercase tracking-tight">{subtitle}</p>}
+        <div>
+          <p className="text-[10px] font-medium text-zinc-500 uppercase tracking-wider">{title}</p>
+          <div className="flex items-baseline gap-2">
+            <p className="text-xl font-semibold text-white/90">{value}</p>
+            {subtitle && <p className="text-[10px] text-zinc-600 font-medium truncate max-w-[80px]">{subtitle}</p>}
+          </div>
+        </div>
       </div>
     </div>
   );

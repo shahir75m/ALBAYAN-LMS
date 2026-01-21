@@ -4,63 +4,87 @@
 
 @layer base {
   body {
-    @apply bg-zinc-950 text-zinc-100 font-sans antialiased selection:bg-emerald-500/30 overflow-x-hidden;
+    @apply bg-[#09090b] text-zinc-200 font-sans antialiased selection:bg-emerald-500/20 overflow-x-hidden;
   }
 }
 
 @layer utilities {
   .animate-in {
-    animation-duration: 1000ms;
-    animation-fill-mode: both; 
+    animation-duration: 700ms;
+    animation-fill-mode: both;
+    animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
   }
-  
+
   .fade-in {
     animation-name: fadeIn;
   }
-  
+
   .zoom-in {
     animation-name: zoomIn;
   }
-  
+
   .slide-in-from-bottom-4 {
     animation-name: slideInFromBottom;
   }
 }
 
 @keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
 }
 
 @keyframes zoomIn {
-  from { opacity: 0; transform: scale(0.95); }
-  to { opacity: 1; transform: scale(1); }
+  from {
+    opacity: 0;
+    transform: scale(0.98);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
 }
 
 @keyframes slideInFromBottom {
-  from { transform: translateY(1rem); opacity: 0; }
-  to { transform: translateY(0); opacity: 1; }
+  from {
+    transform: translateY(0.5rem);
+    opacity: 0;
+  }
+
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
 }
 
 /* Custom Scrollbar */
 ::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
+  width: 6px;
+  height: 6px;
 }
+
 ::-webkit-scrollbar-track {
-  background: #09090b;
+  background: transparent;
 }
+
 ::-webkit-scrollbar-thumb {
   background: #27272a;
-  border-radius: 4px;
+  border-radius: 10px;
 }
+
 ::-webkit-scrollbar-thumb:hover {
-  background: #10b981;
+  background: #3f3f46;
 }
 
 .no-scrollbar::-webkit-scrollbar {
   display: none;
 }
+
 .no-scrollbar {
   -ms-overflow-style: none;
   scrollbar-width: none;
@@ -72,6 +96,7 @@
   border: none !important;
   padding: 0 !important;
 }
+
 #barcode-reader__camera_selection {
   background: #18181b !important;
   color: white !important;
@@ -80,6 +105,7 @@
   padding: 4px !important;
   font-size: 12px !important;
 }
+
 #barcode-reader button {
   background: #10b981 !important;
   color: white !important;
@@ -92,6 +118,7 @@
   letter-spacing: 0.05em !important;
   cursor: pointer !important;
 }
+
 #barcode-reader video {
   border-radius: 16px !important;
 }
