@@ -192,7 +192,7 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
   if (activeTab === 'dashboard') {
     return (
       <div className="space-y-10 animate-in fade-in duration-700">
-        {statusMsg && (
+        {statusMsg && !showPassModal && !showFineModal && (
           <div className={`fixed top-24 right-8 z-[10000] px-6 py-4 rounded-2xl border backdrop-blur-md shadow-2xl animate-in fade-in slide-in-from-top-4 duration-500 flex items-center gap-3 ${statusMsg.type === 'success' ? 'bg-emerald-500/10 border-emerald-500/20 text-emerald-400' : 'bg-red-500/10 border-red-500/20 text-red-400'
             }`}>
             <div className={`w-2 h-2 rounded-full ${statusMsg.type === 'success' ? 'bg-emerald-500' : 'bg-red-500'} animate-pulse`}></div>
@@ -578,6 +578,13 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
                 </button>
               </div>
               <div className="p-6 space-y-4">
+                {statusMsg && (
+                  <div className={`p-4 rounded-xl border flex items-center gap-3 mb-4 animate-in slide-in-from-top-2 duration-300 ${statusMsg.type === 'success' ? 'bg-emerald-500/10 border-emerald-500/20 text-emerald-400' : 'bg-red-500/10 border-red-500/20 text-red-400'
+                    }`}>
+                    <div className={`w-2 h-2 rounded-full ${statusMsg.type === 'success' ? 'bg-emerald-500' : 'bg-red-500'} animate-pulse`}></div>
+                    <span className="text-xs font-bold uppercase tracking-tight">{statusMsg.text}</span>
+                  </div>
+                )}
                 <div>
                   <label className="block text-[10px] font-black text-zinc-500 uppercase tracking-widest mb-2">Current Master Password</label>
                   <input
@@ -638,6 +645,13 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
                 <p className="text-xs text-zinc-500 mt-1">{selectedReturn.bookTitle} - {selectedReturn.userName}</p>
               </div>
               <div className="p-8 space-y-6">
+                {statusMsg && (
+                  <div className={`p-4 rounded-xl border flex items-center gap-3 mb-4 animate-in slide-in-from-top-2 duration-300 ${statusMsg.type === 'success' ? 'bg-emerald-500/10 border-emerald-500/20 text-emerald-400' : 'bg-red-500/10 border-red-500/20 text-red-400'
+                    }`}>
+                    <div className={`w-2 h-2 rounded-full ${statusMsg.type === 'success' ? 'bg-emerald-500' : 'bg-red-500'} animate-pulse`}></div>
+                    <span className="text-xs font-bold uppercase tracking-tight">{statusMsg.text}</span>
+                  </div>
+                )}
                 <div className="flex items-center justify-between p-4 bg-zinc-950 rounded-2xl border border-zinc-800">
                   <span className="text-sm font-bold text-zinc-300">Are there any issues?</span>
                   <button
