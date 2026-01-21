@@ -49,13 +49,13 @@ const Sidebar: React.FC<SidebarProps> = ({
       `}>
         <div className="p-6 flex-1 overflow-y-auto no-scrollbar">
           <div className="flex items-center justify-between mb-10">
-            <div className="flex items-center gap-3">
-              <div className="w-10 h-10 bg-emerald-500/10 rounded-xl border border-emerald-500/20 flex items-center justify-center shadow-lg shadow-emerald-900/10 text-emerald-500">
-                <Logo className="w-5 h-5" />
+            <div className="flex items-center gap-4">
+              <div className="w-10 h-10 bg-emerald-500/5 rounded-2xl border border-emerald-500/10 flex items-center justify-center shadow-inner text-emerald-500/80">
+                <Logo className="w-4.5 h-4.5" />
               </div>
               <div>
-                <span className="block text-white font-black tracking-tighter text-lg leading-none">ALBAYAN</span>
-                <span className="text-[10px] text-zinc-600 font-bold uppercase tracking-widest mt-1 block">LMS Repository</span>
+                <span className="block text-white font-black tracking-tight text-xl leading-none">ALBAYAN</span>
+                <span className="text-[9px] text-zinc-600 font-bold uppercase tracking-[0.2em] mt-1.5 block">Repository</span>
               </div>
             </div>
             {/* Mobile Close Button */}
