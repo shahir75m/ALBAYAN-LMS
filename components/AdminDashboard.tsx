@@ -102,7 +102,12 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
     const reader = new FileReader();
     reader.onload = async (event) => {
       const text = event.target?.result as string;
-      const lines = text.split('\n');
+      const lines = text.split('\n').filter(line => line.trim());
+      if (lines.length < 2) {
+        setStatusMsg('CSV file is empty or missing data!', 'error');
+        return;
+      }
+
       const rawHeaders = lines[0].split(',').map(h => h.trim().toLowerCase().replace(/[^\w\s]/gi, ''));
 
       // Map synonyms to standard keys
@@ -123,22 +128,44 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
 
       const booksToImport: Book[] = [];
 
+      // Better CSV splitter to handle quoted values with commas
+      const splitCsvLine = (line: string) => {
+        const result = [];
+        let cur = '';
+        let inQuote = false;
+        for (let i = 0; i < line.length; i++) {
+          const char = line[i];
+          if (char === '"') inQuote = !inQuote;
+          else if (char === ',' && !inQuote) {
+            result.push(cur.trim());
+            cur = '';
+          } else cur += char;
+        }
+        result.push(cur.trim());
+        return result;
+      };
+
       for (let i = 1; i < lines.length; i++) {
         const line = lines[i].trim();
         if (!line) continue;
 
-        const values = line.split(',').map(v => v.trim());
+        const values = splitCsvLine(line);
         const bookData: any = {};
 
         headers.forEach((header, index) => {
-          if (header) bookData[header] = values[index];
+          if (header) {
+            let val = values[index] || '';
+            // Remove leading/trailing quotes
+            if (val.startsWith('"') && val.endsWith('"')) val = val.substring(1, val.length - 1);
+            bookData[header] = val;
+          }
         });
 
-        if (bookData.title && bookData.author) {
+        if (bookData.title) {
           const newBook: Book = {
-            id: bookData.id || `B${Date.now()}-${i}-${Math.random().toString(36).substr(2, 5)}`,
+            id: bookData.id || `B${Date.now()}-${i}`,
             title: bookData.title,
-            author: bookData.author,
+            author: bookData.author || 'Unknown',
             category: bookData.category || 'General',
             year: parseInt(bookData.year) || new Date().getFullYear(),
             isbn: bookData.isbn || '---',
@@ -150,7 +177,7 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
           };
           booksToImport.push(newBook);
         } else {
-          console.warn(`Skipping line ${i + 1}: Missing title or author.`, bookData);
+          console.warn(`Skipping line ${i + 1}: Missing title.`, bookData);
         }
       }
 
