@@ -248,16 +248,7 @@ const Login: React.FC<LoginProps> = ({ onLogin, onIdentify, initialIdentity, onC
         </div>
 
         {/* About Section on Portal Selection Page */}
-        <div id="about-section" className="border-t border-zinc-900 bg-[#09090b] py-24">
-          <div className="max-w-5xl mx-auto px-6 mb-20 text-center">
-            <div className="inline-block px-6 py-2 rounded-full bg-emerald-500/5 border border-emerald-500/10 text-emerald-500 text-[11px] font-black uppercase tracking-[0.3em] mb-10 shadow-2xl">
-              Discover Al Bayan
-            </div>
-            <h2 className="text-4xl md:text-6xl font-serif text-white mb-10 tracking-tight leading-tight">വിജ്ഞാനത്തിന്റെ അക്ഷയഖനിയെ <br /> <span className="text-zinc-500">അടുത്തറിയാം</span></h2>
-            <p className="text-zinc-500 max-w-2xl mx-auto text-lg leading-relaxed font-medium">
-              മുട്ടിച്ചിറ ശുഹദാക്കളുടെ സ്മരണയിൽ പടുത്തുയർത്തിയ ആധുനികമായ ഈ വൈജ്ഞാനിക സംരംഭത്തെക്കുറിച്ചുള്ള കൂടുതൽ വിവരങ്ങൾ താഴെ നൽകുന്നു.
-            </p>
-          </div>
+        <div id="about-section" className="border-t border-zinc-900 bg-[#09090b]">
           <About />
         </div>
       </div>
