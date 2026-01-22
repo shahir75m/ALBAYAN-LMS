@@ -1,4 +1,3 @@
-
 import React, { useState, useMemo } from 'react';
 import { User, Role } from '../types';
 import Logo from './Logo';
@@ -83,102 +82,42 @@ const Login: React.FC<LoginProps> = ({ onLogin, onIdentify, initialIdentity, onC
 
   if (step === 'IDENTIFY') {
     return (
-      <div className="min-h-screen bg-[#09090b] overflow-y-auto no-scrollbar scroll-smooth">
-        {/* Landing Page Navbar */}
-        <nav className="fixed top-0 inset-x-0 z-50 px-6 py-4 flex items-center justify-between backdrop-blur-xl border-b border-zinc-900/50 bg-[#09090b]/80">
-          <div className="flex items-center gap-3">
-            <Logo className="w-8 h-8" />
-            <span className="text-white font-serif text-lg tracking-tight">AL BAYAN</span>
+      <div className="min-h-screen bg-[#09090b] flex items-center justify-center p-4">
+        <div className="w-full max-w-[400px] bg-[#0c0c0e] border border-zinc-900 rounded-3xl p-8 md:p-10 shadow-3xl relative overflow-hidden">
+          <div className="absolute top-0 right-0 w-32 h-32 bg-emerald-500/5 blur-[60px] rounded-full"></div>
+          <div className="flex flex-col items-center mb-10">
+            <div className="p-4 bg-zinc-900/50 rounded-2xl border border-zinc-800 shadow-sm mb-6">
+              <Logo className="w-12 h-12" />
+            </div>
+            <h2 className="text-xl font-semibold tracking-tight text-white">Library Access</h2>
+            <p className="text-zinc-500 text-xs mt-2 text-center">Enter your ID to proceed to portals</p>
           </div>
-          <button
-            onClick={() => document.getElementById('about-section')?.scrollIntoView({ behavior: 'smooth' })}
-            className="text-xs font-black uppercase tracking-widest text-zinc-500 hover:text-emerald-500 transition-colors"
-          >
-            About Library
-          </button>
-        </nav>
-
-        <div className="min-h-screen flex flex-col items-center justify-center p-4 pt-20">
-          <div className="w-full max-w-[400px] bg-[#0c0c0e] border border-zinc-900 rounded-[2.5rem] p-8 md:p-12 shadow-3xl relative overflow-hidden animate-in fade-in zoom-in duration-700">
-            <div className="absolute top-0 right-0 w-32 h-32 bg-emerald-500/5 blur-[60px] rounded-full"></div>
-            <div className="flex flex-col items-center mb-10">
-              <div className="p-4 bg-zinc-900/50 rounded-2xl border border-zinc-800 shadow-sm mb-6">
-                <Logo className="w-12 h-12" />
+          <div className="space-y-6">
+            <form onSubmit={handleManualIdentify} className="space-y-4">
+              <div className="space-y-2">
+                <label className="text-[10px] font-medium uppercase tracking-wider text-zinc-500 ml-1">User ID</label>
+                <input
+                  type="text"
+                  placeholder="e.g. library_user_123"
+                  className="w-full bg-[#09090b] border border-zinc-800 rounded-xl px-5 py-3.5 text-sm text-white outline-none focus:ring-1 focus:ring-emerald-500/30 focus:border-emerald-500/40 transition-all"
+                  value={manualEmail}
+                  onChange={(e) => setManualEmail(e.target.value)}
+                  required
+                />
               </div>
-              <h2 className="text-xl font-semibold tracking-tight text-white">Library Access</h2>
-              <p className="text-zinc-500 text-xs mt-2 text-center">Enter your User ID to proceed to portals</p>
-            </div>
-            <div className="space-y-6">
-              <form onSubmit={handleManualIdentify} className="space-y-4">
-                <div className="space-y-2">
-                  <label className="text-[10px] font-medium uppercase tracking-wider text-zinc-500 ml-1">User ID</label>
-                  <input
-                    type="text"
-                    placeholder="e.g. library_user_123"
-                    className="w-full bg-[#09090b] border border-zinc-800 rounded-xl px-5 py-3.5 text-sm text-white outline-none focus:ring-1 focus:ring-emerald-500/30 focus:border-emerald-500/40 transition-all"
-                    value={manualEmail}
-                    onChange={(e) => setManualEmail(e.target.value)}
-                    required
-                  />
-                </div>
-                <button
-                  type="submit"
-                  disabled={isSyncing}
-                  className="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-medium text-sm py-3.5 rounded-xl transition-all shadow-lg shadow-emerald-900/20 active:scale-[0.98]"
-                >
-                  {isSyncing ? "Verifying..." : "Continue to Portals"}
-                </button>
-              </form>
-
-              <div className="pt-4 flex flex-col items-center gap-4">
-                <div className="flex items-center gap-4 w-full">
-                  <div className="h-px bg-zinc-900 flex-1"></div>
-                  <span className="text-[10px] text-zinc-700 font-bold uppercase tracking-widest">Or</span>
-                  <div className="h-px bg-zinc-900 flex-1"></div>
-                </div>
-                <button
-                  onClick={() => document.getElementById('about-section')?.scrollIntoView({ behavior: 'smooth' })}
-                  className="text-[11px] font-black uppercase tracking-widest text-zinc-500 hover:text-emerald-400 transition-all flex items-center gap-2 group"
-                >
-                  Explore Library Details
-                  <svg className="w-3 h-3 group-hover:translate-y-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                  </svg>
-                </button>
-              </div>
-
-              {error && (
-                <p className="text-red-400 text-[10px] font-medium text-center bg-red-500/5 py-3 rounded-lg border border-red-500/10">
-                  {error}
-                </p>
-              )}
-            </div>
-          </div>
-
-          <div className="mt-8 text-center text-[10px] text-zinc-600 font-bold uppercase tracking-[0.2em] animate-pulse">
-            Scroll down to learn more
-          </div>
-        </div>
-
-        {/* About Section on Landing Page */}
-        <div id="about-section" className="border-t border-zinc-900 bg-[#09090b] py-20">
-          <div className="max-w-4xl mx-auto px-6 mb-16 text-center">
-            <div className="inline-block px-4 py-1.5 rounded-full bg-emerald-500/5 border border-emerald-500/10 text-emerald-500 text-[10px] font-black uppercase tracking-[0.2em] mb-6">
-              Library Overview
-            </div>
-            <h2 className="text-3xl md:text-5xl font-serif text-white mb-6">അറിവിന്റെ അക്ഷയഖനി</h2>
-            <p className="text-zinc-500 max-w-2xl mx-auto leading-relaxed">
-              മുട്ടിച്ചിറ ശുഹദാക്കളുടെ സ്മരണയിൽ വിജ്ഞാനത്തിന്റെ വിളഭൂമിയായി പടുത്തുയർത്തിയ ആധുനിക ലൈബ്രറി സംവിധാനം.
-            </p>
-          </div>
-          <About />
-          <div className="max-w-md mx-auto px-6 mt-12 mb-20 text-center">
-            <button
-              onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-              className="px-8 py-3.5 bg-zinc-900 hover:bg-zinc-800 border border-zinc-800 rounded-2xl text-zinc-400 text-xs font-bold uppercase tracking-widest transition-all hover:text-emerald-500"
-            >
-              Back to Login
-            </button>
+              <button
+                type="submit"
+                disabled={isSyncing}
+                className="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-medium text-sm py-3.5 rounded-xl transition-all shadow-lg shadow-emerald-900/20 active:scale-[0.98]"
+              >
+                {isSyncing ? "Verifying..." : "Continue"}
+              </button>
+            </form>
+            {error && (
+              <p className="text-red-400 text-[10px] font-medium text-center bg-red-500/5 py-3 rounded-lg border border-red-500/10">
+                {error}
+              </p>
+            )}
           </div>
         </div>
       </div>
