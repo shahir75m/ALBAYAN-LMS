@@ -261,7 +261,8 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
   };
 
   // Stats Logic
-  const totalBooks = books.reduce((acc, b) => acc + b.totalCopies, 0);
+  const totalVolume = books.reduce((acc, b) => acc + b.totalCopies, 0);
+  const uniqueTitles = books.length;
   const issuedBooksCount = history.filter(h => !h.returnDate).length;
   const pendingRequestsCount = requests.filter(r => r.status === 'PENDING').length;
 
@@ -338,7 +339,7 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            <StatCard title="Total Volume" value={totalBooks} icon="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" color="emerald" />
+            <StatCard title="Total Books" value={totalVolume} subtitle={`${uniqueTitles} Titles`} icon="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" color="emerald" />
             <StatCard title="Books Issued" value={issuedBooksCount} icon="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" color="blue" />
             <StatCard title="New Requests" value={pendingRequestsCount} icon="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" color="amber" />
             <StatCard title="Active Fines" value={fines.filter(f => f.status === 'PENDING').length} icon="M12 8c-1.657 0-3 1.343-3 3s1.343 3 3 3 3-1.343 3-3-1.343-3-3-3z M12 2C6.477 2 2 6.477 2 12s4.477 10 10 10 10-4.477 10-10S17.523 2 12 2z M12 20c-4.411 0-8-3.589-8-8s3.589-8 8-8 8 3.589 8 8-3.589 8-8 8z" color="red" />
@@ -402,7 +403,11 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
                   <div key={h.id} className="p-5 flex items-center justify-between hover:bg-zinc-900/30 transition-colors">
                     <div className="overflow-hidden pr-4">
                       <p className="text-sm font-medium text-white/90 truncate">{h.bookTitle}</p>
-                      <p className="text-[11px] text-zinc-500 mt-0.5">Holder: <span className="text-zinc-400">{h.userName}</span></p>
+                      <div className="flex items-center gap-2 mt-1">
+                        <span className="text-[10px] text-zinc-600 font-bold uppercase tracking-wider">Holder:</span>
+                        <p className="text-[11px] text-emerald-500 font-medium truncate">{h.userName}</p>
+                        <span className="text-[9px] text-zinc-700 font-mono">[{h.userId}]</span>
+                      </div>
                     </div>
                     <button
                       onClick={() => {
