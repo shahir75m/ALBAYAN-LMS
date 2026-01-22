@@ -250,6 +250,31 @@ app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, 'dist', 'index.html'));
 });
 
+const cleanupOldRecords = async () => {
+  try {
+    const oneWeekAgo = Date.now() - 7 * 24 * 60 * 60 * 1000;
+
+    // Delete old borrow requests
+    const deletedRequests = await BorrowRequest.deleteMany({ timestamp: { $lt: oneWeekAgo } });
+    if (deletedRequests.deletedCount > 0) console.log(`[Cleanup] Deleted ${deletedRequests.deletedCount} old borrow requests.`);
+
+    // Delete old history records (optional: user said "library records", usually implies history)
+    const deletedHistory = await History.deleteMany({ borrowDate: { $lt: oneWeekAgo } });
+    if (deletedHistory.deletedCount > 0) console.log(`[Cleanup] Deleted ${deletedHistory.deletedCount} old history records.`);
+
+    // Delete old fines (optional but good for hygiene)
+    const deletedFines = await Fine.deleteMany({ timestamp: { $lt: oneWeekAgo }, status: 'PAID' });
+    if (deletedFines.deletedCount > 0) console.log(`[Cleanup] Deleted ${deletedFines.deletedCount} old paid fines.`);
+
+  } catch (err) {
+    console.error('[Cleanup Error]:', err);
+  }
+};
+
+// Run cleanup every 24 hours
+setInterval(cleanupOldRecords, 24 * 60 * 60 * 1000);
+
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
+  cleanupOldRecords(); // Run immediately on start
 });
