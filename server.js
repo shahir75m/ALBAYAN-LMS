@@ -254,18 +254,11 @@ const cleanupOldRecords = async () => {
   try {
     const oneWeekAgo = Date.now() - 7 * 24 * 60 * 60 * 1000;
 
-    // Delete old borrow requests
+    // Delete old borrow requests (confirmation records)
     const deletedRequests = await BorrowRequest.deleteMany({ timestamp: { $lt: oneWeekAgo } });
     if (deletedRequests.deletedCount > 0) console.log(`[Cleanup] Deleted ${deletedRequests.deletedCount} old borrow requests.`);
 
-    // Delete old history records (optional: user said "library records", usually implies history)
-    const deletedHistory = await History.deleteMany({ borrowDate: { $lt: oneWeekAgo } });
-    if (deletedHistory.deletedCount > 0) console.log(`[Cleanup] Deleted ${deletedHistory.deletedCount} old history records.`);
-
-    // Delete old fines (optional but good for hygiene)
-    const deletedFines = await Fine.deleteMany({ timestamp: { $lt: oneWeekAgo }, status: 'PAID' });
-    if (deletedFines.deletedCount > 0) console.log(`[Cleanup] Deleted ${deletedFines.deletedCount} old paid fines.`);
-
+    // Note: Issue history is preserved as per user request ("issue history pokaan padilla")
   } catch (err) {
     console.error('[Cleanup Error]:', err);
   }
