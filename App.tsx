@@ -115,6 +115,11 @@ const App: React.FC = () => {
     await refreshAllData();
   };
 
+  const handleBulkAddBooks = async (books: Book[]) => {
+    await api.bulkSaveBooks(books);
+    await refreshAllData();
+  };
+
   const handleDeleteBook = async (id: string) => {
     await api.deleteBook(id);
     await refreshAllData();
@@ -122,6 +127,11 @@ const App: React.FC = () => {
 
   const handleAddOrUpdateUser = async (user: User) => {
     await api.saveUser(user);
+    await refreshAllData();
+  };
+
+  const handleBulkAddUsers = async (users: User[]) => {
+    await api.bulkSaveUsers(users);
     await refreshAllData();
   };
 
@@ -298,7 +308,9 @@ const App: React.FC = () => {
               <AdminDashboard
                 activeTab={activeTab} books={books} users={users} requests={requests} history={history} fines={fines}
                 onAddBook={handleAddOrUpdateBook} onUpdateBook={handleAddOrUpdateBook} onDeleteBook={handleDeleteBook}
+                onBulkAddBooks={handleBulkAddBooks}
                 onAddUser={handleAddOrUpdateUser} onUpdateUser={handleAddOrUpdateUser} onDeleteUser={handleDeleteUser}
+                onBulkAddUsers={handleBulkAddUsers}
                 onHandleRequest={handleRequestAction} onReturnBook={handleReturnBook} onPayFine={handlePayFine}
                 globalStatus={{ msg: statusMsg, set: setStatusMsg }}
               />

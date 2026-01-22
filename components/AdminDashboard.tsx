@@ -16,9 +16,11 @@ interface AdminDashboardProps {
   onAddBook: (b: Book) => void;
   onUpdateBook: (b: Book) => void;
   onDeleteBook: (id: string) => void;
+  onBulkAddBooks: (books: Book[]) => Promise<void>;
   onAddUser: (u: User) => void;
   onUpdateUser: (u: User) => void;
   onDeleteUser: (id: string) => void;
+  onBulkAddUsers: (users: User[]) => Promise<void>;
   onHandleRequest: (id: string, action: 'APPROVE' | 'DENY') => void;
   onReturnBook: (bid: string, uid: string, fine?: { amount: number, reason: string }) => void;
   onPayFine: (id: string) => void;
@@ -27,8 +29,8 @@ interface AdminDashboardProps {
 
 const AdminDashboard: React.FC<AdminDashboardProps> = ({
   activeTab, books, users, requests, history, fines,
-  onAddBook, onUpdateBook, onDeleteBook,
-  onAddUser, onUpdateUser, onDeleteUser,
+  onAddBook, onUpdateBook, onDeleteBook, onBulkAddBooks,
+  onAddUser, onUpdateUser, onDeleteUser, onBulkAddUsers,
   onHandleRequest, onReturnBook, onPayFine,
   globalStatus
 }) => {
@@ -98,10 +100,11 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
     if (!file) return;
 
     const reader = new FileReader();
-    reader.onload = (event) => {
+    reader.onload = async (event) => {
       const text = event.target?.result as string;
       const lines = text.split('\n');
       const headers = lines[0].split(',').map(h => h.trim().toLowerCase());
+      const booksToImport: Book[] = [];
 
       for (let i = 1; i < lines.length; i++) {
         if (!lines[i].trim()) continue;
@@ -126,10 +129,13 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
             availableCopies: parseInt(bookData.copies) || 1,
             currentBorrowers: []
           };
-          onAddBook(newBook);
+          booksToImport.push(newBook);
         }
       }
-      setStatusMsg('Books bulk import complete!');
+      if (booksToImport.length > 0) {
+        await onBulkAddBooks(booksToImport);
+        setStatusMsg(`${booksToImport.length} Books bulk import complete!`);
+      }
       e.target.value = '';
     };
     reader.readAsText(file);
@@ -141,10 +147,11 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
     if (!file) return;
 
     const reader = new FileReader();
-    reader.onload = (event) => {
+    reader.onload = async (event) => {
       const text = event.target?.result as string;
       const lines = text.split('\n');
       const headers = lines[0].split(',').map(h => h.trim().toLowerCase());
+      const usersToImport: User[] = [];
 
       for (let i = 1; i < lines.length; i++) {
         if (!lines[i].trim()) continue;
@@ -163,10 +170,13 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
             class: userData.class || userData.department || '',
             avatarUrl: userData.avatarurl || ''
           };
-          onAddUser(newUser);
+          usersToImport.push(newUser);
         }
       }
-      setStatusMsg('Users bulk import complete!');
+      if (usersToImport.length > 0) {
+        await onBulkAddUsers(usersToImport);
+        setStatusMsg(`${usersToImport.length} Users bulk import complete!`);
+      }
       e.target.value = '';
     };
     reader.readAsText(file);

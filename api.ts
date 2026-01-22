@@ -81,12 +81,17 @@ class ApiService {
 
       case 'POST': {
         const data = getData(key);
-        const existingIndex = data.findIndex((item: any) => item.id === body.id);
-        if (existingIndex > -1) {
-          data[existingIndex] = body;
-        } else {
-          data.push(body);
-        }
+        const bodies = Array.isArray(body) ? body : [body];
+
+        bodies.forEach((item: any) => {
+          const existingIndex = data.findIndex((existing: any) => existing.id === item.id);
+          if (existingIndex > -1) {
+            data[existingIndex] = item;
+          } else {
+            data.push(item);
+          }
+        });
+
         setData(key, data);
         return body;
       }
@@ -118,9 +123,11 @@ class ApiService {
 
   async getBooks(): Promise<Book[]> { return this.request<Book[]>('/books'); }
   async saveBook(book: Book): Promise<Book> { return this.request<Book>('/books', { method: 'POST', body: JSON.stringify(book) }); }
+  async bulkSaveBooks(books: Book[]): Promise<Book[]> { return this.request<Book[]>('/books/bulk', { method: 'POST', body: JSON.stringify(books) }); }
   async deleteBook(id: string): Promise<void> { await this.request<void>(`/books/${id}`, { method: 'DELETE' }); }
   async getUsers(): Promise<User[]> { return this.request<User[]>('/users'); }
   async saveUser(user: User): Promise<User> { return this.request<User>('/users', { method: 'POST', body: JSON.stringify(user) }); }
+  async bulkSaveUsers(users: User[]): Promise<User[]> { return this.request<User[]>('/users/bulk', { method: 'POST', body: JSON.stringify(users) }); }
   async deleteUser(id: string): Promise<void> { await this.request<void>(`/users/${id}`, { method: 'DELETE' }); }
   async getRequests(): Promise<BorrowRequest[]> { return this.request<BorrowRequest[]>('/requests'); }
   async createRequest(request: BorrowRequest): Promise<BorrowRequest> { return this.request<BorrowRequest>('/requests', { method: 'POST', body: JSON.stringify(request) }); }

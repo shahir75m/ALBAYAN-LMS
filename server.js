@@ -138,6 +138,21 @@ app.post('/api/books', async (req, res) => {
   } catch (err) { res.status(400).json({ message: err.message }); }
 });
 
+app.post('/api/books/bulk', async (req, res) => {
+  try {
+    const books = req.body;
+    const operations = books.map(book => ({
+      updateOne: {
+        filter: { id: book.id },
+        update: { $set: book },
+        upsert: true
+      }
+    }));
+    await Book.bulkWrite(operations);
+    res.status(201).json({ message: 'Bulk books saved successfully' });
+  } catch (err) { res.status(400).json({ message: err.message }); }
+});
+
 app.delete('/api/books/:id', async (req, res) => {
   try { await Book.findOneAndDelete({ id: req.params.id }); res.json({ message: 'Book deleted' }); } catch (err) { res.status(500).json({ message: err.message }); }
 });
@@ -153,6 +168,25 @@ app.post('/api/users', async (req, res) => {
     if (ADMIN_EMAILS.includes(id)) finalRole = 'ADMIN';
     const user = await User.findOneAndUpdate({ id: id }, { name, avatarUrl, class: userClass, role: finalRole }, { upsert: true, new: true });
     res.status(201).json(user);
+  } catch (err) { res.status(400).json({ message: err.message }); }
+});
+
+app.post('/api/users/bulk', async (req, res) => {
+  try {
+    const users = req.body;
+    const operations = users.map(user => {
+      let finalRole = user.role || 'STUDENT';
+      if (ADMIN_EMAILS.includes(user.id)) finalRole = 'ADMIN';
+      return {
+        updateOne: {
+          filter: { id: user.id },
+          update: { $set: { ...user, role: finalRole } },
+          upsert: true
+        }
+      };
+    });
+    await User.bulkWrite(operations);
+    res.status(201).json({ message: 'Bulk users saved successfully' });
   } catch (err) { res.status(400).json({ message: err.message }); }
 });
 
