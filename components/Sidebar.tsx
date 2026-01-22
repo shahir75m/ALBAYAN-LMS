@@ -52,8 +52,8 @@ const Sidebar: React.FC<SidebarProps> = ({
             <div className="flex items-center gap-4">
               <Logo className="w-12 h-12 md:w-14 md:h-14" />
               <div>
-                <span className="block text-white font-black tracking-tight text-xl leading-none">ALBAYAN</span>
-                <span className="text-[9px] text-zinc-600 font-bold uppercase tracking-[0.2em] mt-1.5 block">Repository</span>
+                <span className="block text-white font-serif tracking-tight text-xl leading-none">BAYANUL</span>
+                <span className="text-[9px] text-zinc-600 font-bold uppercase tracking-[0.2em] mt-1.5 block">ULOOM</span>
               </div>
             </div>
             {/* Mobile Close Button */}

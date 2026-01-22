@@ -6,15 +6,15 @@ const Splash: React.FC = () => {
     <div className="fixed inset-0 bg-black flex flex-col items-center justify-center z-50 p-6">
       <div className="relative flex flex-col items-center animate-in fade-in zoom-in duration-700">
         <img
-          src="/logo.png"
+          src="/icon-logo-removebg-preview (1).png"
           alt="Albayan Library Logo"
           className="relative w-28 h-28 md:w-40 md:h-40 object-contain rounded-3xl"
         />
       </div>
 
       <div className="mt-8 text-center animate-in slide-in-from-bottom-4 duration-700 delay-200">
-        <h1 className="text-xl md:text-2xl font-medium tracking-tight text-white/90">
-          Albayan <span className="text-emerald-500/80 font-semibold">Library</span>
+        <h1 className="text-xl md:text-2xl font-serif text-white/90 tracking-wide">
+          Dars <span className="text-emerald-500/80 font-semibold">Bayanul Uloom</span>
         </h1>
         <p className="text-zinc-500 text-[10px] font-medium tracking-[0.2em] uppercase mt-2">
           Management System
