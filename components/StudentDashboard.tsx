@@ -21,7 +21,9 @@ const StudentDashboard: React.FC<StudentDashboardProps> = ({
 
   const filteredBooks = books.filter(b =>
     (filter === 'All' || b.category === filter) &&
-    (b.title.toLowerCase().includes(search.toLowerCase()) || b.author.toLowerCase().includes(search.toLowerCase()))
+    (b.title.toLowerCase().includes(search.toLowerCase()) ||
+      b.author.toLowerCase().includes(search.toLowerCase()) ||
+      b.id.toLowerCase().includes(search.toLowerCase()))
   );
 
   const categories = ['All', ...Array.from(new Set(books.map(b => b.category)))];
