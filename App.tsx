@@ -6,6 +6,7 @@ import Login from './components/Login';
 import Sidebar from './components/Sidebar';
 import AdminDashboard from './components/AdminDashboard';
 import StudentDashboard from './components/StudentDashboard';
+import About from './components/About';
 import Logo from './components/Logo';
 import { api } from './api';
 
@@ -304,7 +305,9 @@ const App: React.FC = () => {
               </p>
             </header>
 
-            {currentUser.role === 'ADMIN' ? (
+            {activeTab === 'about' ? (
+              <About />
+            ) : currentUser.role === 'ADMIN' ? (
               <AdminDashboard
                 activeTab={activeTab} books={books} users={users} requests={requests} history={history} fines={fines}
                 onAddBook={handleAddOrUpdateBook} onUpdateBook={handleAddOrUpdateBook} onDeleteBook={handleDeleteBook}
