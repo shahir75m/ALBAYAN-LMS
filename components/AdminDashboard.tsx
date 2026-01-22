@@ -103,38 +103,66 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
     reader.onload = async (event) => {
       const text = event.target?.result as string;
       const lines = text.split('\n');
-      const headers = lines[0].split(',').map(h => h.trim().toLowerCase());
+      const rawHeaders = lines[0].split(',').map(h => h.trim().toLowerCase().replace(/[^\w\s]/gi, ''));
+
+      // Map synonyms to standard keys
+      const headerMap: Record<string, string> = {
+        'id': 'id', 'book id': 'id',
+        'title': 'title', 'book title': 'title', 'name': 'title',
+        'author': 'author', 'writer': 'author',
+        'category': 'category', 'genre': 'category', 'type': 'category',
+        'year': 'year', 'published': 'year',
+        'isbn': 'isbn', 'isbn number': 'isbn',
+        'coverurl': 'coverUrl', 'cover url': 'coverUrl', 'cover': 'coverUrl', 'image': 'coverUrl',
+        'price': 'price', 'cost': 'price', 'amount': 'price',
+        'copies': 'copies', 'total copies': 'copies', 'stock': 'copies', 'count': 'copies'
+      };
+
+      const headers = rawHeaders.map(h => headerMap[h] || h);
+      console.log('Normalized Headers:', headers);
+
       const booksToImport: Book[] = [];
 
       for (let i = 1; i < lines.length; i++) {
-        if (!lines[i].trim()) continue;
-        const values = lines[i].split(',').map(v => v.trim());
+        const line = lines[i].trim();
+        if (!line) continue;
+
+        const values = line.split(',').map(v => v.trim());
         const bookData: any = {};
 
         headers.forEach((header, index) => {
-          bookData[header] = values[index];
+          if (header) bookData[header] = values[index];
         });
 
         if (bookData.title && bookData.author) {
           const newBook: Book = {
-            id: bookData.id || `B${Date.now()}${i}`,
+            id: bookData.id || `B${Date.now()}-${i}-${Math.random().toString(36).substr(2, 5)}`,
             title: bookData.title,
             author: bookData.author,
             category: bookData.category || 'General',
             year: parseInt(bookData.year) || new Date().getFullYear(),
             isbn: bookData.isbn || '---',
-            coverUrl: bookData.coverurl || 'https://picsum.photos/seed/book/400/600',
+            coverUrl: bookData.coverUrl || 'https://picsum.photos/seed/book/400/600',
             price: parseFloat(bookData.price) || 0,
             totalCopies: parseInt(bookData.copies) || 1,
             availableCopies: parseInt(bookData.copies) || 1,
             currentBorrowers: []
           };
           booksToImport.push(newBook);
+        } else {
+          console.warn(`Skipping line ${i + 1}: Missing title or author.`, bookData);
         }
       }
+
       if (booksToImport.length > 0) {
-        await onBulkAddBooks(booksToImport);
-        setStatusMsg(`${booksToImport.length} Books bulk import complete!`);
+        try {
+          await onBulkAddBooks(booksToImport);
+          setStatusMsg(`${booksToImport.length} Books bulk import complete!`);
+        } catch (err: any) {
+          setStatusMsg(`Import failed: ${err.message}`, 'error');
+        }
+      } else {
+        setStatusMsg('No valid books found in CSV!', 'error');
       }
       e.target.value = '';
     };
@@ -150,16 +178,30 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
     reader.onload = async (event) => {
       const text = event.target?.result as string;
       const lines = text.split('\n');
-      const headers = lines[0].split(',').map(h => h.trim().toLowerCase());
+      const rawHeaders = lines[0].split(',').map(h => h.trim().toLowerCase().replace(/[^\w\s]/gi, ''));
+
+      const headerMap: Record<string, string> = {
+        'id': 'id', 'user id': 'id', 'student id': 'id', 'roll no': 'id',
+        'name': 'name', 'user name': 'name', 'full name': 'name',
+        'role': 'role', 'type': 'role',
+        'class': 'class', 'department': 'class', 'dept': 'class', 'grade': 'class',
+        'avatarurl': 'avatarUrl', 'avatar': 'avatarUrl', 'profile': 'avatarUrl', 'image': 'avatarUrl'
+      };
+
+      const headers = rawHeaders.map(h => headerMap[h] || h);
+      console.log('Normalized Headers (Users):', headers);
+
       const usersToImport: User[] = [];
 
       for (let i = 1; i < lines.length; i++) {
-        if (!lines[i].trim()) continue;
-        const values = lines[i].split(',').map(v => v.trim());
+        const line = lines[i].trim();
+        if (!line) continue;
+
+        const values = line.split(',').map(v => v.trim());
         const userData: any = {};
 
         headers.forEach((header, index) => {
-          userData[header] = values[index];
+          if (header) userData[header] = values[index];
         });
 
         if (userData.name && userData.id) {
@@ -167,15 +209,24 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
             id: userData.id,
             name: userData.name,
             role: (userData.role?.toUpperCase() === 'ADMIN' ? 'ADMIN' : 'STUDENT'),
-            class: userData.class || userData.department || '',
-            avatarUrl: userData.avatarurl || ''
+            class: userData.class || '',
+            avatarUrl: userData.avatarUrl || ''
           };
           usersToImport.push(newUser);
+        } else {
+          console.warn(`Skipping line ${i + 1}: Missing name or ID.`, userData);
         }
       }
+
       if (usersToImport.length > 0) {
-        await onBulkAddUsers(usersToImport);
-        setStatusMsg(`${usersToImport.length} Users bulk import complete!`);
+        try {
+          await onBulkAddUsers(usersToImport);
+          setStatusMsg(`${usersToImport.length} Users bulk import complete!`);
+        } catch (err: any) {
+          setStatusMsg(`Import failed: ${err.message}`, 'error');
+        }
+      } else {
+        setStatusMsg('No valid users found in CSV!', 'error');
       }
       e.target.value = '';
     };

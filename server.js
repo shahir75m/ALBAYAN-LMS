@@ -141,16 +141,22 @@ app.post('/api/books', async (req, res) => {
 app.post('/api/books/bulk', async (req, res) => {
   try {
     const books = req.body;
-    const operations = books.map(book => ({
-      updateOne: {
-        filter: { id: book.id },
-        update: { $set: book },
-        upsert: true
-      }
-    }));
+    const operations = books.map(book => {
+      const { _id, __v, ...updateData } = book;
+      return {
+        updateOne: {
+          filter: { id: book.id },
+          update: { $set: updateData },
+          upsert: true
+        }
+      };
+    });
     await Book.bulkWrite(operations);
-    res.status(201).json({ message: 'Bulk books saved successfully' });
-  } catch (err) { res.status(400).json({ message: err.message }); }
+    res.status(201).json({ success: true, count: books.length });
+  } catch (err) {
+    console.error('Bulk Books Error:', err);
+    res.status(400).json({ message: err.message });
+  }
 });
 
 app.delete('/api/books/:id', async (req, res) => {
@@ -175,19 +181,23 @@ app.post('/api/users/bulk', async (req, res) => {
   try {
     const users = req.body;
     const operations = users.map(user => {
+      const { _id, __v, ...updateData } = user;
       let finalRole = user.role || 'STUDENT';
       if (ADMIN_EMAILS.includes(user.id)) finalRole = 'ADMIN';
       return {
         updateOne: {
           filter: { id: user.id },
-          update: { $set: { ...user, role: finalRole } },
+          update: { $set: { ...updateData, role: finalRole } },
           upsert: true
         }
       };
     });
     await User.bulkWrite(operations);
-    res.status(201).json({ message: 'Bulk users saved successfully' });
-  } catch (err) { res.status(400).json({ message: err.message }); }
+    res.status(201).json({ success: true, count: users.length });
+  } catch (err) {
+    console.error('Bulk Users Error:', err);
+    res.status(400).json({ message: err.message });
+  }
 });
 
 app.delete('/api/users/:id', async (req, res) => {
