@@ -75,11 +75,13 @@ const About: React.FC<AboutProps> = ({ booksCount, studentsCount }) => {
             {/* Stats row - Responsive Grid */}
             <section className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-8 md:gap-12 pt-20 border-t border-zinc-900">
                 <StatItem
-                    value={booksCount ? (booksCount >= 1000 ? `${(booksCount / 1000).toFixed(1)}k+` : `${booksCount}+`) : "10k+"}
+                    value={booksCount !== undefined ?
+                        (booksCount >= 1000 ? `${(booksCount / 1000).toFixed(1)}k+` : booksCount.toString())
+                        : "0"}
                     label="Volumes"
                 />
                 <StatItem
-                    value={studentsCount ? `${studentsCount}+` : "500+"}
+                    value={studentsCount !== undefined ? studentsCount.toString() : "0"}
                     label="Muthallims"
                 />
                 <StatItem value="100%" label="Digital" />
