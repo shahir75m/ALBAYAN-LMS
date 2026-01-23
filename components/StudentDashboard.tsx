@@ -171,11 +171,11 @@ const StudentDashboard: React.FC<StudentDashboardProps> = ({
                 </div>
               </div>
             </div>
-            <div className="flex gap-2 overflow-x-auto pb-1 w-full md:w-auto no-scrollbar">
+            <div className="flex gap-2 overflow-x-auto pb-2 w-full no-scrollbar">
               {categories.map(c => (
                 <button
                   key={c.name} onClick={() => setFilter(c.name)}
-                  className={`px-4 py-2 rounded-lg text-xs font-medium transition-all border whitespace-nowrap flex items-center gap-2 ${filter === c.name
+                  className={`px-4 py-2 rounded-lg text-xs font-medium transition-all border whitespace-nowrap flex items-center gap-2 shrink-0 ${filter === c.name
                     ? 'bg-emerald-600/10 text-emerald-400 border-emerald-500/20'
                     : 'bg-[#0c0c0e] text-zinc-500 hover:text-zinc-300 border-zinc-900'
                     }`}
