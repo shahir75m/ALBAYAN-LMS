@@ -1,10 +1,10 @@
-
 import React, { useState, useMemo, useRef } from 'react';
-// Retrieve stored admin password or default
-const storedAdminPass = typeof window !== 'undefined' ? localStorage.getItem('adminPassword') || 'admin@484' : 'admin@484';
 import { Book, User, BorrowRequest, HistoryRecord, Fine } from '../types';
 import BookForm from './BookForm';
 import UserForm from './UserForm';
+
+// Retrieve stored admin password or default
+const storedAdminPass = typeof window !== 'undefined' ? localStorage.getItem('adminPassword') || 'admin@484' : 'admin@484';
 
 interface AdminDashboardProps {
   activeTab: string;
@@ -51,6 +51,8 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
   const [currentPass, setCurrentPass] = useState('');
   const [newPass, setNewPass] = useState('');
 
+  const [selectedBookDetail, setSelectedBookDetail] = useState<Book | null>(null);
+
   // Fine Modal State
   const [showFineModal, setShowFineModal] = useState(false);
   const [selectedReturn, setSelectedReturn] = useState<HistoryRecord | null>(null);
@@ -95,7 +97,17 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
       u.class?.toLowerCase().includes(search.toLowerCase()))
   );
 
-  const categories = ['All', ...Array.from(new Set(books.map(b => b.category)))];
+  const categories = useMemo(() => {
+    const counts: Record<string, number> = {};
+    books.forEach(b => {
+      counts[b.category] = (counts[b.category] || 0) + 1;
+    });
+    const uniqueCats = Array.from(new Set(books.map(b => b.category)));
+    return [
+      { name: 'All', count: books.length },
+      ...uniqueCats.map(c => ({ name: c, count: counts[c] }))
+    ];
+  }, [books]);
 
   // Bulk Book Import Handler
   const handleBulkBookImport = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -336,7 +348,7 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
                 value={filter} onChange={(e) => setFilter(e.target.value)}
                 className="bg-[#0c0c0e] border border-zinc-900 rounded-xl px-4 py-2.5 text-sm focus:border-zinc-700 outline-none text-zinc-400 transition-all cursor-pointer"
               >
-                {categories.map(c => <option key={c} value={c}>{c}</option>)}
+                {categories.map(c => <option key={c.name} value={c.name}>{c.name} ({c.count})</option>)}
               </select>
             )}
             {activeTab === 'users' && (
@@ -521,7 +533,7 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
                       <span className="text-[9px] font-semibold text-emerald-500/80 bg-emerald-500/5 px-2 py-0.5 rounded border border-emerald-500/10">{book.category}</span>
                       <p className="text-[9px] text-zinc-700 font-medium">#{book.id}</p>
                     </div>
-                    <h4 className="text-sm font-semibold text-white/90 leading-snug line-clamp-2">{book.title}</h4>
+                    <h4 className="text-sm font-semibold text-white/90 leading-snug">{book.title}</h4>
                     <p className="text-[11px] text-zinc-500 mt-1 truncate">by {book.author}</p>
 
                     <div className="mt-auto pt-4 flex justify-between items-end border-t border-zinc-900/50">
@@ -531,25 +543,31 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
                           {book.availableCopies} <span className="text-zinc-600 font-normal">/ {book.totalCopies}</span>
                         </p>
                       </div>
-                      <div className="flex gap-1">
-                        <button onClick={() => { setEditingBook(book); setShowBookForm(true); }} className="p-2 text-zinc-600 hover:text-emerald-500 hover:bg-emerald-500/5 rounded-lg transition-all" title="Edit">
-                          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
-                          </svg>
-                        </button>
-                        <button onClick={() => {
-                          setConfirmDialog({
-                            show: true,
-                            title: 'Delete Asset',
-                            message: `Are you sure you want to remove "${book.title}" from the inventory?`,
-                            onConfirm: () => onDeleteBook(book.id)
-                          });
-                        }} className="p-2 text-zinc-600 hover:text-red-400 hover:bg-red-400/5 rounded-lg transition-all" title="Delete">
-                          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-                          </svg>
-                        </button>
-                      </div>
+                    </div>
+                    <div className="flex gap-1">
+                      <button onClick={() => setSelectedBookDetail(book)} className="p-2 text-zinc-600 hover:text-blue-400 hover:bg-blue-400/5 rounded-lg transition-all" title="View Details">
+                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                        </svg>
+                      </button>
+                      <button onClick={() => { setEditingBook(book); setShowBookForm(true); }} className="p-2 text-zinc-600 hover:text-emerald-500 hover:bg-emerald-500/5 rounded-lg transition-all" title="Edit">
+                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
+                        </svg>
+                      </button>
+                      <button onClick={() => {
+                        setConfirmDialog({
+                          show: true,
+                          title: 'Delete Asset',
+                          message: `Are you sure you want to remove "${book.title}" from the inventory?`,
+                          onConfirm: () => onDeleteBook(book.id)
+                        });
+                      }} className="p-2 text-zinc-600 hover:text-red-400 hover:bg-red-400/5 rounded-lg transition-all" title="Delete">
+                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                        </svg>
+                      </button>
                     </div>
                   </div>
                 </div>
@@ -727,8 +745,7 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
             </div>
             <div className="p-6 space-y-4">
               {statusMsg && (
-                <div className={`p-4 rounded-xl border flex items-center gap-3 mb-4 animate-in slide-in-from-top-2 duration-300 ${statusMsg.type === 'success' ? 'bg-emerald-500/10 border-emerald-500/20 text-emerald-400' : 'bg-red-500/10 border-red-500/20 text-red-400'
-                  }`}>
+                <div className={`p-4 rounded-xl border flex items-center gap-3 mb-4 animate-in slide-in-from-top-2 duration-300 ${statusMsg.type === 'success' ? 'bg-emerald-500/10 border-emerald-500/20 text-emerald-400' : 'bg-red-500/10 border-red-500/20 text-red-400'}`}>
                   <div className={`w-2 h-2 rounded-full ${statusMsg.type === 'success' ? 'bg-emerald-500' : 'bg-red-500'} animate-pulse`}></div>
                   <span className="text-xs font-bold uppercase tracking-tight">{statusMsg.text}</span>
                 </div>
@@ -766,7 +783,6 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
                       setStatusMsg('New password cannot be empty!', 'error');
                       return;
                     }
-
                     localStorage.setItem('adminPassword', newPass.trim());
                     setStatusMsg('Master Admin password updated successfully!');
                     setShowPassModal(false);
@@ -794,8 +810,7 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
             </div>
             <div className="p-8 space-y-6">
               {statusMsg && (
-                <div className={`p-4 rounded-xl border flex items-center gap-3 mb-4 animate-in slide-in-from-top-2 duration-300 ${statusMsg.type === 'success' ? 'bg-emerald-500/10 border-emerald-500/20 text-emerald-400' : 'bg-red-500/10 border-red-500/20 text-red-400'
-                  }`}>
+                <div className={`p-4 rounded-xl border flex items-center gap-3 mb-4 animate-in slide-in-from-top-2 duration-300 ${statusMsg.type === 'success' ? 'bg-emerald-500/10 border-emerald-500/20 text-emerald-400' : 'bg-red-500/10 border-red-500/20 text-red-400'}`}>
                   <div className={`w-2 h-2 rounded-full ${statusMsg.type === 'success' ? 'bg-emerald-500' : 'bg-red-500'} animate-pulse`}></div>
                   <span className="text-xs font-bold uppercase tracking-tight">{statusMsg.text}</span>
                 </div>
@@ -809,7 +824,6 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
                   <div className={`absolute top-1 w-4 h-4 bg-white rounded-full transition-all ${hasIssue ? 'left-7' : 'left-1'}`}></div>
                 </button>
               </div>
-
               {hasIssue && (
                 <div className="space-y-4 animate-in fade-in slide-in-from-top-2 duration-300">
                   <div>
@@ -833,7 +847,6 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
                   </div>
                 </div>
               )}
-
               <div className="pt-4 flex gap-3">
                 <button
                   onClick={() => setShowFineModal(false)}
@@ -843,11 +856,7 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
                 </button>
                 <button
                   onClick={() => {
-                    onReturnBook(
-                      selectedReturn.bookId,
-                      selectedReturn.userId,
-                      hasIssue ? { amount: fineAmount, reason: fineReason } : undefined
-                    );
+                    onReturnBook(selectedReturn.bookId, selectedReturn.userId, hasIssue ? { amount: fineAmount, reason: fineReason } : undefined);
                     setShowFineModal(false);
                   }}
                   className="flex-1 bg-emerald-600 hover:bg-emerald-500 text-white py-3 rounded-xl text-sm font-bold transition-all shadow-lg shadow-emerald-900/20"
@@ -870,7 +879,6 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
               </div>
               <h3 className="text-xl font-black text-white uppercase tracking-tight">{confirmDialog.title}</h3>
               <p className="text-sm text-zinc-500 mt-3 leading-relaxed">{confirmDialog.message}</p>
-
               <div className="mt-8 flex gap-3">
                 <button
                   onClick={() => setConfirmDialog({ ...confirmDialog, show: false })}
@@ -892,6 +900,130 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
           </div>
         </div>
       )}
+
+      {/* Book Detail Modal */}
+      {selectedBookDetail && (
+        <div className="fixed inset-0 z-[10000] flex items-center justify-center p-4">
+          <div className="absolute inset-0 bg-black/80 backdrop-blur-xl" onClick={() => setSelectedBookDetail(null)}></div>
+          <div className="relative w-full max-w-5xl bg-zinc-950 border border-zinc-800 rounded-[2.5rem] overflow-hidden shadow-3xl animate-in zoom-in-95 duration-300 flex flex-col md:flex-row max-h-[90vh]">
+            <div className="w-full md:w-1/3 h-64 md:h-auto shrink-0 overflow-hidden bg-zinc-900">
+              <img src={selectedBookDetail.coverUrl} className="w-full h-full object-cover" alt={selectedBookDetail.title} />
+              <div className="absolute inset-0 bg-gradient-to-t from-zinc-950 via-transparent to-transparent"></div>
+            </div>
+            <div className="flex-1 p-8 md:p-12 overflow-y-auto no-scrollbar flex flex-col">
+              <button onClick={() => setSelectedBookDetail(null)} className="absolute top-8 right-8 p-2 bg-zinc-900 hover:bg-zinc-800 rounded-full transition-all text-zinc-500 hover:text-white">
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /></svg>
+              </button>
+              <div className="mb-10">
+                <span className="inline-block px-3 py-1 bg-emerald-500/10 text-emerald-500 text-[10px] font-black uppercase tracking-widest rounded-full border border-emerald-500/20 mb-4">
+                  {selectedBookDetail.category}
+                </span>
+                <h2 className="text-3xl font-black text-white leading-tight mb-2 tracking-tighter uppercase">{selectedBookDetail.title}</h2>
+                <p className="text-zinc-500 text-lg font-medium">by {selectedBookDetail.author}</p>
+              </div>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-10 pb-8 border-b border-zinc-900">
+                <div>
+                  <label className="block text-[10px] font-black text-zinc-600 uppercase tracking-widest mb-2">Specifications</label>
+                  <p className="text-sm text-zinc-300 font-mono">ISBN: {selectedBookDetail.isbn}</p>
+                  <p className="text-sm text-zinc-300 mt-1">Ref ID: #{selectedBookDetail.id}</p>
+                  <p className="text-sm text-zinc-300 mt-1">Year: {selectedBookDetail.year}</p>
+                </div>
+                <div>
+                  <label className="block text-[10px] font-black text-zinc-600 uppercase tracking-widest mb-2">Inventory</label>
+                  <p className="text-sm text-zinc-300">Total: {selectedBookDetail.totalCopies}</p>
+                  <p className="text-sm text-zinc-300 mt-1">Available: {selectedBookDetail.availableCopies}</p>
+                  <p className="text-sm text-zinc-300 mt-1">Price: ₹{selectedBookDetail.price}</p>
+                </div>
+                <div>
+                  <label className="block text-[10px] font-black text-zinc-600 uppercase tracking-widest mb-2">Status</label>
+                  <span className={`inline-block px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-widest ${selectedBookDetail.availableCopies > 0 ? 'bg-emerald-500/10 text-emerald-500 border border-emerald-500/20' : 'bg-red-500/10 text-red-500 border border-red-500/20'}`}>
+                    {selectedBookDetail.availableCopies > 0 ? 'Available' : 'Out of Stock'}
+                  </span>
+                </div>
+              </div>
+              <div className="space-y-8">
+                <div>
+                  <h3 className="text-xs font-black text-white uppercase tracking-[0.2em] mb-4 flex items-center gap-2">
+                    <span className="w-1.5 h-1.5 bg-emerald-500 rounded-full"></span>
+                    Current Borrowers
+                  </h3>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    {selectedBookDetail.currentBorrowers.map(cb => (
+                      <div key={cb.userId} className="p-4 bg-zinc-900 border border-zinc-800 rounded-2xl flex items-center justify-between">
+                        <div>
+                          <p className="text-sm font-medium text-white">{cb.userName}</p>
+                          <p className="text-[10px] text-zinc-500 font-mono uppercase mt-0.5">{cb.userId}</p>
+                        </div>
+                        <button
+                          onClick={() => {
+                            const rec = history.find(h => h.bookId === selectedBookDetail.id && h.userId === cb.userId && !h.returnDate);
+                            if (rec) {
+                              setSelectedReturn(rec);
+                              setShowFineModal(true);
+                              setSelectedBookDetail(null);
+                            }
+                          }}
+                          className="px-3 py-1.5 bg-zinc-800 hover:bg-zinc-700 text-zinc-400 hover:text-emerald-500 rounded-lg text-[10px] font-bold uppercase transition-all"
+                        >
+                          Return Book
+                        </button>
+                      </div>
+                    ))}
+                    {selectedBookDetail.currentBorrowers.length === 0 && (
+                      <div className="col-span-full py-8 text-center bg-zinc-900/40 border border-dashed border-zinc-800 rounded-2xl">
+                        <p className="text-zinc-600 text-xs italic">No active borrowers for this asset</p>
+                      </div>
+                    )}
+                  </div>
+                </div>
+                <div>
+                  <h3 className="text-xs font-black text-white uppercase tracking-[0.2em] mb-4 flex items-center gap-2">
+                    <span className="w-1.5 h-1.5 bg-blue-500 rounded-full"></span>
+                    Movement History
+                  </h3>
+                  <div className="bg-zinc-900/50 border border-zinc-900 rounded-2xl overflow-hidden">
+                    <table className="w-full text-left text-[11px]">
+                      <thead className="bg-zinc-900 border-b border-zinc-800 text-zinc-500 font-black uppercase tracking-wider">
+                        <tr>
+                          <th className="px-6 py-3">Borrower</th>
+                          <th className="px-6 py-3">Issued</th>
+                          <th className="px-6 py-3">Returned</th>
+                        </tr>
+                      </thead>
+                      <tbody className="divide-y divide-zinc-800">
+                        {history.filter(h => h.bookId === selectedBookDetail.id).slice(-5).reverse().map(record => (
+                          <tr key={record.id} className="hover:bg-zinc-900/50 transition-colors">
+                            <td className="px-6 py-3 font-medium text-zinc-300">{record.userName}</td>
+                            <td className="px-6 py-3 text-zinc-500">{new Date(record.borrowDate).toLocaleDateString()}</td>
+                            <td className="px-6 py-3">
+                              {record.returnDate ? (
+                                <span className="text-zinc-500">{new Date(record.returnDate).toLocaleDateString()}</span>
+                              ) : (
+                                <span className="text-emerald-500 font-bold uppercase">Active</span>
+                              )}
+                            </td>
+                          </tr>
+                        ))}
+                        {history.filter(h => h.bookId === selectedBookDetail.id).length === 0 && (
+                          <tr><td colSpan={3} className="px-6 py-8 text-center text-zinc-600 italic">No circulation history found</td></tr>
+                        )}
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+              <div className="mt-12 flex gap-4 pt-8 border-t border-zinc-900">
+                <button
+                  onClick={() => { setEditingBook(selectedBookDetail); setShowBookForm(true); setSelectedBookDetail(null); }}
+                  className="flex-1 py-4 bg-zinc-900 border border-zinc-800 text-zinc-400 hover:text-white text-sm font-black uppercase tracking-widest rounded-2xl transition-all active:scale-[0.98]"
+                >
+                  Edit Specifications
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
@@ -901,6 +1033,7 @@ const StatCard = ({ title, value, subtitle, icon, color }: any) => {
     emerald: 'text-emerald-500 bg-emerald-500/5 border-emerald-500/20',
     blue: 'text-blue-500 bg-blue-500/5 border-blue-500/20',
     amber: 'text-amber-500 bg-amber-500/5 border-amber-500/20',
+    red: 'text-red-500 bg-red-500/5 border-red-500/20',
     purple: 'text-purple-500 bg-purple-500/5 border-purple-500/20',
   };
 

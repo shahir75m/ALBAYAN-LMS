@@ -67,7 +67,14 @@ const App: React.FC = () => {
 
       const savedSession = localStorage.getItem('albayan_active_session');
       if (savedSession) {
-        setCurrentUser(JSON.parse(savedSession));
+        const user = JSON.parse(savedSession);
+        // Requirement: Admin must re-authenticate on refresh
+        if (user.role === 'ADMIN') {
+          localStorage.removeItem('albayan_active_session');
+          setCurrentUser(null);
+        } else {
+          setCurrentUser(user);
+        }
       }
 
       await refreshAllData();
