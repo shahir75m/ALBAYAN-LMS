@@ -1,7 +1,12 @@
 import React from 'react';
 import Logo from './Logo';
 
-const About: React.FC = () => {
+interface AboutProps {
+    booksCount?: number;
+    studentsCount?: number;
+}
+
+const About: React.FC<AboutProps> = ({ booksCount, studentsCount }) => {
     return (
         <div className="max-w-6xl mx-auto px-6 py-24 space-y-32 animate-in fade-in duration-1000">
             {/* Hero Section - The Future of Knowledge */}
@@ -69,8 +74,14 @@ const About: React.FC = () => {
 
             {/* Stats row - Responsive Grid */}
             <section className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-8 md:gap-12 pt-20 border-t border-zinc-900">
-                <StatItem value="10k+" label="Volumes" />
-                <StatItem value="500+" label="Muthallims" />
+                <StatItem
+                    value={booksCount ? (booksCount >= 1000 ? `${(booksCount / 1000).toFixed(1)}k+` : `${booksCount}+`) : "10k+"}
+                    label="Volumes"
+                />
+                <StatItem
+                    value={studentsCount ? `${studentsCount}+` : "500+"}
+                    label="Muthallims"
+                />
                 <StatItem value="100%" label="Digital" />
                 <StatItem value="24/7" label="Access" />
             </section>

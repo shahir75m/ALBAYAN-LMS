@@ -309,7 +309,10 @@ const App: React.FC = () => {
             </header>
 
             {activeTab === 'about' ? (
-              <About />
+              <About
+                booksCount={books.reduce((acc, b) => acc + (b.totalCopies || 0), 0)}
+                studentsCount={users.filter(u => u.role === 'STUDENT').length}
+              />
             ) : currentUser.role === 'ADMIN' ? (
               <AdminDashboard
                 activeTab={activeTab} books={books} users={users} requests={requests} history={history} fines={fines}

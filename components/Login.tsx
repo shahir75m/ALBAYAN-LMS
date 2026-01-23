@@ -253,7 +253,7 @@ const Login: React.FC<LoginProps> = ({ onLogin, onIdentify, initialIdentity, onC
 
         {/* About Section on Portal Selection Page */}
         <div id="about-section" className="border-t border-zinc-900 bg-[#09090b]">
-          <About />
+          <About studentsCount={availableUsers.filter(u => u.role === 'STUDENT').length} />
         </div>
       </div>
     );
