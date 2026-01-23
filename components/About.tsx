@@ -20,7 +20,7 @@ const About: React.FC = () => {
                         <span className="text-zinc-600">KNOWLEDGE</span>
                     </h1>
                     <p className="text-lg text-zinc-400 leading-relaxed max-w-lg font-medium">
-                        Silent sophistication. Modern curation. We preserve the past and illuminate the future through curated wisdom and digital precision.
+                        Welcome to Bayanul Uloom Dars, where tradition meets modernity in Islamic education. Our aim is to nurture pious, knowledgeable, and socially responsible individuals guided by the principles of Islam. Join us on this journey of enlightenment and spiritual growth.
                     </p>
                 </div>
                 <div className="relative w-full md:w-1/3 aspect-square">
@@ -38,16 +38,23 @@ const About: React.FC = () => {
             <section className="relative flex flex-col md:flex-row-reverse items-center gap-16">
                 <div className="flex-1 space-y-8">
                     <h2 className="text-5xl md:text-7xl font-serif text-white leading-tight tracking-tight">
-                        OUR QUIET <br />
-                        <span className="text-zinc-600">MISSION</span>
+                        ലക്ഷ്യങ്ങൾ
                     </h2>
                     <div className="space-y-6 text-zinc-400 text-lg leading-relaxed font-medium">
-                        <p>
-                            മുട്ടിച്ചിറ ശുഹദാക്കളുടെ പുണ്യസ്മരണയിലായി അറിവിൻ്റെ അലയൊലികൾ തീർക്കുന്ന ബയാനുൽ ഉലൂം ലൈബ്രറി. പരമ്പരാഗതമായ അറിവിനെ ആധുനിക സാങ്കേതിക വിദ്യയിലൂടെ കൂട്ടിയിണക്കുന്നു.
-                        </p>
-                        <p className="text-sm text-zinc-500 border-l border-emerald-500/30 pl-6 italic">
-                            A sanctuary for muthallims and seekers, where history meets the horizon of digital accessibility.
-                        </p>
+                        <ul className="space-y-4 list-none">
+                            <li className="flex gap-4">
+                                <span className="text-emerald-500">•</span>
+                                <span>പ്രാമാണിക ഗ്രന്ഥങ്ങളിൽ അവഗാഹമുള്ള പണ്ഡിതപ്രതിഭകളെ വാർത്തെടുക്കുക.</span>
+                            </li>
+                            <li className="flex gap-4">
+                                <span className="text-emerald-500">•</span>
+                                <span>ആധുനിക വെല്ലുവിളികളെ നേരിടാനുതകുന്ന പ്രബോധകരെയും ഇസ്ലാമിക ബോധമുള്ള സമൂഹത്തെയും വളർത്തിയെടുക്കുക.</span>
+                            </li>
+                            <li className="flex gap-4">
+                                <span className="text-emerald-500">•</span>
+                                <span>സമൂഹത്തിന് ആത്മീയ നേതൃത്വങ്ങളെ സമ്മാനിക്കുക</span>
+                            </li>
+                        </ul>
                     </div>
                 </div>
                 <div className="relative w-full md:w-1/3 aspect-square">
