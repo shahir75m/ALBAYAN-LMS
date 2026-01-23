@@ -69,6 +69,10 @@ const Login: React.FC<LoginProps> = ({ onLogin, onIdentify, initialIdentity, onC
     return list.filter(u => u.name.toLowerCase().includes(userSearch.toLowerCase()) || u.id.toLowerCase().includes(userSearch.toLowerCase()));
   }, [availableUsers, selectedRole, userSearch, storedAdminPass]);
 
+  const handleFinalSelect = (user: User) => {
+    onLogin(user);
+  };
+
   if (step === 'IDENTIFY') {
     return (
       <div className={`min-h-screen bg-[#09090b] flex items-center justify-center p-4 ${isRTL ? 'font-arabic' : ''}`}>
@@ -140,7 +144,7 @@ const Login: React.FC<LoginProps> = ({ onLogin, onIdentify, initialIdentity, onC
     );
   }
 
-  if (step === 'PORTAL' && initialIdentity) {
+  if (step === 'PORTAL') {
     return (
       <div className={`min-h-screen bg-[#09090b] overflow-y-auto no-scrollbar scroll-smooth ${isRTL ? 'font-arabic' : ''}`}>
         <div className="min-h-screen library-bg flex flex-col items-center justify-center p-6 animate-in fade-in duration-700 relative overflow-hidden">
