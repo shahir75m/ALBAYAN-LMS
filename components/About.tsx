@@ -1,5 +1,7 @@
+
 import React from 'react';
 import Logo from './Logo';
+import { useLanguage } from '../LanguageContext';
 
 interface AboutProps {
     booksCount?: number;
@@ -7,25 +9,27 @@ interface AboutProps {
 }
 
 const About: React.FC<AboutProps> = ({ booksCount, studentsCount }) => {
+    const { t, isRTL } = useLanguage();
+
     return (
-        <div className="max-w-6xl mx-auto px-6 py-24 space-y-32 animate-in fade-in duration-1000">
+        <div className={`max-w-6xl mx-auto px-6 py-24 space-y-32 animate-in fade-in duration-1000 ${isRTL ? 'text-right' : 'text-left'}`}>
             {/* Hero Section - The Future of Knowledge */}
-            <section className="relative flex flex-col md:flex-row items-center gap-16">
+            <section className={`relative flex flex-col md:flex-row items-center gap-16 ${isRTL ? 'md:flex-row-reverse' : ''}`}>
                 <div className="flex-1 space-y-8">
-                    <div className="flex items-center gap-4 mb-4">
+                    <div className={`flex items-center gap-4 mb-4 ${isRTL ? 'flex-row-reverse' : ''}`}>
                         <div className="p-3 bg-zinc-900/50 rounded-2xl border border-zinc-800 shadow-sm">
                             <Logo className="w-8 h-8" />
                         </div>
                         <div className="px-4 py-1.5 rounded-full bg-emerald-500/5 border border-emerald-500/10 text-emerald-500 text-[10px] font-black uppercase tracking-[0.2em]">
-                            Vision 2026
+                            {t('vision')}
                         </div>
                     </div>
-                    <h1 className="text-6xl md:text-8xl font-serif text-white leading-tight tracking-tighter">
-                        THE FUTURE OF <br />
-                        <span className="text-zinc-600">KNOWLEDGE</span>
+                    <h1 className={`text-6xl md:text-8xl font-serif text-[var(--text-primary)] leading-tight tracking-tighter ${isRTL ? 'font-arabic' : ''}`}>
+                        {t('about_hero_title')} <br />
+                        <span className="text-[var(--text-secondary)]">{t('about_hero_subtitle')}</span>
                     </h1>
-                    <p className="text-lg text-zinc-400 leading-relaxed max-w-lg font-medium">
-                        Welcome to Bayanul Uloom Dars, where tradition meets modernity in Islamic education. Our aim is to nurture pious, knowledgeable, and socially responsible individuals guided by the principles of Islam. Join us on this journey of enlightenment and spiritual growth.
+                    <p className="text-lg text-[var(--text-secondary)] leading-relaxed max-w-lg font-medium">
+                        {t('about_hero_p')}
                     </p>
                 </div>
                 <div className="relative w-full md:w-1/3 aspect-square">
@@ -40,24 +44,24 @@ const About: React.FC<AboutProps> = ({ booksCount, studentsCount }) => {
             </section>
 
             {/* Content Section - Our Quiet Mission */}
-            <section className="relative flex flex-col md:flex-row-reverse items-center gap-16">
+            <section className={`relative flex flex-col md:flex-row items-center gap-16 ${isRTL ? 'md:flex-row' : 'md:flex-row-reverse'}`}>
                 <div className="flex-1 space-y-8">
-                    <h2 className="text-5xl md:text-7xl font-serif text-white leading-tight tracking-tight">
-                        ലക്ഷ്യങ്ങൾ
+                    <h2 className={`text-5xl md:text-7xl font-serif text-[var(--text-primary)] leading-tight tracking-tight ${isRTL ? 'font-arabic' : ''}`}>
+                        {t('about_goals_title')}
                     </h2>
-                    <div className="space-y-6 text-zinc-400 text-lg leading-relaxed font-medium">
+                    <div className="space-y-6 text-[var(--text-secondary)] text-lg leading-relaxed font-medium">
                         <ul className="space-y-4 list-none">
-                            <li className="flex gap-4">
+                            <li className={`flex gap-4 ${isRTL ? 'flex-row-reverse' : ''}`}>
                                 <span className="text-emerald-500">•</span>
-                                <span>പ്രാമാണിക ഗ്രന്ഥങ്ങളിൽ അവഗാഹമുള്ള പണ്ഡിതപ്രതിഭകളെ വാർത്തെടുക്കുക.</span>
+                                <span>{t('about_goal_1')}</span>
                             </li>
-                            <li className="flex gap-4">
+                            <li className={`flex gap-4 ${isRTL ? 'flex-row-reverse' : ''}`}>
                                 <span className="text-emerald-500">•</span>
-                                <span>ആധുനിക വെല്ലുവിളികളെ നേരിടാനുതകുന്ന പ്രബോധകരെയും ഇസ്ലാമിക ബോധമുള്ള സമൂഹത്തെയും വളർത്തിയെടുക്കുക.</span>
+                                <span>{t('about_goal_2')}</span>
                             </li>
-                            <li className="flex gap-4">
+                            <li className={`flex gap-4 ${isRTL ? 'flex-row-reverse' : ''}`}>
                                 <span className="text-emerald-500">•</span>
-                                <span>സമൂഹത്തിന് ആത്മീയ നേതൃത്വങ്ങളെ സമ്മാനിക്കുക</span>
+                                <span>{t('about_goal_3')}</span>
                             </li>
                         </ul>
                     </div>
@@ -78,23 +82,23 @@ const About: React.FC<AboutProps> = ({ booksCount, studentsCount }) => {
                     value={booksCount !== undefined ?
                         (booksCount >= 1000 ? `${(booksCount / 1000).toFixed(1)}k+` : booksCount.toString())
                         : "0"}
-                    label="Volumes"
+                    label={t('volumes')}
                 />
                 <StatItem
                     value={studentsCount !== undefined ? studentsCount.toString() : "0"}
-                    label="Muthallims"
+                    label={t('muthallims')}
                 />
-                <StatItem value="100%" label="Digital" />
-                <StatItem value="24/7" label="Access" />
+                <StatItem value="100%" label={t('digital')} />
+                <StatItem value="24/7" label={t('access')} />
             </section>
 
             {/* Minimalist Footer */}
             <section className="relative pt-32 pb-16 border-t border-zinc-900">
-                <div className="flex flex-col md:flex-row items-center justify-between gap-12">
-                    <div className="space-y-4 text-center md:text-left">
-                        <h3 className="text-2xl font-serif text-white tracking-tight">Stay Connected</h3>
-                        <p className="text-[10px] text-zinc-600 font-bold uppercase tracking-[0.3em]">
-                            Preserving Knowledge • Inspiring Futures
+                <div className={`flex flex-col md:flex-row items-center justify-between gap-12 ${isRTL ? 'md:flex-row-reverse' : ''}`}>
+                    <div className={`space-y-4 text-center ${isRTL ? 'md:text-right' : 'md:text-left'}`}>
+                        <h3 className="text-2xl font-serif text-[var(--text-primary)] tracking-tight">{t('stay_connected')}</h3>
+                        <p className="text-[10px] text-[var(--text-secondary)] font-bold uppercase tracking-[0.3em]">
+                            {t('preserving')}
                         </p>
                     </div>
 
@@ -120,8 +124,8 @@ const About: React.FC<AboutProps> = ({ booksCount, studentsCount }) => {
 
 const StatItem = ({ value, label }: { value: string, label: string }) => (
     <div className="space-y-1">
-        <p className="text-3xl font-serif text-white tracking-tighter">{value}</p>
-        <p className="text-[10px] text-zinc-600 font-bold uppercase tracking-widest">{label}</p>
+        <p className="text-3xl font-serif text-[var(--text-primary)] tracking-tighter">{value}</p>
+        <p className="text-[10px] text-[var(--text-secondary)] font-bold uppercase tracking-widest">{label}</p>
     </div>
 );
 
