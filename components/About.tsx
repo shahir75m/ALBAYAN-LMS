@@ -75,6 +75,33 @@ const About: React.FC = () => {
                 <StatItem value="24/7" label="Access" />
             </section>
 
+            {/* Social Connections */}
+            <section className="relative py-20 border-t border-zinc-900">
+                <div className="text-center space-y-12">
+                    <div className="space-y-4">
+                        <h3 className="text-3xl font-serif text-white tracking-tight">Stay Connected</h3>
+                        <p className="text-zinc-500 text-sm font-medium uppercase tracking-[0.2em]">Join our digital community</p>
+                    </div>
+                    <div className="flex flex-wrap justify-center gap-8 md:gap-16">
+                        <SocialLink
+                            href="https://www.instagram.com/muttichira_dars/"
+                            label="Instagram"
+                            icon={<path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M7.75 2h8.5A5.75 5.75 0 0122 7.75v8.5A5.75 5.75 0 0116.25 22h-8.5A5.75 5.75 0 012 16.25v-8.5A5.75 5.75 0 017.75 2zm0 1.5A4.25 4.25 0 003.5 7.75v8.5a4.25 4.25 0 004.25 4.25h8.5a4.25 4.25 0 004.25-4.25v-8.5a4.25 4.25 0 00-4.25-4.25h-8.5zM12 7a5 5 0 110 10 5 5 0 010-10zm0 1.5a3.5 3.5 0 100 7 3.5 3.5 0 000-7zm5.25-.25a.75.75 0 110 1.5.75.75 0 010-1.5z" />}
+                        />
+                        <SocialLink
+                            href="https://www.youtube.com/@muttichiradars"
+                            label="YouTube"
+                            icon={<path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M22.54 6.42a2.78 2.78 0 00-1.94-2C18.88 4 12 4 12 4s-6.88 0-8.6.46a2.78 2.78 0 00-1.94 2A29 29 0 001 11.75a29 29 0 00.46 5.33 2.78 2.78 0 001.94 2C5.12 19.5 12 19.5 12 19.5s6.88 0 8.6-.46a2.78 2.78 0 001.94-2A29 29 0 0023 11.75a29 29 0 00-.46-5.33zM9.75 15.02V8.48L15.45 11.75l-5.7 3.27z" />}
+                        />
+                        <SocialLink
+                            href="https://sites.google.com/view/bayanululoomdars-usthad/home"
+                            label="Website"
+                            icon={<path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 21a9 9 0 100-18 9 9 0 000 18zm0 0v-8m0 0l-4 4m4-4l4 4M2 12h20" />}
+                        />
+                    </div>
+                </div>
+            </section>
+
             {/* Footer Tagline */}
             <div className="text-center pt-20">
                 <p className="text-[10px] text-zinc-700 font-black uppercase tracking-[0.5em]">
@@ -90,6 +117,22 @@ const StatItem = ({ value, label }: { value: string, label: string }) => (
         <p className="text-3xl font-serif text-white tracking-tighter">{value}</p>
         <p className="text-[10px] text-zinc-600 font-bold uppercase tracking-widest">{label}</p>
     </div>
+);
+
+const SocialLink = ({ href, label, icon }: { href: string; label: string; icon: React.ReactNode }) => (
+    <a
+        href={href}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="group flex flex-col items-center gap-4 transition-all duration-500"
+    >
+        <div className="w-16 h-16 rounded-3xl bg-zinc-900 border border-zinc-800 flex items-center justify-center text-zinc-500 group-hover:text-emerald-500 group-hover:border-emerald-500/30 group-hover:bg-emerald-500/5 transition-all duration-500 shadow-2xl">
+            <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                {icon}
+            </svg>
+        </div>
+        <span className="text-[10px] font-black text-zinc-600 uppercase tracking-[0.2em] group-hover:text-zinc-400 transition-colors duration-500">{label}</span>
+    </a>
 );
 
 export default About;

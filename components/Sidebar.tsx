@@ -105,20 +105,41 @@ const Sidebar: React.FC<SidebarProps> = ({
               <p className="text-[10px] text-zinc-600 font-medium uppercase tracking-wider">{role}</p>
             </div>
           </div>
-          <button
-            onClick={(e) => {
-              e.preventDefault();
-              e.stopPropagation();
-              onLogout();
-            }}
-            type="button"
-            className="w-full flex items-center gap-3 px-4 py-3 text-xs font-medium text-zinc-500 hover:text-red-400 hover:bg-red-500/5 rounded-xl transition-all group"
-          >
-            <svg className="w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
-            </svg>
-            Sign Out
-          </button>
+
+          <div className="flex flex-col gap-2">
+            <button
+              onClick={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                onLogout();
+              }}
+              type="button"
+              className="w-full flex items-center gap-3 px-4 py-3 text-xs font-medium text-zinc-500 hover:text-red-400 hover:bg-red-500/5 rounded-xl transition-all group"
+            >
+              <svg className="w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+              </svg>
+              Sign Out
+            </button>
+
+            <div className="flex items-center justify-center gap-4 pt-4 border-t border-zinc-900/50 mt-2">
+              <a href="https://www.instagram.com/muttichira_dars/" target="_blank" rel="noopener noreferrer" className="p-2 text-zinc-600 hover:text-emerald-500 transition-colors" title="Instagram">
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M7.75 2h8.5A5.75 5.75 0 0122 7.75v8.5A5.75 5.75 0 0116.25 22h-8.5A5.75 5.75 0 012 16.25v-8.5A5.75 5.75 0 017.75 2zm0 1.5A4.25 4.25 0 003.5 7.75v8.5a4.25 4.25 0 004.25 4.25h8.5a4.25 4.25 0 004.25-4.25v-8.5a4.25 4.25 0 00-4.25-4.25h-8.5zM12 7a5 5 0 110 10 5 5 0 010-10zm0 1.5a3.5 3.5 0 100 7 3.5 3.5 0 000-7zm5.25-.25a.75.75 0 110 1.5.75.75 0 010-1.5z" />
+                </svg>
+              </a>
+              <a href="https://www.youtube.com/@muttichiradars" target="_blank" rel="noopener noreferrer" className="p-2 text-zinc-600 hover:text-emerald-500 transition-colors" title="YouTube">
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M22.54 6.42a2.78 2.78 0 00-1.94-2C18.88 4 12 4 12 4s-6.88 0-8.6.46a2.78 2.78 0 00-1.94 2A29 29 0 001 11.75a29 29 0 00.46 5.33 2.78 2.78 0 001.94 2C5.12 19.5 12 19.5 12 19.5s6.88 0 8.6-.46a2.78 2.78 0 001.94-2A29 29 0 0023 11.75a29 29 0 00-.46-5.33zM9.75 15.02V8.48L15.45 11.75l-5.7 3.27z" />
+                </svg>
+              </a>
+              <a href="https://sites.google.com/view/bayanululoomdars-usthad/home" target="_blank" rel="noopener noreferrer" className="p-2 text-zinc-600 hover:text-emerald-500 transition-colors" title="Website">
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 21a9 9 0 100-18 9 9 0 000 18zm0 0v-8m0 0l-4 4m4-4l4 4M2 12h20" />
+                </svg>
+              </a>
+            </div>
+          </div>
         </div>
       </div>
     </>

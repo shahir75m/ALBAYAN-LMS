@@ -89,7 +89,10 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
   );
 
   const filteredUsers = users.filter(u =>
-    u.name.toLowerCase().includes(search.toLowerCase()) || u.id.toLowerCase().includes(search.toLowerCase())
+    (filter === 'All' || u.role === filter) &&
+    (u.name.toLowerCase().includes(search.toLowerCase()) ||
+      u.id.toLowerCase().includes(search.toLowerCase()) ||
+      u.class?.toLowerCase().includes(search.toLowerCase()))
   );
 
   const categories = ['All', ...Array.from(new Set(books.map(b => b.category)))];
@@ -308,6 +311,76 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
         </div>
       )}
 
+      {/* Unified Search & Filters (Hidden on Dashboard) */}
+      {activeTab !== 'dashboard' && (
+        <div className="flex flex-col md:flex-row gap-4 items-center justify-between mb-8 pb-6 border-b border-zinc-900/50">
+          <div className="flex gap-2 items-center w-full md:w-auto flex-1">
+            <div className="relative w-full md:w-80 lg:w-[28rem]">
+              <svg className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-zinc-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+              </svg>
+              <input
+                type="text"
+                placeholder={
+                  activeTab === 'users' ? "Search name, ID or class..." :
+                    activeTab === 'history' ? "Search circulation records..." :
+                      activeTab === 'books' ? "Search title, author or ISBN..." :
+                        "Search archives..."
+                }
+                value={search} onChange={(e) => setSearch(e.target.value)}
+                className="bg-[#0c0c0e] border border-zinc-900 rounded-xl pl-10 pr-4 py-2.5 text-sm text-white/90 focus:border-zinc-700 outline-none w-full transition-all"
+              />
+            </div>
+            {activeTab === 'books' && (
+              <select
+                value={filter} onChange={(e) => setFilter(e.target.value)}
+                className="bg-[#0c0c0e] border border-zinc-900 rounded-xl px-4 py-2.5 text-sm focus:border-zinc-700 outline-none text-zinc-400 transition-all cursor-pointer"
+              >
+                {categories.map(c => <option key={c} value={c}>{c}</option>)}
+              </select>
+            )}
+            {activeTab === 'users' && (
+              <select
+                value={filter} onChange={(e) => setFilter(e.target.value)}
+                className="bg-[#0c0c0e] border border-zinc-900 rounded-xl px-4 py-2.5 text-sm focus:border-zinc-700 outline-none text-zinc-400 transition-all cursor-pointer"
+              >
+                <option value="All">All Roles</option>
+                <option value="STUDENT">Students</option>
+                <option value="ADMIN">Administrators</option>
+              </select>
+            )}
+          </div>
+
+          <div className="flex gap-2 w-full md:w-auto items-center">
+            {activeTab === 'books' && (
+              <>
+                <input type="file" ref={importBooksInputRef} className="hidden" accept=".csv" onChange={handleBulkBookImport} />
+                <button onClick={() => importBooksInputRef.current?.click()} className="border border-zinc-900 hover:border-zinc-800 text-zinc-400 font-medium text-xs py-2.5 px-6 rounded-xl flex items-center gap-2 transition-all">
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" /></svg>
+                  Import
+                </button>
+                <button onClick={() => { setEditingBook(null); setShowBookForm(true); }} className="bg-emerald-600 hover:bg-emerald-500 text-white font-medium text-xs py-2.5 px-6 rounded-xl flex items-center gap-2 transition-all active:scale-95 shadow-lg shadow-emerald-900/10">
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" /></svg>
+                  Add Book
+                </button>
+              </>
+            )}
+            {activeTab === 'users' && (
+              <>
+                <input type="file" ref={importUsersInputRef} className="hidden" accept=".csv" onChange={handleBulkUserImport} />
+                <button onClick={() => importUsersInputRef.current?.click()} className="border border-zinc-900 hover:border-zinc-800 text-zinc-400 font-medium text-xs py-2.5 px-6 rounded-xl flex items-center gap-2 transition-all">
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" /></svg>
+                  Import
+                </button>
+                <button onClick={() => { setEditingUser(null); setShowUserForm(true); }} className="bg-emerald-600 hover:bg-emerald-500 text-white font-medium text-xs py-2.5 px-6 rounded-xl flex items-center gap-2 transition-all active:scale-95 shadow-lg shadow-emerald-900/10">
+                  Add User
+                </button>
+              </>
+            )}
+          </div>
+        </div>
+      )}
+
       {/* Tab Content Switching */}
       {activeTab === 'dashboard' && (
         <div className="space-y-10 animate-in fade-in duration-700">
@@ -436,50 +509,6 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
 
       {activeTab === 'books' && (
         <div className="space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-500">
-          <div className="flex flex-col md:flex-row gap-4 items-center justify-between">
-            <div className="flex gap-2 items-center w-full md:w-auto flex-1">
-              <div className="relative w-full md:w-80 lg:w-[28rem]">
-                <svg className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-zinc-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                </svg>
-                <input
-                  type="text" placeholder="Search title, author or ISBN..."
-                  value={search} onChange={(e) => setSearch(e.target.value)}
-                  className="bg-[#0c0c0e] border border-zinc-900 rounded-xl pl-10 pr-4 py-2.5 text-sm text-white/90 focus:border-zinc-700 outline-none w-full transition-all"
-                />
-              </div>
-              <select
-                value={filter} onChange={(e) => setFilter(e.target.value)}
-                className="bg-[#0c0c0e] border border-zinc-900 rounded-xl px-4 py-2.5 text-sm focus:border-zinc-700 outline-none text-zinc-400 transition-all cursor-pointer"
-              >
-                {categories.map(c => <option key={c} value={c}>{c}</option>)}
-              </select>
-            </div>
-            <div className="flex gap-2 w-full md:w-auto">
-              <input
-                type="file"
-                ref={importBooksInputRef}
-                className="hidden"
-                accept=".csv"
-                onChange={handleBulkBookImport}
-              />
-              <button
-                onClick={() => importBooksInputRef.current?.click()}
-                className="flex-1 md:flex-initial border border-zinc-900 hover:border-zinc-800 text-zinc-400 font-medium text-xs py-2.5 px-6 rounded-xl flex items-center justify-center gap-2 transition-all active:scale-[0.98]"
-              >
-                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" /></svg>
-                Import
-              </button>
-              <button
-                onClick={() => { setEditingBook(null); setShowBookForm(true); }}
-                className="flex-1 md:flex-initial bg-emerald-600 hover:bg-emerald-500 text-white font-medium text-xs py-2.5 px-6 rounded-xl flex items-center justify-center gap-2 transition-all active:scale-[0.98] shadow-lg shadow-emerald-900/10"
-              >
-                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" /></svg>
-                Add Book
-              </button>
-            </div>
-          </div>
-
           <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
             {filteredBooks.map(book => (
               <div key={book.id} className="bg-[#0c0c0e] border border-zinc-900 rounded-2xl overflow-hidden group hover:border-zinc-800 transition-all shadow-sm">
@@ -527,7 +556,6 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
               </div>
             ))}
           </div>
-
         </div>
       )}
 
@@ -535,25 +563,6 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
         <div className="bg-[#0c0c0e] border border-zinc-900 rounded-2xl overflow-hidden shadow-sm animate-in fade-in slide-in-from-bottom-2 duration-500">
           <div className="p-6 border-b border-zinc-900 bg-zinc-900/20 flex justify-between items-center">
             <h3 className="font-semibold text-xs text-zinc-400">Library Records</h3>
-            {activeTab === 'users' && (
-              <div className="flex gap-2">
-                <input
-                  type="file"
-                  ref={importUsersInputRef}
-                  className="hidden"
-                  accept=".csv"
-                  onChange={handleBulkUserImport}
-                />
-                <button
-                  onClick={() => importUsersInputRef.current?.click()}
-                  className="border border-zinc-900 hover:border-zinc-800 text-zinc-500 font-medium text-[10px] py-1.5 px-4 rounded-lg transition-all flex items-center gap-1.5 active:scale-[0.98]"
-                >
-                  <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" /></svg>
-                  Import
-                </button>
-                <button onClick={() => { setEditingUser(null); setShowUserForm(true); }} className="bg-emerald-600 hover:bg-emerald-500 text-white font-medium text-[10px] py-1.5 px-4 rounded-lg transition-all active:scale-[0.98]">Add User</button>
-              </div>
-            )}
           </div>
           <div className="overflow-x-auto no-scrollbar">
             <table className="w-full text-left text-sm">
