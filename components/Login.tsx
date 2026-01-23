@@ -191,8 +191,12 @@ const Login: React.FC<LoginProps> = ({ onLogin, onIdentify, initialIdentity, onC
           {/* Hero Content */}
           <div className="text-center mb-12 z-10">
             <div className="flex justify-center mb-6">
-              <div className="p-5 bg-zinc-900/70 rounded-[2rem] border border-zinc-800 shadow-2xl backdrop-blur-xl">
+              <div className="p-5 bg-zinc-900/70 rounded-[2rem] border border-zinc-800 shadow-2xl backdrop-blur-xl flex items-center gap-4">
                 <Logo className="w-16 h-16" />
+                <div className="text-left border-l border-zinc-800 pl-4">
+                  <span className="block text-white font-serif tracking-tight text-2xl leading-none">BAYANUL</span>
+                  <span className="block text-zinc-500 font-bold uppercase tracking-[0.2em] text-[10px] mt-1">ULOOM</span>
+                </div>
               </div>
             </div>
             <h2 className="text-5xl font-serif text-white tracking-tight drop-shadow-2xl">Select Portal</h2>

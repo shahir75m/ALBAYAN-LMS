@@ -67,8 +67,8 @@ const About: React.FC = () => {
                 </div>
             </section>
 
-            {/* Stats row - Minimalist */}
-            <section className="grid grid-cols-2 md:grid-cols-4 gap-12 pt-20 border-t border-zinc-900">
+            {/* Stats row - Responsive Grid */}
+            <section className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-8 md:gap-12 pt-20 border-t border-zinc-900">
                 <StatItem value="10k+" label="Volumes" />
                 <StatItem value="500+" label="Muthallims" />
                 <StatItem value="100%" label="Digital" />
