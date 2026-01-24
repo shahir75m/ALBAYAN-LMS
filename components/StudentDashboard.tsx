@@ -194,6 +194,13 @@ const StudentDashboard: React.FC<StudentDashboardProps> = ({
                             const isBorrowing = book.currentBorrowers.some(cb => cb.userId === currentUser.id);
                             const availabilityPercent = (book.availableCopies / book.totalCopies) * 100;
 
+                            // Calculate queue position
+                            const bookQueue = requests
+                                .filter(r => r.bookId === book.id && r.status === 'PENDING')
+                                .sort((a, b) => a.timestamp - b.timestamp);
+                            const myQueuePosition = bookQueue.findIndex(r => r.userId === currentUser.id) + 1;
+                            const totalInQueue = bookQueue.length;
+
                             return (
                                 <div key={book.id} className="bg-zinc-900/10 border border-zinc-800 rounded-2xl overflow-hidden flex flex-col group hover:border-zinc-700 transition-all shadow-sm active:scale-[0.99] cursor-pointer" onClick={() => setSelectedBook(book)}>
                                     <div className="aspect-[3/4] relative overflow-hidden bg-zinc-900/20 border-b border-zinc-800/50">
@@ -226,6 +233,22 @@ const StudentDashboard: React.FC<StudentDashboardProps> = ({
                                             </div>
                                         </div>
 
+                                        {/* Show current borrowers when unavailable */}
+                                        {isTaken && book.currentBorrowers.length > 0 && (
+                                            <div className="mb-3 p-2 bg-zinc-900/30 rounded-lg border border-zinc-800/50">
+                                                <p className="text-[8px] text-zinc-600 font-bold uppercase tracking-wider mb-1">Currently Borrowed By</p>
+                                                <p className="text-[10px] text-zinc-400 truncate">{book.currentBorrowers.map(b => b.userName).join(', ')}</p>
+                                            </div>
+                                        )}
+
+                                        {/* Show queue info if there's a queue */}
+                                        {totalInQueue > 0 && isTaken && (
+                                            <div className="mb-3 flex items-center gap-2 text-[9px] text-amber-500">
+                                                <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" /></svg>
+                                                <span className="font-bold">{totalInQueue} in queue</span>
+                                            </div>
+                                        )}
+
                                         <div className="mt-auto">
                                             {isBorrowing ? (
                                                 <div className="w-full py-2.5 bg-zinc-900/50 border border-zinc-800 text-zinc-400 text-[10px] font-bold uppercase tracking-wider rounded-xl flex items-center justify-center gap-2">
@@ -233,9 +256,14 @@ const StudentDashboard: React.FC<StudentDashboardProps> = ({
                                                     Returned
                                                 </div>
                                             ) : hasRequested ? (
-                                                <div className="w-full py-2.5 bg-amber-500/5 text-amber-500 text-[10px] font-bold uppercase tracking-wider rounded-xl flex items-center justify-center gap-2 border border-amber-500/10">
-                                                    <span className="w-1.5 h-1.5 bg-amber-500 rounded-full animate-pulse"></span>
-                                                    Requested
+                                                <div className="w-full py-2.5 bg-amber-500/5 text-amber-500 text-[10px] font-bold uppercase tracking-wider rounded-xl flex flex-col items-center justify-center gap-1 border border-amber-500/10">
+                                                    <div className="flex items-center gap-2">
+                                                        <span className="w-1.5 h-1.5 bg-amber-500 rounded-full animate-pulse"></span>
+                                                        <span>{isTaken ? 'In Queue' : 'Requested'}</span>
+                                                    </div>
+                                                    {isTaken && myQueuePosition > 0 && (
+                                                        <span className="text-[8px] text-amber-600">Position #{myQueuePosition}</span>
+                                                    )}
                                                 </div>
                                             ) : (
                                                 <button
@@ -250,7 +278,7 @@ const StudentDashboard: React.FC<StudentDashboardProps> = ({
                                                 >
                                                     {isTaken ? (
                                                         <>
-                                                            Notify Me
+                                                            Join Queue
                                                         </>
                                                     ) : (
                                                         <>
@@ -280,23 +308,45 @@ const StudentDashboard: React.FC<StudentDashboardProps> = ({
                                     <th className="px-6 py-4">Date Requested</th>
                                     <th className="px-6 py-4">Resource Title</th>
                                     <th className="px-6 py-4">Status</th>
+                                    <th className="px-6 py-4">Queue Position</th>
                                 </tr>
                             </thead>
                             <tbody className="divide-y divide-zinc-900/50">
-                                {myRequests.map(req => (
-                                    <tr key={req.id} className="hover:bg-zinc-900/20 transition-all">
-                                        <td className="px-6 py-4 text-zinc-600 font-mono text-[10px]">{new Date(req.timestamp).toLocaleDateString()}</td>
-                                        <td className="px-6 py-4 font-medium text-white/90">{req.bookTitle}</td>
-                                        <td className="px-6 py-4">
-                                            <span className={`px-2 py-0.5 rounded text-[9px] font-bold uppercase tracking-wider border ${req.status === 'PENDING' ? 'bg-amber-500/10 text-amber-500 border-amber-500/20' :
-                                                req.status === 'APPROVED' ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20' :
-                                                    'bg-red-500/10 text-red-500 border-red-500/20'
-                                                }`}>{req.status}</span>
-                                        </td>
-                                    </tr>
-                                ))}
+                                {myRequests.map(req => {
+                                    const book = books.find(b => b.id === req.bookId);
+                                    const isInQueue = book && book.availableCopies === 0 && req.status === 'PENDING';
+                                    const bookQueue = isInQueue ? requests
+                                        .filter(r => r.bookId === req.bookId && r.status === 'PENDING')
+                                        .sort((a, b) => a.timestamp - b.timestamp) : [];
+                                    const queuePosition = bookQueue.findIndex(r => r.id === req.id) + 1;
+
+                                    return (
+                                        <tr key={req.id} className="hover:bg-zinc-900/20 transition-all">
+                                            <td className="px-6 py-4 text-zinc-600 font-mono text-[10px]">{new Date(req.timestamp).toLocaleDateString()}</td>
+                                            <td className="px-6 py-4 font-medium text-white/90">{req.bookTitle}</td>
+                                            <td className="px-6 py-4">
+                                                <span className={`px-2 py-0.5 rounded text-[9px] font-bold uppercase tracking-wider border ${req.status === 'PENDING' ? 'bg-amber-500/10 text-amber-500 border-amber-500/20' :
+                                                    req.status === 'APPROVED' ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20' :
+                                                        'bg-red-500/10 text-red-500 border-red-500/20'
+                                                    }`}>{isInQueue ? 'IN QUEUE' : req.status}</span>
+                                            </td>
+                                            <td className="px-6 py-4">
+                                                {isInQueue && queuePosition > 0 ? (
+                                                    <div className="flex items-center gap-2">
+                                                        <span className="w-5 h-5 rounded-full bg-amber-500/20 text-amber-500 flex items-center justify-center text-[10px] font-bold">
+                                                            {queuePosition}
+                                                        </span>
+                                                        <span className="text-xs text-zinc-500">of {bookQueue.length}</span>
+                                                    </div>
+                                                ) : (
+                                                    <span className="text-xs text-zinc-600">—</span>
+                                                )}
+                                            </td>
+                                        </tr>
+                                    );
+                                })}
                                 {myRequests.length === 0 && (
-                                    <tr><td colSpan={3} className="px-6 py-16 text-center text-zinc-600 text-xs italic">No requests found</td></tr>
+                                    <tr><td colSpan={4} className="px-6 py-16 text-center text-zinc-600 text-xs italic">No requests found</td></tr>
                                 )}
                             </tbody>
                         </table>
@@ -344,102 +394,158 @@ const StudentDashboard: React.FC<StudentDashboardProps> = ({
             )}
 
             {/* Book Detail Modal */}
-            {selectedBook && (
-                <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 md:p-6">
-                    <div className="absolute inset-0 bg-black/80 backdrop-blur-xl" onClick={() => setSelectedBook(null)}></div>
-                    <div className="relative w-full max-w-4xl bg-zinc-950 border border-zinc-800 rounded-[2.5rem] overflow-hidden shadow-3xl animate-in zoom-in-95 duration-300 flex flex-col md:flex-row">
-                        <div className="w-full md:w-2/5 aspect-[3/4] md:aspect-auto relative overflow-hidden bg-zinc-900">
-                            <img src={selectedBook.coverUrl} className="w-full h-full object-cover" alt={selectedBook.title} />
-                            <div className="absolute inset-0 bg-gradient-to-t from-zinc-950 via-transparent to-transparent"></div>
-                        </div>
-                        <div className="w-full md:w-3/5 p-8 md:p-12 flex flex-col h-full overflow-y-auto no-scrollbar">
-                            <button
-                                onClick={() => setSelectedBook(null)}
-                                className="absolute top-8 right-8 p-2 bg-zinc-900 hover:bg-zinc-800 rounded-full transition-all text-zinc-500 hover:text-white"
-                            >
-                                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /></svg>
-                            </button>
+            {selectedBook && (() => {
+                // Calculate queue for this book
+                const bookQueue = requests
+                    .filter(r => r.bookId === selectedBook.id && r.status === 'PENDING')
+                    .sort((a, b) => a.timestamp - b.timestamp);
+                const myQueuePosition = bookQueue.findIndex(r => r.userId === currentUser.id) + 1;
+                const isTaken = selectedBook.availableCopies === 0;
 
-                            <div className="mb-8">
-                                <span className="inline-block px-3 py-1 bg-emerald-500/10 text-emerald-500 text-[10px] font-black uppercase tracking-widest rounded-full border border-emerald-500/20 mb-4">
-                                    {selectedBook.category}
-                                </span>
-                                <h2 className="text-3xl md:text-4xl font-black text-white leading-tight mb-2 tracking-tighter uppercase">{selectedBook.title}</h2>
-                                <p className="text-zinc-500 text-lg font-medium">by {selectedBook.author}</p>
+                return (
+                    <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 md:p-6">
+                        <div className="absolute inset-0 bg-black/80 backdrop-blur-xl" onClick={() => setSelectedBook(null)}></div>
+                        <div className="relative w-full max-w-4xl bg-zinc-950 border border-zinc-800 rounded-[2.5rem] overflow-hidden shadow-3xl animate-in zoom-in-95 duration-300 flex flex-col md:flex-row">
+                            <div className="w-full md:w-2/5 aspect-[3/4] md:aspect-auto relative overflow-hidden bg-zinc-900">
+                                <img src={selectedBook.coverUrl} className="w-full h-full object-cover" alt={selectedBook.title} />
+                                <div className="absolute inset-0 bg-gradient-to-t from-zinc-950 via-transparent to-transparent"></div>
                             </div>
+                            <div className="w-full md:w-3/5 p-8 md:p-12 flex flex-col h-full overflow-y-auto no-scrollbar">
+                                <button
+                                    onClick={() => setSelectedBook(null)}
+                                    className="absolute top-8 right-8 p-2 bg-zinc-900 hover:bg-zinc-800 rounded-full transition-all text-zinc-500 hover:text-white"
+                                >
+                                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /></svg>
+                                </button>
 
-                            <div className="grid grid-cols-2 gap-8 mb-10">
-                                <div>
-                                    <label className="block text-[10px] font-black text-zinc-600 uppercase tracking-widest mb-2">Identification</label>
-                                    <p className="text-sm text-zinc-300 font-mono">ISBN: {selectedBook.isbn}</p>
-                                    <p className="text-sm text-zinc-300 mt-1">Ref ID: #{selectedBook.id}</p>
+                                <div className="mb-8">
+                                    <span className="inline-block px-3 py-1 bg-emerald-500/10 text-emerald-500 text-[10px] font-black uppercase tracking-widest rounded-full border border-emerald-500/20 mb-4">
+                                        {selectedBook.category}
+                                    </span>
+                                    <h2 className="text-3xl md:text-4xl font-black text-white leading-tight mb-2 tracking-tighter uppercase">{selectedBook.title}</h2>
+                                    <p className="text-zinc-500 text-lg font-medium">by {selectedBook.author}</p>
                                 </div>
-                                <div>
-                                    <label className="block text-[10px] font-black text-zinc-600 uppercase tracking-widest mb-2">Publication</label>
-                                    <p className="text-sm text-zinc-300">Edition Year: {selectedBook.year}</p>
-                                </div>
-                            </div>
 
-                            <div className="bg-zinc-900/50 border border-zinc-900 p-6 rounded-3xl mb-10">
-                                <div className="flex items-center justify-between mb-4">
+                                <div className="grid grid-cols-2 gap-8 mb-10">
                                     <div>
-                                        <p className="text-[10px] text-zinc-500 font-black uppercase tracking-widest mb-1">Stock Level</p>
-                                        <p className="text-2xl font-black text-white">{selectedBook.availableCopies} of {selectedBook.totalCopies}</p>
+                                        <label className="block text-[10px] font-black text-zinc-600 uppercase tracking-widest mb-2">Identification</label>
+                                        <p className="text-sm text-zinc-300 font-mono">ISBN: {selectedBook.isbn}</p>
+                                        <p className="text-sm text-zinc-300 mt-1">Ref ID: #{selectedBook.id}</p>
                                     </div>
-                                    <div className="text-right">
-                                        <span className={`px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-widest ${selectedBook.availableCopies > 0 ? 'bg-emerald-500/10 text-emerald-500 border border-emerald-500/20' : 'bg-red-500/10 text-red-500 border border-red-500/20'}`}>
-                                            {selectedBook.availableCopies > 0 ? 'Ready to Borrow' : 'All copies out'}
-                                        </span>
+                                    <div>
+                                        <label className="block text-[10px] font-black text-zinc-600 uppercase tracking-widest mb-2">Publication</label>
+                                        <p className="text-sm text-zinc-300">Edition Year: {selectedBook.year}</p>
                                     </div>
                                 </div>
-                                <div className="w-full h-2 bg-zinc-950 rounded-full overflow-hidden">
-                                    <div
-                                        className={`h-full transition-all duration-1000 ${(selectedBook.availableCopies / selectedBook.totalCopies) * 100 === 0 ? 'bg-red-500' : (selectedBook.availableCopies / selectedBook.totalCopies) * 100 <= 25 ? 'bg-amber-500' : 'bg-emerald-500'}`}
-                                        style={{ width: `${(selectedBook.availableCopies / selectedBook.totalCopies) * 100}%` }}
-                                    />
-                                </div>
-                            </div>
 
-                            <div className="mt-auto flex gap-4 pt-8 border-t border-zinc-900">
-                                {selectedBook.currentBorrowers.some(cb => cb.userId === currentUser.id) ? (
-                                    <div className="flex-1 py-4 bg-zinc-900 border border-zinc-800 text-zinc-400 text-sm font-black uppercase tracking-widest rounded-2xl flex items-center justify-center gap-3">
-                                        <svg className="w-5 h-5 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 13l4 4L19 7" /></svg>
-                                        Currently In Your Care
+                                <div className="bg-zinc-900/50 border border-zinc-900 p-6 rounded-3xl mb-10">
+                                    <div className="flex items-center justify-between mb-4">
+                                        <div>
+                                            <p className="text-[10px] text-zinc-500 font-black uppercase tracking-widest mb-1">Stock Level</p>
+                                            <p className="text-2xl font-black text-white">{selectedBook.availableCopies} of {selectedBook.totalCopies}</p>
+                                        </div>
+                                        <div className="text-right">
+                                            <span className={`px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-widest ${selectedBook.availableCopies > 0 ? 'bg-emerald-500/10 text-emerald-500 border border-emerald-500/20' : 'bg-red-500/10 text-red-500 border border-red-500/20'}`}>
+                                                {selectedBook.availableCopies > 0 ? 'Ready to Borrow' : 'All copies out'}
+                                            </span>
+                                        </div>
                                     </div>
-                                ) : requests.some(r => r.userId === currentUser.id && r.bookId === selectedBook.id && r.status === 'PENDING') ? (
-                                    <div className="flex-1 py-4 bg-amber-500/5 text-amber-500 text-sm font-black uppercase tracking-widest rounded-2xl flex items-center justify-center gap-3 border border-amber-500/10">
-                                        <span className="w-2 h-2 bg-amber-500 rounded-full animate-pulse"></span>
-                                        Pending Request
+                                    <div className="w-full h-2 bg-zinc-950 rounded-full overflow-hidden">
+                                        <div
+                                            className={`h-full transition-all duration-1000 ${(selectedBook.availableCopies / selectedBook.totalCopies) * 100 === 0 ? 'bg-red-500' : (selectedBook.availableCopies / selectedBook.totalCopies) * 100 <= 25 ? 'bg-amber-500' : 'bg-emerald-500'}`}
+                                            style={{ width: `${(selectedBook.availableCopies / selectedBook.totalCopies) * 100}%` }}
+                                        />
                                     </div>
-                                ) : (
-                                    <button
-                                        onClick={() => {
-                                            selectedBook.availableCopies === 0 ? handleNotify(selectedBook.title) : onBorrow(selectedBook.id);
-                                            setSelectedBook(null);
-                                        }}
-                                        className={`flex-1 py-4 rounded-2xl text-sm font-black uppercase tracking-widest transition-all active:scale-[0.98] flex items-center justify-center gap-3 ${selectedBook.availableCopies === 0
-                                            ? 'bg-zinc-800 text-zinc-400 hover:text-white'
-                                            : 'bg-emerald-600 hover:bg-emerald-500 text-white shadow-xl shadow-emerald-900/20'
-                                            }`}
-                                    >
-                                        {selectedBook.availableCopies === 0 ? (
-                                            <>
-                                                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" /></svg>
-                                                Notify Availability
-                                            </>
-                                        ) : (
-                                            <>
-                                                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" /></svg>
-                                                Borrow This Book
-                                            </>
-                                        )}
-                                    </button>
+                                </div>
+
+                                {/* Current Borrowers Section */}
+                                {isTaken && selectedBook.currentBorrowers.length > 0 && (
+                                    <div className="bg-zinc-900/50 border border-zinc-900 p-6 rounded-3xl mb-6">
+                                        <p className="text-[10px] text-zinc-500 font-black uppercase tracking-widest mb-4">Currently Borrowed By</p>
+                                        <div className="space-y-2">
+                                            {selectedBook.currentBorrowers.map((borrower, idx) => (
+                                                <div key={idx} className="flex items-center gap-3 p-2 bg-zinc-950/50 rounded-lg">
+                                                    <div className="w-8 h-8 rounded-full bg-zinc-800 flex items-center justify-center text-zinc-400 text-xs font-bold">
+                                                        {borrower.userName.charAt(0)}
+                                                    </div>
+                                                    <span className="text-sm text-zinc-300">{borrower.userName}</span>
+                                                </div>
+                                            ))}
+                                        </div>
+                                    </div>
                                 )}
+
+                                {/* Waiting Queue Section */}
+                                {bookQueue.length > 0 && isTaken && (
+                                    <div className="bg-amber-500/5 border border-amber-500/20 p-6 rounded-3xl mb-6">
+                                        <div className="flex items-center gap-2 mb-4">
+                                            <svg className="w-4 h-4 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" /></svg>
+                                            <p className="text-[10px] text-amber-500 font-black uppercase tracking-widest">Waiting Queue ({bookQueue.length})</p>
+                                        </div>
+                                        <div className="space-y-2 max-h-32 overflow-y-auto">
+                                            {bookQueue.slice(0, 5).map((req, idx) => (
+                                                <div key={req.id} className="flex items-center gap-3 p-2 bg-zinc-950/30 rounded-lg">
+                                                    <span className="w-6 h-6 rounded-full bg-amber-500/20 text-amber-500 flex items-center justify-center text-xs font-bold">
+                                                        {idx + 1}
+                                                    </span>
+                                                    <span className={`text-sm ${req.userId === currentUser.id ? 'text-amber-400 font-bold' : 'text-zinc-400'}`}>
+                                                        {req.userId === currentUser.id ? 'You' : req.userName}
+                                                    </span>
+                                                </div>
+                                            ))}
+                                            {bookQueue.length > 5 && (
+                                                <p className="text-xs text-zinc-600 text-center pt-2">+{bookQueue.length - 5} more in queue</p>
+                                            )}
+                                        </div>
+                                    </div>
+                                )}
+
+                                <div className="mt-auto flex gap-4 pt-8 border-t border-zinc-900">
+                                    {selectedBook.currentBorrowers.some(cb => cb.userId === currentUser.id) ? (
+                                        <div className="flex-1 py-4 bg-zinc-900 border border-zinc-800 text-zinc-400 text-sm font-black uppercase tracking-widest rounded-2xl flex items-center justify-center gap-3">
+                                            <svg className="w-5 h-5 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 13l4 4L19 7" /></svg>
+                                            Currently In Your Care
+                                        </div>
+                                    ) : requests.some(r => r.userId === currentUser.id && r.bookId === selectedBook.id && r.status === 'PENDING') ? (
+                                        <div className="flex-1 py-4 bg-amber-500/5 text-amber-500 text-sm font-black uppercase tracking-widest rounded-2xl flex flex-col items-center justify-center gap-2 border border-amber-500/10">
+                                            <div className="flex items-center gap-3">
+                                                <span className="w-2 h-2 bg-amber-500 rounded-full animate-pulse"></span>
+                                                <span>{isTaken ? 'In Queue' : 'Pending Request'}</span>
+                                            </div>
+                                            {isTaken && myQueuePosition > 0 && (
+                                                <span className="text-xs text-amber-600">Position #{myQueuePosition} of {bookQueue.length}</span>
+                                            )}
+                                        </div>
+                                    ) : (
+                                        <button
+                                            onClick={() => {
+                                                selectedBook.availableCopies === 0 ? handleNotify(selectedBook.title) : onBorrow(selectedBook.id);
+                                                setSelectedBook(null);
+                                            }}
+                                            className={`flex-1 py-4 rounded-2xl text-sm font-black uppercase tracking-widest transition-all active:scale-[0.98] flex items-center justify-center gap-3 ${selectedBook.availableCopies === 0
+                                                ? 'bg-zinc-800 text-zinc-400 hover:text-white'
+                                                : 'bg-emerald-600 hover:bg-emerald-500 text-white shadow-xl shadow-emerald-900/20'
+                                                }`}
+                                        >
+                                            {selectedBook.availableCopies === 0 ? (
+                                                <>
+                                                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" /></svg>
+                                                    Join Queue
+                                                </>
+                                            ) : (
+                                                <>
+                                                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" /></svg>
+                                                    Borrow This Book
+                                                </>
+                                            )}
+                                        </button>
+                                    )}
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
-            )}
+                );
+            })()}
         </div>
     );
 };

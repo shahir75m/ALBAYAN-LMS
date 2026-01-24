@@ -962,6 +962,48 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
                                         )}
                                     </div>
                                 </div>
+
+                                {/* Waiting Queue Section */}
+                                {(() => {
+                                    const bookQueue = requests
+                                        .filter(r => r.bookId === selectedBookDetail.id && r.status === 'PENDING')
+                                        .sort((a, b) => a.timestamp - b.timestamp);
+
+                                    if (bookQueue.length === 0) return null;
+
+                                    return (
+                                        <div className="mb-8">
+                                            <h3 className="text-xs font-black text-white uppercase tracking-[0.2em] mb-4 flex items-center gap-2">
+                                                <span className="w-1.5 h-1.5 bg-amber-500 rounded-full"></span>
+                                                Waiting Queue ({bookQueue.length})
+                                            </h3>
+                                            <div className="bg-amber-500/5 border border-amber-500/20 rounded-2xl overflow-hidden">
+                                                <table className="w-full text-left text-[11px]">
+                                                    <thead className="bg-amber-500/10 border-b border-amber-500/20 text-amber-500 font-black uppercase tracking-wider">
+                                                        <tr>
+                                                            <th className="px-6 py-3">Position</th>
+                                                            <th className="px-6 py-3">Student Name</th>
+                                                            <th className="px-6 py-3">Requested On</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody className="divide-y divide-amber-500/10">
+                                                        {bookQueue.map((req, idx) => (
+                                                            <tr key={req.id} className="hover:bg-amber-500/5 transition-colors">
+                                                                <td className="px-6 py-3">
+                                                                    <span className="w-6 h-6 rounded-full bg-amber-500/20 text-amber-500 flex items-center justify-center text-xs font-bold">
+                                                                        {idx + 1}
+                                                                    </span>
+                                                                </td>
+                                                                <td className="px-6 py-3 font-medium text-zinc-300">{req.userName}</td>
+                                                                <td className="px-6 py-3 text-zinc-500">{new Date(req.timestamp).toLocaleDateString()}</td>
+                                                            </tr>
+                                                        ))}
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    );
+                                })()}
                                 <div>
                                     <h3 className="text-xs font-black text-white uppercase tracking-[0.2em] mb-4 flex items-center gap-2">
                                         <span className="w-1.5 h-1.5 bg-blue-500 rounded-full"></span>
