@@ -178,7 +178,7 @@ const Login: React.FC<LoginProps> = ({ onLogin, onIdentify, initialIdentity, onC
         </header>
 
         <main className="w-full max-w-lg text-center z-0">
-          <h2 className="text-4xl md:text-5xl font-bold text-white tracking-tighter mb-4">Digital Library</h2>
+          <h2 className="text-4xl md:text-5xl font-bold text-white tracking-tighter mb-4">ALBAYAN LMS</h2>
           <p className="text-zinc-500 mb-12 max-w-xs mx-auto text-sm leading-relaxed">
             Your gateway to knowledge. Manage books, track history, and explore resources.
           </p>
