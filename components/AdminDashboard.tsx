@@ -424,23 +424,22 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
                     </div>
 
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                        <StatCard title="Total Books" value={totalVolume} subtitle={`${uniqueTitles} Titles`} icon="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" color="emerald" />
-                        <StatCard title="Books Issued" value={issuedBooksCount} icon="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" color="blue" />
-                        <StatCard title="New Requests" value={pendingRequestsCount} icon="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" color="amber" />
-                        <StatCard title="Active Fines" value={fines.filter(f => f.status === 'PENDING').length} icon="M12 8c-1.657 0-3 1.343-3 3s1.343 3 3 3 3-1.343 3-3-1.343-3-3-3z M12 2C6.477 2 2 6.477 2 12s4.477 10 10 10 10-4.477 10-10S17.523 2 12 2z M12 20c-4.411 0-8-3.589-8-8s3.589-8 8-8 8 3.589 8 8-3.589 8-8 8z" color="red" />
+                        <StatCard title="Total Books" value={totalVolume} subtitle={`${uniqueTitles} Titles`} icon="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+                        <StatCard title="Books Issued" value={issuedBooksCount} icon="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                        <StatCard title="New Requests" value={pendingRequestsCount} icon="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        <StatCard title="Active Fines" value={fines.filter(f => f.status === 'PENDING').length} icon="M12 8c-1.657 0-3 1.343-3 3s1.343 3 3 3 3-1.343 3-3-1.343-3-3-3z M12 2C6.477 2 2 6.477 2 12s4.477 10 10 10 10-4.477 10-10S17.523 2 12 2z M12 20c-4.411 0-8-3.589-8-8s3.589-8 8-8 8 3.589 8 8-3.589 8-8 8z" />
                     </div>
 
                     <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                        <div className="bg-[#0c0c0e] border border-zinc-900 rounded-2xl overflow-hidden shadow-sm">
-                            <div className="px-6 py-4 border-b border-zinc-900 flex justify-between items-center bg-zinc-900/20">
-                                <h3 className="font-semibold text-xs text-zinc-300 flex items-center gap-2 uppercase tracking-widest">
-                                    <span className="w-1.5 h-1.5 bg-amber-500 rounded-full"></span>
+                        <div className="bg-zinc-900/10 border border-zinc-800 rounded-2xl overflow-hidden shadow-sm">
+                            <div className="px-6 py-4 border-b border-zinc-900/50 flex justify-between items-center bg-zinc-900/10">
+                                <h3 className="font-semibold text-xs text-zinc-300 uppercase tracking-widest">
                                     Confirmations
                                 </h3>
                             </div>
-                            <div className="divide-y divide-zinc-900 max-h-[400px] overflow-y-auto no-scrollbar">
+                            <div className="divide-y divide-zinc-900/50 max-h-[400px] overflow-y-auto no-scrollbar">
                                 {requests.filter(r => r.status === 'PENDING').map(req => (
-                                    <div key={req.id} className="p-5 flex items-center justify-between hover:bg-zinc-900/30 transition-colors">
+                                    <div key={req.id} className="p-5 flex items-center justify-between hover:bg-zinc-900/20 transition-colors">
                                         <div>
                                             <p className="text-sm font-medium text-white/90">{req.userName}</p>
                                             <p className="text-[11px] text-zinc-500 mt-0.5">Requested: <span className="text-zinc-400">{req.bookTitle}</span></p>
@@ -448,13 +447,13 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
                                         <div className="flex gap-2">
                                             <button
                                                 onClick={() => onHandleRequest(req.id, 'APPROVE')}
-                                                className="px-4 py-1.5 bg-emerald-600/90 hover:bg-emerald-600 rounded-lg text-xs font-medium text-white transition-all active:scale-95"
+                                                className="px-3 py-1 bg-emerald-600/10 hover:bg-emerald-600/20 text-emerald-500 rounded text-xs font-bold transition-all"
                                             >
                                                 Approve
                                             </button>
                                             <button
                                                 onClick={() => onHandleRequest(req.id, 'DENY')}
-                                                className="px-4 py-1.5 bg-zinc-800 hover:bg-zinc-700 text-zinc-400 rounded-lg text-xs font-medium transition-all active:scale-95"
+                                                className="px-3 py-1 bg-zinc-800/50 hover:bg-zinc-800 text-zinc-400 rounded text-xs font-medium transition-all"
                                             >
                                                 Deny
                                             </button>
@@ -462,36 +461,33 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
                                     </div>
                                 ))}
                                 {requests.filter(r => r.status === 'PENDING').length === 0 && (
-                                    <div className="p-16 text-center text-zinc-600 text-xs italic font-medium">No pending requests</div>
+                                    <div className="p-16 text-center text-zinc-600 text-xs italic">No pending requests</div>
                                 )}
                             </div>
                         </div>
 
-                        <div className="bg-[#0c0c0e] border border-zinc-900 rounded-2xl overflow-hidden shadow-sm">
-                            <div className="px-6 py-4 border-b border-zinc-900 bg-zinc-900/20 flex items-center justify-between">
-                                <h3 className="font-semibold text-xs text-zinc-300 flex items-center gap-2 shrink-0">
-                                    <span className="w-1.5 h-1.5 bg-blue-500 rounded-full"></span>
+                        <div className="bg-zinc-900/10 border border-zinc-800 rounded-2xl overflow-hidden shadow-sm">
+                            <div className="px-6 py-4 border-b border-zinc-900/50 bg-zinc-900/10 flex items-center justify-between">
+                                <h3 className="font-semibold text-xs text-zinc-300 uppercase tracking-widest">
                                     Returns
                                 </h3>
                                 <div className="relative w-40 ml-4">
                                     <input
                                         type="text"
-                                        placeholder="Find book/user..."
+                                        placeholder="Search..."
                                         value={returnSearch}
                                         onChange={(e) => setReturnSearch(e.target.value)}
-                                        className="w-full bg-[#09090b] border border-zinc-800 rounded-lg px-3 py-1 text-[10px] text-zinc-400 focus:border-zinc-700 outline-none transition-all"
+                                        className="w-full bg-zinc-900 border border-zinc-800 rounded-lg px-3 py-1 text-[10px] text-zinc-400 focus:border-zinc-700 outline-none transition-all placeholder:text-zinc-700"
                                     />
                                 </div>
                             </div>
-                            <div className="divide-y divide-zinc-900 max-h-[400px] overflow-y-auto no-scrollbar">
+                            <div className="divide-y divide-zinc-900/50 max-h-[400px] overflow-y-auto no-scrollbar">
                                 {activeCirculation.map(h => (
-                                    <div key={h.id} className="p-5 flex items-center justify-between hover:bg-zinc-900/30 transition-colors">
+                                    <div key={h.id} className="p-5 flex items-center justify-between hover:bg-zinc-900/20 transition-colors">
                                         <div className="overflow-hidden pr-4">
                                             <p className="text-sm font-medium text-white/90 truncate">{h.bookTitle}</p>
                                             <div className="flex items-center gap-2 mt-1">
-                                                <span className="text-[10px] text-zinc-600 font-bold uppercase tracking-wider">Holder:</span>
-                                                <p className="text-[11px] text-emerald-500 font-medium truncate">{h.userName}</p>
-                                                <span className="text-[9px] text-zinc-700 font-mono">[{h.userId}]</span>
+                                                <p className="text-[11px] text-zinc-500 font-medium truncate">Holder: {h.userName}</p>
                                             </div>
                                         </div>
                                         <button
@@ -502,14 +498,14 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
                                                 setFineAmount(0);
                                                 setFineReason('');
                                             }}
-                                            className="shrink-0 px-3 py-1.5 border border-zinc-800 text-zinc-400 hover:text-emerald-500 hover:border-emerald-500/30 rounded-lg text-xs font-medium transition-all active:scale-95"
+                                            className="shrink-0 px-3 py-1 border border-zinc-800 text-zinc-400 hover:text-white hover:border-zinc-700 rounded text-[10px] font-bold uppercase transition-all"
                                         >
                                             Return
                                         </button>
                                     </div>
                                 ))}
                                 {activeCirculation.length === 0 && (
-                                    <div className="p-16 text-center text-zinc-600 text-xs italic font-medium">
+                                    <div className="p-16 text-center text-zinc-600 text-xs italic">
                                         {returnSearch ? 'No matching circulation' : 'All books are in stock'}
                                     </div>
                                 )}
@@ -523,51 +519,45 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
                 <div className="space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-500">
                     <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
                         {filteredBooks.map(book => (
-                            <div key={book.id} className="bg-[#0c0c0e] border border-zinc-900 rounded-2xl overflow-hidden group hover:border-zinc-800 transition-all shadow-sm">
-                                <div className="flex h-48">
-                                    <div className="w-[35%] overflow-hidden bg-zinc-900/50">
+                            <div key={book.id} className="bg-zinc-900/10 border border-zinc-800 rounded-2xl overflow-hidden group hover:border-zinc-700 transition-all shadow-sm">
+                                <div className="flex h-44">
+                                    <div className="w-[30%] overflow-hidden bg-zinc-900/30 relative">
                                         <img src={book.coverUrl} alt={book.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                                        <div className="absolute inset-0 bg-black/10 group-hover:bg-transparent transition-colors"></div>
                                     </div>
-                                    <div className="w-[65%] p-5 flex flex-col">
-                                        <div className="flex justify-between items-start mb-2">
-                                            <span className="text-[9px] font-semibold text-emerald-500/80 bg-emerald-500/5 px-2 py-0.5 rounded border border-emerald-500/10">{book.category}</span>
-                                            <p className="text-[9px] text-zinc-700 font-medium">#{book.id}</p>
+                                    <div className="w-[70%] p-4 flex flex-col">
+                                        <div className="flex justify-between items-start mb-1">
+                                            <span className="text-[9px] font-bold text-emerald-500/80 uppercase tracking-wider">{book.category}</span>
+                                            <p className="text-[9px] text-zinc-600 font-mono">#{book.id}</p>
                                         </div>
-                                        <h4 className="text-sm font-semibold text-white/90 leading-snug">{book.title}</h4>
-                                        <p className="text-[11px] text-zinc-500 mt-1 truncate">by {book.author}</p>
+                                        <h4 className="text-sm font-bold text-zinc-200 leading-tight mb-0.5 line-clamp-2">{book.title}</h4>
+                                        <p className="text-[10px] text-zinc-500 truncate mb-3">by {book.author}</p>
 
-                                        <div className="mt-auto pt-4 flex justify-between items-end border-t border-zinc-900/50">
+                                        <div className="mt-auto flex justify-between items-end border-t border-zinc-800/50 pt-3">
                                             <div>
-                                                <p className="text-[10px] text-zinc-600 font-medium">Availability</p>
-                                                <p className={`text-xs font-semibold mt-0.5 ${book.availableCopies === 0 ? 'text-red-400' : 'text-zinc-300'}`}>
+                                                <p className="text-[9px] text-zinc-600 font-bold uppercase tracking-wider">Stock</p>
+                                                <p className={`text-xs font-bold ${book.availableCopies === 0 ? 'text-red-400' : 'text-zinc-300'}`}>
                                                     {book.availableCopies} <span className="text-zinc-600 font-normal">/ {book.totalCopies}</span>
                                                 </p>
                                             </div>
-                                        </div>
-                                        <div className="flex gap-1">
-                                            <button onClick={() => setSelectedBookDetail(book)} className="p-2 text-zinc-600 hover:text-blue-400 hover:bg-blue-400/5 rounded-lg transition-all" title="View Details">
-                                                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
-                                                </svg>
-                                            </button>
-                                            <button onClick={() => { setEditingBook(book); setShowBookForm(true); }} className="p-2 text-zinc-600 hover:text-emerald-500 hover:bg-emerald-500/5 rounded-lg transition-all" title="Edit">
-                                                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
-                                                </svg>
-                                            </button>
-                                            <button onClick={() => {
-                                                setConfirmDialog({
-                                                    show: true,
-                                                    title: 'Delete Asset',
-                                                    message: `Are you sure you want to remove "${book.title}" from the inventory?`,
-                                                    onConfirm: () => onDeleteBook(book.id)
-                                                });
-                                            }} className="p-2 text-zinc-600 hover:text-red-400 hover:bg-red-400/5 rounded-lg transition-all" title="Delete">
-                                                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-                                                </svg>
-                                            </button>
+                                            <div className="flex gap-1">
+                                                <button onClick={() => setSelectedBookDetail(book)} className="p-1.5 text-zinc-500 hover:text-white hover:bg-zinc-800 rounded-md transition-all" title="View Details">
+                                                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" /><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" /></svg>
+                                                </button>
+                                                <button onClick={() => { setEditingBook(book); setShowBookForm(true); }} className="p-1.5 text-zinc-500 hover:text-emerald-500 hover:bg-emerald-500/10 rounded-md transition-all" title="Edit">
+                                                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" /></svg>
+                                                </button>
+                                                <button onClick={() => {
+                                                    setConfirmDialog({
+                                                        show: true,
+                                                        title: 'Delete Asset',
+                                                        message: `Are you sure you want to remove "${book.title}" from the inventory?`,
+                                                        onConfirm: () => onDeleteBook(book.id)
+                                                    });
+                                                }} className="p-1.5 text-zinc-500 hover:text-red-400 hover:bg-red-500/10 rounded-md transition-all" title="Delete">
+                                                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg>
+                                                </button>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -578,39 +568,37 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
             )}
 
             {(activeTab === 'users' || activeTab === 'requests' || activeTab === 'history' || activeTab === 'fines') && (
-                <div className="bg-[#0c0c0e] border border-zinc-900 rounded-2xl overflow-hidden shadow-sm animate-in fade-in slide-in-from-bottom-2 duration-500">
-                    <div className="p-6 border-b border-zinc-900 bg-zinc-900/20 flex justify-between items-center">
-                        <h3 className="font-semibold text-xs text-zinc-400">Library Records</h3>
+                <div className="bg-zinc-900/10 border border-zinc-800 rounded-2xl overflow-hidden shadow-sm animate-in fade-in slide-in-from-bottom-2 duration-500">
+                    <div className="p-6 border-b border-zinc-900/50 bg-zinc-900/10 flex justify-between items-center">
+                        <h3 className="font-semibold text-xs text-zinc-400 uppercase tracking-widest">Library Records</h3>
                     </div>
                     <div className="overflow-x-auto no-scrollbar">
                         <table className="w-full text-left text-sm">
                             {activeTab === 'users' && (
                                 <>
-                                    <thead className="bg-[#09090b] border-b border-zinc-900 text-zinc-500 text-[10px] font-medium tracking-wide">
-                                        <tr><th className="px-6 py-4">Profile</th><th className="px-6 py-4">ID</th><th className="px-6 py-4">Name</th><th className="px-6 py-4">Role</th><th className="px-6 py-4">Class/Dept</th><th className="px-6 py-4 text-right">Actions</th></tr>
+                                    <thead className="bg-zinc-900/20 border-b border-zinc-900/50 text-zinc-500 text-[10px] font-bold uppercase tracking-wider">
+                                        <tr><th className="px-6 py-4">Profile</th><th className="px-6 py-4">ID</th><th className="px-6 py-4">Name</th><th className="px-6 py-4">Role</th><th className="px-6 py-4">Class</th><th className="px-6 py-4 text-right">Actions</th></tr>
                                     </thead>
                                     <tbody className="divide-y divide-zinc-900/50">
                                         {filteredUsers.map(user => (
                                             <tr key={user.id} className="hover:bg-zinc-900/20 transition-all group">
                                                 <td className="px-6 py-4">
-                                                    <div className="w-9 h-9 rounded-lg bg-zinc-900 border border-zinc-800 overflow-hidden flex items-center justify-center text-[10px] font-medium text-zinc-500">
+                                                    <div className="w-8 h-8 rounded-full bg-zinc-900 border border-zinc-800 overflow-hidden flex items-center justify-center text-[10px] font-medium text-zinc-500">
                                                         {user.avatarUrl ? <img src={user.avatarUrl} className="w-full h-full object-cover" /> : user.name.charAt(0)}
                                                     </div>
                                                 </td>
-                                                <td className="px-6 py-4 font-mono text-xs text-zinc-600">{user.id === storedAdminPass ? '••••••••' : user.id}</td>
-                                                <td className="px-6 py-4 font-medium text-white/90">{user.name}</td>
+                                                <td className="px-6 py-4 font-mono text-[11px] text-zinc-600">{user.id === storedAdminPass ? '••••••••' : user.id}</td>
+                                                <td className="px-6 py-4 font-medium text-zinc-200">{user.name}</td>
                                                 <td className="px-6 py-4">
-                                                    <span className={`px-2.5 py-0.5 rounded-full text-[10px] font-medium border ${user.role === 'ADMIN' ? 'bg-purple-500/5 text-purple-400 border-purple-500/10' : 'bg-emerald-500/5 text-emerald-400 border-emerald-500/10'}`}>
+                                                    <span className={`px-2 py-0.5 rounded text-[9px] font-bold uppercase tracking-wider border ${user.role === 'ADMIN' ? 'bg-purple-500/10 text-purple-400 border-purple-500/20' : 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20'}`}>
                                                         {user.role}
                                                     </span>
                                                 </td>
-                                                <td className="px-6 py-4 text-xs text-zinc-500">{user.class || '---'}</td>
+                                                <td className="px-6 py-4 text-zinc-500 text-xs">{user.class || '---'}</td>
                                                 <td className="px-6 py-4 text-right">
                                                     <div className="flex justify-end gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
-                                                        <button onClick={() => { setEditingUser(user); setShowUserForm(true); }} className="p-2 text-zinc-600 hover:text-emerald-500 hover:bg-emerald-500/5 rounded-lg transition-all" title="Edit">
-                                                            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
-                                                            </svg>
+                                                        <button onClick={() => { setEditingUser(user); setShowUserForm(true); }} className="p-1.5 text-zinc-500 hover:text-emerald-500 hover:bg-emerald-500/10 rounded-md transition-all" title="Edit">
+                                                            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" /></svg>
                                                         </button>
                                                         <button onClick={() => {
                                                             setConfirmDialog({
@@ -619,10 +607,8 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
                                                                 message: `Are you sure you want to revoke access for ${user.name}? This cannot be undone.`,
                                                                 onConfirm: () => onDeleteUser(user.id)
                                                             });
-                                                        }} className="p-2 text-zinc-600 hover:text-red-400 hover:bg-red-400/5 rounded-lg transition-all" title="Delete">
-                                                            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-                                                            </svg>
+                                                        }} className="p-1.5 text-zinc-500 hover:text-red-400 hover:bg-red-500/10 rounded-md transition-all" title="Delete">
+                                                            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg>
                                                         </button>
                                                     </div>
                                                 </td>
@@ -633,26 +619,26 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
                             )}
                             {activeTab === 'requests' && (
                                 <>
-                                    <thead className="bg-[#09090b] border-b border-zinc-900 text-zinc-500 text-[10px] font-medium tracking-wide">
+                                    <thead className="bg-zinc-900/20 border-b border-zinc-900/50 text-zinc-500 text-[10px] font-bold uppercase tracking-wider">
                                         <tr><th className="px-6 py-4">Date</th><th className="px-6 py-4">User</th><th className="px-6 py-4">Book</th><th className="px-6 py-4">Status</th><th className="px-6 py-4 text-right">Actions</th></tr>
                                     </thead>
                                     <tbody className="divide-y divide-zinc-900/50">
                                         {requests.map(req => (
                                             <tr key={req.id} className="hover:bg-zinc-900/20 transition-all">
-                                                <td className="px-6 py-4 text-zinc-600 text-[11px]">{new Date(req.timestamp).toLocaleDateString()}</td>
-                                                <td className="px-6 py-4 font-medium text-white/90">{req.userName}</td>
-                                                <td className="px-6 py-4 text-xs text-zinc-500">{req.bookTitle}</td>
+                                                <td className="px-6 py-4 text-zinc-600 font-mono text-[10px]">{new Date(req.timestamp).toLocaleDateString()}</td>
+                                                <td className="px-6 py-4 font-medium text-zinc-200">{req.userName}</td>
+                                                <td className="px-6 py-4 text-zinc-400 text-xs">{req.bookTitle}</td>
                                                 <td className="px-6 py-4">
-                                                    <span className={`px-2.5 py-0.5 rounded-full text-[10px] font-medium border ${req.status === 'PENDING' ? 'bg-amber-500/5 text-amber-500 border-amber-500/10' :
-                                                        req.status === 'APPROVED' ? 'bg-emerald-500/5 text-emerald-400 border-emerald-500/10' :
-                                                            'bg-red-500/5 text-red-500 border-red-500/10'
+                                                    <span className={`px-2 py-0.5 rounded text-[9px] font-bold uppercase tracking-wider border ${req.status === 'PENDING' ? 'bg-amber-500/10 text-amber-500 border-amber-500/20' :
+                                                        req.status === 'APPROVED' ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20' :
+                                                            'bg-red-500/10 text-red-500 border-red-500/20'
                                                         }`}>{req.status}</span>
                                                 </td>
                                                 <td className="px-6 py-4 text-right">
                                                     {req.status === 'PENDING' && (
                                                         <div className="flex justify-end gap-2">
-                                                            <button onClick={() => onHandleRequest(req.id, 'APPROVE')} className="px-3 py-1 bg-emerald-600/90 hover:bg-emerald-600 rounded-lg text-xs font-medium text-white transition-all active:scale-95">Approve</button>
-                                                            <button onClick={() => onHandleRequest(req.id, 'DENY')} className="px-3 py-1 bg-zinc-800 hover:bg-zinc-700 text-zinc-400 rounded-lg text-xs font-medium transition-all active:scale-95">Deny</button>
+                                                            <button onClick={() => onHandleRequest(req.id, 'APPROVE')} className="px-3 py-1 bg-emerald-600/10 hover:bg-emerald-600/20 text-emerald-500 rounded text-[10px] font-bold uppercase transition-all">Approve</button>
+                                                            <button onClick={() => onHandleRequest(req.id, 'DENY')} className="px-3 py-1 bg-zinc-800/50 hover:bg-zinc-800 text-zinc-400 rounded text-[10px] font-bold uppercase transition-all">Deny</button>
                                                         </div>
                                                     )}
                                                 </td>
@@ -663,18 +649,18 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
                             )}
                             {activeTab === 'history' && (
                                 <>
-                                    <thead className="bg-[#09090b] border-b border-zinc-900 text-zinc-500 text-[10px] font-medium tracking-wide">
+                                    <thead className="bg-zinc-900/20 border-b border-zinc-900/50 text-zinc-500 text-[10px] font-bold uppercase tracking-wider">
                                         <tr><th className="px-6 py-4">Borrowed</th><th className="px-6 py-4">User</th><th className="px-6 py-4">Book</th><th className="px-6 py-4">Returned</th><th className="px-6 py-4">Status</th></tr>
                                     </thead>
                                     <tbody className="divide-y divide-zinc-900/50">
                                         {history.map(record => (
                                             <tr key={record.id} className="hover:bg-zinc-900/20 transition-all">
-                                                <td className="px-6 py-4 text-zinc-600 text-[11px]">{new Date(record.borrowDate).toLocaleDateString()}</td>
-                                                <td className="px-6 py-4 font-medium text-white/90">{record.userName}</td>
-                                                <td className="px-6 py-4 text-xs text-zinc-500">{record.bookTitle}</td>
-                                                <td className="px-6 py-4 text-zinc-600 text-[11px]">{record.returnDate ? new Date(record.returnDate).toLocaleDateString() : '---'}</td>
+                                                <td className="px-6 py-4 text-zinc-600 font-mono text-[10px]">{new Date(record.borrowDate).toLocaleDateString()}</td>
+                                                <td className="px-6 py-4 font-medium text-zinc-200">{record.userName}</td>
+                                                <td className="px-6 py-4 text-zinc-400 text-xs">{record.bookTitle}</td>
+                                                <td className="px-6 py-4 text-zinc-600 font-mono text-[10px]">{record.returnDate ? new Date(record.returnDate).toLocaleDateString() : '---'}</td>
                                                 <td className="px-6 py-4">
-                                                    <span className={`px-2.5 py-0.5 rounded-full text-[10px] font-medium border ${record.returnDate ? 'bg-zinc-800/30 text-zinc-600 border-zinc-800' : 'bg-blue-500/5 text-blue-500 border-blue-500/10'}`}>
+                                                    <span className={`px-2 py-0.5 rounded text-[9px] font-bold uppercase tracking-wider border ${record.returnDate ? 'bg-zinc-800/50 text-zinc-500 border-zinc-800' : 'bg-blue-500/10 text-blue-500 border-blue-500/20'}`}>
                                                         {record.returnDate ? 'Returned' : 'In Use'}
                                                     </span>
                                                 </td>
@@ -685,25 +671,25 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
                             )}
                             {activeTab === 'fines' && (
                                 <>
-                                    <thead className="bg-[#09090b] border-b border-zinc-900 text-zinc-500 text-[10px] font-medium tracking-wide">
+                                    <thead className="bg-zinc-900/20 border-b border-zinc-900/50 text-zinc-500 text-[10px] font-bold uppercase tracking-wider">
                                         <tr><th className="px-6 py-4">Date</th><th className="px-6 py-4">User</th><th className="px-6 py-4">Book</th><th className="px-6 py-4">Reason</th><th className="px-6 py-4 text-right">Amount</th><th className="px-6 py-4">Status</th><th className="px-6 py-4 text-right">Actions</th></tr>
                                     </thead>
                                     <tbody className="divide-y divide-zinc-900/50">
                                         {fines.map(fine => (
                                             <tr key={fine.id} className="hover:bg-zinc-900/20 transition-all">
-                                                <td className="px-6 py-4 text-zinc-600 text-[11px]">{new Date(fine.timestamp).toLocaleDateString()}</td>
-                                                <td className="px-6 py-4 font-medium text-white/90">{fine.userName}</td>
-                                                <td className="px-6 py-4 text-xs text-zinc-500">{fine.bookTitle}</td>
-                                                <td className="px-6 py-4 text-xs text-zinc-500">{fine.reason}</td>
+                                                <td className="px-6 py-4 text-zinc-600 font-mono text-[10px]">{new Date(fine.timestamp).toLocaleDateString()}</td>
+                                                <td className="px-6 py-4 font-medium text-zinc-200">{fine.userName}</td>
+                                                <td className="px-6 py-4 text-zinc-400 text-xs">{fine.bookTitle}</td>
+                                                <td className="px-6 py-4 text-zinc-500 text-xs">{fine.reason}</td>
                                                 <td className="px-6 py-4 text-right font-mono text-xs text-emerald-500">₹{fine.amount}</td>
                                                 <td className="px-6 py-4">
-                                                    <span className={`px-2.5 py-0.5 rounded-full text-[10px] font-medium border ${fine.status === 'PAID' ? 'bg-emerald-500/5 text-emerald-400 border-emerald-500/10' : 'bg-red-500/5 text-red-500 border-red-500/10'}`}>
+                                                    <span className={`px-2 py-0.5 rounded text-[9px] font-bold uppercase tracking-wider border ${fine.status === 'PAID' ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20' : 'bg-red-500/10 text-red-500 border-red-500/20'}`}>
                                                         {fine.status}
                                                     </span>
                                                 </td>
                                                 <td className="px-6 py-4 text-right">
                                                     {fine.status === 'PENDING' && (
-                                                        <button onClick={() => onPayFine(fine.id)} className="px-3 py-1 bg-emerald-600/90 hover:bg-emerald-600 rounded-lg text-[10px] font-bold text-white transition-all active:scale-95 uppercase tracking-tighter">Mark Paid</button>
+                                                        <button onClick={() => onPayFine(fine.id)} className="px-3 py-1 bg-emerald-600/10 hover:bg-emerald-600/20 rounded text-[9px] font-bold text-emerald-500 transition-all active:scale-95 uppercase tracking-wider border border-transparent hover:border-emerald-500/30">Mark Paid</button>
                                                     )}
                                                 </td>
                                             </tr>

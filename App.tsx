@@ -30,7 +30,7 @@ const App: React.FC = () => {
   const [statusMsg, setStatusMsgState] = useState<{ text: string, type: 'success' | 'error' } | null>(null);
   const setStatusMsg = (text: string, type: 'success' | 'error' = 'success') => {
     setStatusMsgState({ text, type });
-    setTimeout(() => setStatusMsgState(null), 5000);
+    setTimeout(() => setStatusMsgState(null), 4000);
   };
 
   const refreshAllData = useCallback(async () => {
@@ -172,7 +172,7 @@ const App: React.FC = () => {
         }
       }
       await api.updateRequestStatus(requestId, action === 'APPROVE' ? 'APPROVED' : 'DENIED');
-      setStatusMsg(`Request ${action === 'APPROVE' ? 'Approved' : 'Denied'} successfully`);
+      setStatusMsg(`Request ${action === 'APPROVE' ? 'Approved' : 'Denied'}`);
       await refreshAllData();
     } catch (err: any) {
       setStatusMsg("Action failed: " + err.message, 'error');
@@ -248,7 +248,7 @@ const App: React.FC = () => {
   }
 
   return (
-    <div className="flex h-screen bg-zinc-950 text-zinc-100 selection:bg-emerald-500/30 overflow-hidden">
+    <div className="flex h-screen bg-zinc-950 text-zinc-300 overflow-hidden font-sans">
       <Sidebar
         role={currentUser.role}
         activeTab={activeTab}
@@ -263,55 +263,56 @@ const App: React.FC = () => {
       />
 
       <main className="flex-1 overflow-y-auto relative flex flex-col">
-        <div className="md:hidden bg-zinc-900 border-b border-zinc-800 p-4 flex items-center justify-between shrink-0 sticky top-0 z-40">
-          <button onClick={() => setIsMobileMenuOpen(true)} className="p-2 bg-zinc-800 rounded-xl border border-zinc-700 text-zinc-400">
+
+        {/* Mobile Header */}
+        <div className="md:hidden bg-zinc-900/50 border-b border-zinc-800 p-4 flex items-center justify-between shrink-0 sticky top-0 z-40 backdrop-blur-md">
+          <button onClick={() => setIsMobileMenuOpen(true)} className="p-2 text-zinc-400 hover:text-white transition-colors">
             <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16m-7 6h7" /></svg>
           </button>
-          <div className="flex items-center gap-3">
-            <Logo className="w-8 h-8" />
-            <div className="flex flex-col leading-none">
-              <span className="text-[10px] font-serif text-white tracking-tight">BAYANUL</span>
-              <span className="text-[7px] text-zinc-500 font-bold uppercase tracking-widest">ULOOM</span>
-            </div>
+          <div className="flex items-center gap-2">
+            <Logo className="w-6 h-6" />
+            <span className="font-bold text-white text-sm">ALBAYAN</span>
           </div>
-          <button onClick={handleSwitchPortal} className="p-2 bg-zinc-800 rounded-xl text-zinc-400">
-            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7" /></svg>
+          <button onClick={handleSwitchPortal} className="p-2 text-zinc-400">
+            <div className="w-8 h-8 rounded-full bg-zinc-800 flex items-center justify-center">
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7" /></svg>
+            </div>
           </button>
         </div>
 
-        <div className="flex-1 p-4 md:p-8">
-          <div className="fixed top-20 md:top-4 right-4 md:right-8 z-50 flex flex-col items-end gap-2">
-            <div className="flex items-center gap-3 bg-zinc-900/80 border border-zinc-800 px-4 py-2 rounded-2xl backdrop-blur-md shadow-2xl">
-              <div className="flex flex-col items-end">
-                <span className={`text-[8px] font-black uppercase tracking-widest ${isLocalMode ? 'text-amber-500' : 'text-emerald-500'}`}>
-                  {isLocalMode ? 'LocalStorage Mode' : 'Cloud Sync Active'}
-                </span>
-                <span className="text-[10px] text-zinc-300 font-bold">{cloudIdentity?.id === (localStorage.getItem('adminPassword') || 'admin@484') ? '••••••••' : cloudIdentity?.id}</span>
+        <div className="flex-1 p-4 md:p-10 max-w-7xl mx-auto w-full">
+
+          {/* Top Bar (Desktop) */}
+          <div className="hidden md:flex justify-end mb-8 items-center gap-4">
+
+            {statusMsg && (
+              <div className={`flex items-center gap-3 px-4 py-2 rounded-full text-xs font-medium animate-in fade-in slide-in-from-top-2 ${statusMsg.type === 'success' ? 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20' : 'bg-red-500/10 text-red-400 border border-red-500/20'}`}>
+                <span className={`w-1.5 h-1.5 rounded-full ${statusMsg.type === 'success' ? 'bg-emerald-500' : 'bg-red-500'}`}></span>
+                {statusMsg.text}
               </div>
-              <button onClick={handleFullLogout} className="p-1.5 bg-zinc-800 hover:bg-zinc-700 rounded-lg text-zinc-500 border border-zinc-700" title="Full Logout">
-                <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7" /></svg>
-              </button>
+            )}
+
+            <div className="h-4 w-[1px] bg-zinc-800 mx-2"></div>
+
+            <div className="flex flex-col items-end">
+              <span className={`text-[9px] font-bold uppercase tracking-wider ${isLocalMode ? 'text-amber-500' : 'text-emerald-500'}`}>
+                {isLocalMode ? 'Offline Mode' : 'System Online'}
+              </span>
+              {isSyncing && <span className="text-[9px] text-zinc-500">Syncing...</span>}
             </div>
-            {isSyncing && (
-              <div className="flex items-center gap-2 bg-emerald-500/10 border border-emerald-500/20 px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-tighter text-emerald-400 animate-pulse">
-                <span className="w-1.5 h-1.5 bg-emerald-500 rounded-full animate-ping"></span>
-                Refreshing...
-              </div>
-            )}
-            {isLocalMode && (
-              <div className="text-[9px] font-bold text-amber-500/50 uppercase tracking-widest bg-amber-500/5 px-3 py-1 rounded-full border border-amber-500/10">
-                Backend Unreachable
-              </div>
-            )}
+
+            <button onClick={handleFullLogout} className="text-xs font-medium text-zinc-500 hover:text-white transition-colors" title="Switch User ID">
+              Switch ID
+            </button>
           </div>
 
           <div className="w-full">
             <header className="mb-10">
-              <h1 className="text-4xl font-black text-white tracking-tighter uppercase">
+              <h1 className="text-3xl font-bold text-white tracking-tight capitalize">
                 {activeTab.replace('-', ' ')}
               </h1>
               <p className="text-zinc-500 text-sm mt-1">
-                Currently in <span className="text-emerald-400 font-bold">{currentUser.role}</span> Portal
+                Manage your library activities and resources.
               </p>
             </header>
 
