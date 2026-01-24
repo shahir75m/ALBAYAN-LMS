@@ -2,8 +2,6 @@
 import React from 'react';
 import { Role, User } from '../types';
 import Logo from './Logo';
-import { useLanguage } from '../LanguageContext';
-import { useTheme } from '../ThemeContext';
 
 interface SidebarProps {
   role: Role;
@@ -15,29 +13,24 @@ interface SidebarProps {
   onCloseMobile?: () => void;
 }
 
-
 const Sidebar: React.FC<SidebarProps> = ({
   role, activeTab, setActiveTab, onLogout, user, isMobileOpen, onCloseMobile
 }) => {
-  const { t, language, setLanguage, isRTL } = useLanguage();
-  const { theme, toggleTheme } = useTheme();
-
   const navItems = role === 'ADMIN' ? [
-    { id: 'dashboard', label: t('dashboard'), icon: 'M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z' },
-    { id: 'books', label: t('books'), icon: 'M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253' },
-    { id: 'users', label: t('users'), icon: 'M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z' },
-    { id: 'requests', label: t('requests'), icon: 'M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4' },
-    { id: 'history', label: t('history'), icon: 'M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z' },
-    { id: 'fines', label: t('fines'), icon: 'M12 8c-1.657 0-3 1.343-3 3s1.343 3 3 3 3-1.343 3-3-1.343-3-3-3z M12 2C6.477 2 2 6.477 2 12s4.477 10 10 10 10-4.477 10-10S17.523 2 12 2z M12 20c-4.411 0-8-3.589-8-8s3.589-8 8-8 8 3.589 8 8-3.589 8-8 8z' },
-    { id: 'about', label: t('about'), icon: 'M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z' },
+    { id: 'dashboard', label: 'Dashboard', icon: 'M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z' },
+    { id: 'books', label: 'Books Catalog', icon: 'M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253' },
+    { id: 'users', label: 'Students & Staff', icon: 'M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z' },
+    { id: 'requests', label: 'Confirmations', icon: 'M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4' },
+    { id: 'history', label: 'Issue History', icon: 'M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z' },
+    { id: 'fines', label: 'Library Fines', icon: 'M12 8c-1.657 0-3 1.343-3 3s1.343 3 3 3 3-1.343 3-3-1.343-3-3-3z M12 2C6.477 2 2 6.477 2 12s4.477 10 10 10 10-4.477 10-10S17.523 2 12 2z M12 20c-4.411 0-8-3.589-8-8s3.589-8 8-8 8 3.589 8 8-3.589 8-8 8z' },
+    { id: 'about', label: 'About Library', icon: 'M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z' },
   ] : [
-    { id: 'dashboard', label: t('dashboard'), icon: 'M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6' },
-    { id: 'catalog', label: t('catalog'), icon: 'M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253' },
-    { id: 'my-requests', label: t('requests'), icon: 'M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4' },
-    { id: 'my-fines', label: t('fines'), icon: 'M12 8c-1.657 0-3 1.343-3 3s1.343 3 3 3 3-1.343 3-3-1.343-3-3-3z M12 2C6.477 2 2 6.477 2 12s4.477 10 10 10 10-4.477 10-10S17.523 2 12 2z M12 20c-4.411 0-8-3.589-8-8s3.589-8 8-8 8 3.589 8 8-3.589 8-8 8z' },
-    { id: 'about', label: t('about'), icon: 'M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z' },
+    { id: 'dashboard', label: 'My Dashboard', icon: 'M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6' },
+    { id: 'catalog', label: 'Library Books', icon: 'M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253' },
+    { id: 'my-requests', label: 'My Requests', icon: 'M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4' },
+    { id: 'my-fines', label: 'My Fines', icon: 'M12 8c-1.657 0-3 1.343-3 3s1.343 3 3 3 3-1.343 3-3-1.343-3-3-3z M12 2C6.477 2 2 6.477 2 12s4.477 10 10 10 10-4.477 10-10S17.523 2 12 2z M12 20c-4.411 0-8-3.589-8-8s3.589-8 8-8 8 3.589 8 8-3.589 8-8 8z' },
+    { id: 'about', label: 'About Library', icon: 'M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z' },
   ];
-
 
   return (
     <>
@@ -49,21 +42,20 @@ const Sidebar: React.FC<SidebarProps> = ({
         />
       )}
 
-
       <div className={`
-        fixed md:static inset-y-0 ${isRTL ? 'right-0 border-l' : 'left-0 border-r'} z-[80]
-        w-64 bg-[var(--bg-card)] border-zinc-900 flex flex-col shrink-0
+        fixed md:static inset-y-0 left-0 z-[80]
+        w-64 bg-[#0c0c0e] border-r border-zinc-900 flex flex-col shrink-0
         transition-transform duration-300 ease-in-out
-        ${isMobileOpen ? 'translate-x-0' : (isRTL ? 'translate-x-full' : '-translate-x-full')}
+        ${isMobileOpen ? 'translate-x-0' : '-translate-x-full'}
         md:translate-x-0
       `}>
         <div className="p-6 flex-1 overflow-y-auto no-scrollbar">
           <div className="flex items-center justify-between mb-10">
-            <div className={`flex items-center gap-4 ${isRTL ? 'flex-row-reverse' : ''}`}>
+            <div className="flex items-center gap-4">
               <Logo className="w-12 h-12 md:w-14 md:h-14" />
-              <div className={isRTL ? 'text-right' : ''}>
-                <span className="block text-[var(--text-primary)] font-serif tracking-tight text-xl leading-none">BAYANUL</span>
-                <span className="block text-[var(--text-primary)] font-serif tracking-tight text-xl leading-none">ULOOM</span>
+              <div>
+                <span className="block text-white font-serif tracking-tight text-xl leading-none">BAYANUL</span>
+                <span className="block text-white font-serif tracking-tight text-xl leading-none">ULOOM</span>
               </div>
             </div>
             {/* Mobile Close Button */}
@@ -85,10 +77,10 @@ const Sidebar: React.FC<SidebarProps> = ({
                 className={`w-full flex items-center gap-3 px-4 py-3 text-sm font-medium rounded-xl transition-all relative group ${activeTab === item.id
                   ? 'text-emerald-500 bg-emerald-500/5'
                   : 'text-zinc-500 hover:text-zinc-300 hover:bg-zinc-900/50'
-                  } ${isRTL ? 'flex-row-reverse text-right' : ''}`}
+                  }`}
               >
                 {activeTab === item.id && (
-                  <div className={`absolute ${isRTL ? 'right-0' : 'left-0'} w-1 h-5 bg-emerald-500 rounded-r-full`} />
+                  <div className="absolute left-0 w-1 h-5 bg-emerald-500 rounded-r-full" />
                 )}
                 <svg className={`w-5 h-5 transition-colors ${activeTab === item.id ? 'text-emerald-500' : 'text-zinc-500 group-hover:text-zinc-400'}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d={item.icon} />
@@ -97,45 +89,10 @@ const Sidebar: React.FC<SidebarProps> = ({
               </button>
             ))}
           </nav>
-
-          {/* Language & Theme Controls */}
-          <div className="mt-8 pt-8 border-t border-zinc-900/50 space-y-4">
-            <div className="flex items-center justify-between px-2">
-              <span className="text-[10px] font-black text-zinc-600 uppercase tracking-widest">{t('language')}</span>
-              <div className="flex gap-2">
-                {['en', 'ml', 'ar'].map((lang) => (
-                  <button
-                    key={lang}
-                    onClick={() => setLanguage(lang as any)}
-                    className={`text-[10px] font-black uppercase w-7 h-7 flex items-center justify-center rounded-lg border transition-all ${language === lang
-                      ? 'bg-emerald-500/10 border-emerald-500/20 text-emerald-500'
-                      : 'border-zinc-800 text-zinc-600 hover:border-zinc-700'}`}
-                  >
-                    {lang}
-                  </button>
-                ))}
-              </div>
-            </div>
-
-            <button
-              onClick={toggleTheme}
-              className="w-full flex items-center justify-between px-4 py-3 bg-zinc-900/30 border border-zinc-800/50 rounded-xl hover:bg-zinc-900/50 transition-all group"
-            >
-              <span className="text-xs font-bold text-zinc-500 group-hover:text-zinc-400">{t('theme')}</span>
-              <div className="flex items-center gap-2">
-                <span className="text-[10px] font-black uppercase text-emerald-500/80">{t(theme as any)}</span>
-                {theme === 'dark' ? (
-                  <svg className="w-4 h-4 text-amber-500" fill="currentColor" viewBox="0 0 20 20"><path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" /></svg>
-                ) : (
-                  <svg className="w-4 h-4 text-blue-500" fill="currentColor" viewBox="0 0 20 20"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z" /></svg>
-                )}
-              </div>
-            </button>
-          </div>
         </div>
 
-        <div className="p-6 border-t border-zinc-900 bg-[var(--bg-main)]/50">
-          <div className={`flex items-center gap-3 mb-6 p-2 rounded-xl border border-transparent hover:border-zinc-800/50 transition-all ${isRTL ? 'flex-row-reverse text-right' : ''}`}>
+        <div className="p-6 border-t border-zinc-900 bg-[#09090b]/50">
+          <div className="flex items-center gap-3 mb-6 p-2 rounded-xl border border-transparent hover:border-zinc-800/50 transition-all">
             <div className="w-10 h-10 rounded-xl bg-zinc-900 flex items-center justify-center text-zinc-500 border border-zinc-800 font-medium shadow-sm overflow-hidden shrink-0">
               {user.avatarUrl ? (
                 <img src={user.avatarUrl} alt={user.name} className="w-full h-full object-cover" />
@@ -144,8 +101,8 @@ const Sidebar: React.FC<SidebarProps> = ({
               )}
             </div>
             <div className="min-w-0">
-              <p className="text-sm font-medium text-[var(--text-primary)] truncate">{user.name}</p>
-              <p className="text-[10px] text-[var(--text-secondary)] font-medium uppercase tracking-wider">{role}</p>
+              <p className="text-sm font-medium text-white/90 truncate">{user.name}</p>
+              <p className="text-[10px] text-zinc-600 font-medium uppercase tracking-wider">{role}</p>
             </div>
           </div>
 
@@ -157,12 +114,12 @@ const Sidebar: React.FC<SidebarProps> = ({
                 onLogout();
               }}
               type="button"
-              className={`w-full flex items-center gap-3 px-4 py-3 text-xs font-medium text-zinc-500 hover:text-red-400 hover:bg-red-500/5 rounded-xl transition-all group ${isRTL ? 'flex-row-reverse text-right' : ''}`}
+              className="w-full flex items-center gap-3 px-4 py-3 text-xs font-medium text-zinc-500 hover:text-red-400 hover:bg-red-500/5 rounded-xl transition-all group"
             >
-              <svg className={`w-4 h-4 group-hover:${isRTL ? '-translate-x-1' : 'translate-x-1'} transition-transform`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg className="w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
               </svg>
-              {t('logout')}
+              Sign Out
             </button>
 
             <div className="flex items-center justify-center gap-4 pt-4 border-t border-zinc-900/50 mt-2">
