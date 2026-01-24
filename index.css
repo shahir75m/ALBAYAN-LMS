@@ -4,7 +4,21 @@
 
 @layer base {
   body {
-    @apply bg-[#0f0f11] text-zinc-300 font-sans antialiased selection:bg-emerald-500/20 overflow-x-hidden;
+    @apply bg-zinc-950 text-zinc-300 font-sans antialiased selection:bg-emerald-500/30 selection:text-emerald-200 overflow-x-hidden;
+  }
+
+  /* Premium Scrollbar */
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+
+  ::-webkit-scrollbar-track {
+    @apply bg-transparent;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    @apply bg-zinc-800 rounded-full hover:bg-zinc-700 transition-colors;
   }
 }
 
@@ -23,13 +37,21 @@
     animation-name: zoomIn;
   }
 
+  .slide-in-from-bottom-2 {
+    animation-name: slideInFromBottom;
+  }
+
   .slide-in-from-bottom-4 {
     animation-name: slideInFromBottom;
   }
 
+  .slide-in-from-top-2 {
+    animation-name: slideInFromTop;
+  }
+
   /* Minimal glassy card - no heavy borders/shadows */
   .glass-card {
-    @apply bg-zinc-900/30 backdrop-blur-md border border-white/5 shadow-sm;
+    @apply bg-zinc-900/40 backdrop-blur-xl border border-white/5 shadow-sm;
   }
 }
 
@@ -67,6 +89,18 @@
   }
 }
 
+@keyframes slideInFromTop {
+  from {
+    transform: translateY(-10px);
+    opacity: 0;
+  }
+
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
 /* Scanner Overrides */
 #barcode-reader__dashboard {
   background-color: transparent !important;
@@ -75,25 +109,14 @@
 }
 
 #barcode-reader__camera_selection {
-  background: #18181b !important;
-  color: white !important;
-  border: 1px solid #27272a !important;
-  border-radius: 6px !important;
-  padding: 4px !important;
-  font-size: 13px !important;
+  @apply bg-zinc-900 text-zinc-300 border border-zinc-800 rounded-lg p-1 text-xs outline-none focus:border-emerald-500/50 transition-colors !important;
 }
 
 #barcode-reader button {
-  background: #10b981 !important;
-  color: white !important;
+  @apply bg-emerald-600 hover:bg-emerald-500 text-white rounded-lg px-4 py-1.5 text-xs font-bold uppercase tracking-wider transition-all !important;
   border: none !important;
-  padding: 6px 12px !important;
-  border-radius: 6px !important;
-  font-weight: 600 !important;
-  font-size: 13px !important;
-  cursor: pointer !important;
 }
 
 #barcode-reader video {
-  border-radius: 8px !important;
+  @apply rounded-xl border border-zinc-800 !important;
 }
