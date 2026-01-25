@@ -62,11 +62,17 @@ const Login: React.FC<LoginProps> = ({ onLogin, onIdentify, initialIdentity, onC
   };
 
   const filteredUsers = useMemo(() => {
-    // Show all users in the general directory, or specific ones if needed
-    const list = [...availableUsers];
+    let list = [...availableUsers];
 
-    if (selectedRole === 'ADMIN' && !list.find(u => u.id === storedAdminPass)) {
-      list.push({ id: storedAdminPass, name: 'Master Admin', role: 'ADMIN', class: 'System' });
+    if (selectedRole === 'ADMIN') {
+      // Admin Directory flow: show ONLY Admins
+      list = list.filter(u => u.role === 'ADMIN');
+      if (!list.find(u => u.id === storedAdminPass)) {
+        list.push({ id: storedAdminPass, name: 'Master Admin', role: 'ADMIN', class: 'System' });
+      }
+    } else {
+      // Library Portal flow: show everyone (Students, Usthads, Admins)
+      // No extra filtering needed for 'list' here
     }
 
     return list.filter(u =>
