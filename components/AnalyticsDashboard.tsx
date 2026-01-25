@@ -116,16 +116,16 @@ const AnalyticsDashboard: React.FC<AnalyticsDashboardProps> = ({ books, users, h
                 {/* Category Pie Chart */}
                 <div className="bg-[#0c0c0e] border border-zinc-900 p-6 rounded-3xl">
                     <h3 className="text-xs font-black text-zinc-400 uppercase tracking-[0.2em] mb-8">Collection by Category</h3>
-                    <div className="h-80 w-full flex items-center">
+                    <div className="h-80 w-full">
                         <ResponsiveContainer width="100%" height="100%">
                             <PieChart>
                                 <Pie
                                     data={categoryData}
-                                    cx="50%"
+                                    cx="40%"
                                     cy="50%"
-                                    innerRadius={60}
-                                    outerRadius={100}
-                                    paddingAngle={5}
+                                    innerRadius={50}
+                                    outerRadius={80}
+                                    paddingAngle={3}
                                     dataKey="value"
                                     stroke="none"
                                 >
@@ -134,9 +134,15 @@ const AnalyticsDashboard: React.FC<AnalyticsDashboardProps> = ({ books, users, h
                                     ))}
                                 </Pie>
                                 <Tooltip
-                                    contentStyle={{ backgroundColor: '#09090b', border: '1px solid #27272a', borderRadius: '12px', fontSize: '12px' }}
+                                    contentStyle={{ backgroundColor: '#09090b', border: '1px solid #27272a', borderRadius: '10px', fontSize: '10px' }}
                                 />
-                                <Legend verticalAlign="bottom" height={36} />
+                                <Legend
+                                    layout="vertical"
+                                    align="right"
+                                    verticalAlign="middle"
+                                    iconSize={8}
+                                    formatter={(value) => <span style={{ color: '#a1a1aa', fontSize: '10px', fontWeight: 'bold', textTransform: 'uppercase' }}>{value}</span>}
+                                />
                             </PieChart>
                         </ResponsiveContainer>
                     </div>
