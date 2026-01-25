@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect, useRef } from 'react';
 import { User, Role } from '../types';
 
@@ -37,86 +36,81 @@ const UserForm: React.FC<UserFormProps> = ({ onClose, onSubmit, initialData }) =
     onSubmit(formData);
   };
 
+  const GlassInput = ({ label, ...props }: any) => (
+    <div>
+      <label className="block text-[8px] font-black text-zinc-500 uppercase tracking-[0.4em] mb-2 px-1">{label}</label>
+      <input
+        {...props}
+        className="w-full bg-white/[0.03] border border-white/5 rounded-2xl px-6 py-4 text-sm text-white placeholder:text-zinc-800 focus:bg-white/[0.05] focus:glow-emerald outline-none transition-all"
+      />
+    </div>
+  );
+
   return (
-    <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-[100] p-4">
-      <div className="bg-zinc-950 border border-zinc-900 w-full max-w-md rounded-2xl shadow-2xl overflow-hidden animate-in fade-in slide-in-from-bottom-2 duration-300">
-        <div className="px-6 py-4 border-b border-zinc-900 bg-zinc-900/20 flex justify-between items-center">
-          <h3 className="font-bold text-sm text-zinc-200 uppercase tracking-wide">{initialData ? 'Update Profile' : 'Register User'}</h3>
-          <button onClick={onClose} className="p-1.5 hover:bg-zinc-900 rounded-lg transition-all text-zinc-500 hover:text-white">
-            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M6 18L18 6M6 6l12 12" /></svg>
+    <div className="fixed inset-0 z-[10000] flex items-center justify-center p-4">
+      <div className="absolute inset-0 bg-black/90 backdrop-blur-2xl animate-in fade-in duration-700" onClick={onClose}></div>
+      <div className="relative w-full max-w-md glass-main border-white/5 rounded-[3.5rem] overflow-hidden animate-in zoom-in duration-500 flex flex-col shadow-[0_0_100px_-20px_rgba(0,0,0,1)]">
+        <div className="px-10 py-8 border-b border-white/5 bg-white/[0.02] flex justify-between items-center shrink-0">
+          <h3 className="font-black text-[10px] text-zinc-400 uppercase tracking-[0.4em]">{initialData ? 'Update Identity' : 'Register Identity'}</h3>
+          <button onClick={onClose} className="p-3 glass-card rounded-full text-zinc-600 hover:text-white transition-all">
+            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M6 18L18 6M6 6l12 12" /></svg>
           </button>
         </div>
 
-        <form onSubmit={handleSubmit} className="p-6 space-y-6">
+        <form onSubmit={handleSubmit} className="p-10 space-y-10">
           <div className="flex justify-center">
             <div
               onClick={() => fileInputRef.current?.click()}
-              className="w-24 h-24 rounded-full bg-zinc-900/50 border border-zinc-800 flex items-center justify-center cursor-pointer overflow-hidden group hover:border-zinc-700 transition-all shadow-inner relative"
+              className="w-28 h-28 rounded-full glass-card border-white/10 flex items-center justify-center cursor-pointer overflow-hidden group hover:glow-emerald transition-all relative"
             >
               {formData.avatarUrl ? (
-                <img src={formData.avatarUrl} alt="Avatar" className="w-full h-full object-cover" />
+                <img src={formData.avatarUrl} alt="Avatar" className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
               ) : (
                 <div className="text-center">
-                  <svg className="w-8 h-8 text-zinc-700 mx-auto group-hover:text-emerald-500 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <svg className="w-10 h-10 text-zinc-700 mx-auto group-hover:text-emerald-500 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" />
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M15 13a3 3 0 11-6 0 3 3 0 016 0z" />
                   </svg>
+                  <p className="text-[7px] font-black text-zinc-700 uppercase tracking-widest mt-2 group-hover:text-emerald-500 transition-colors">Upload</p>
                 </div>
               )}
             </div>
             <input type="file" ref={fileInputRef} className="hidden" accept="image/*" onChange={handleFileChange} />
           </div>
 
-          <div className="space-y-4">
-            <div>
-              <label className="block text-[10px] font-bold text-zinc-500 uppercase tracking-wider mb-2">Full Legal Name</label>
-              <input
-                required
-                className="w-full bg-zinc-900/50 border border-zinc-800 rounded-xl px-4 py-2.5 text-sm focus:border-emerald-500/50 outline-none text-white transition-all placeholder:text-zinc-700"
-                value={formData.name}
-                onChange={e => setFormData({ ...formData, name: e.target.value })}
-                placeholder="Enter full name"
-              />
-            </div>
-            <div>
-              <label className="block text-[10px] font-bold text-zinc-500 uppercase tracking-wider mb-2">Identity / Access ID</label>
-              <input
-                required
-                className="w-full bg-zinc-900/50 border border-zinc-800 rounded-xl px-4 py-2.5 text-sm focus:border-emerald-500/50 outline-none font-mono text-white transition-all disabled:opacity-50 placeholder:text-zinc-700"
-                value={formData.id === storedAdminPass ? '••••••••' : formData.id}
-                onChange={e => setFormData({ ...formData, id: e.target.value })}
-                disabled={!!initialData}
-                placeholder="Unique ID"
-              />
-            </div>
-            <div className="grid grid-cols-2 gap-4">
+          <div className="space-y-6">
+            <GlassInput label="Full Designation" required value={formData.name} onChange={(e: any) => setFormData({ ...formData, name: e.target.value })} placeholder="Enter identity label..." />
+
+            <GlassInput
+              label="Identity Hash"
+              required
+              value={formData.id === storedAdminPass ? '••••••••' : formData.id}
+              onChange={(e: any) => setFormData({ ...formData, id: e.target.value })}
+              disabled={!!initialData}
+              placeholder="Unique system descriptor"
+              style={{ fontFamily: 'monospace' }}
+            />
+
+            <div className="grid grid-cols-2 gap-6">
               <div>
-                <label className="block text-[10px] font-bold text-zinc-500 uppercase tracking-wider mb-2">Role</label>
+                <label className="block text-[8px] font-black text-zinc-500 uppercase tracking-[0.4em] mb-2 px-1">Privilege</label>
                 <select
-                  className="w-full bg-zinc-900/50 border border-zinc-800 rounded-xl px-4 py-2.5 text-sm focus:border-emerald-500/50 outline-none text-white transition-all cursor-pointer appearance-none"
+                  className="w-full bg-white/[0.03] border border-white/5 rounded-2xl px-6 py-4 text-sm text-white focus:bg-white/[0.05] focus:glow-emerald outline-none transition-all cursor-pointer appearance-none uppercase font-black text-[10px] tracking-widest"
                   value={formData.role}
                   onChange={e => setFormData({ ...formData, role: e.target.value as Role })}
                 >
                   <option value="STUDENT">Student</option>
-                  <option value="ADMIN">Administrator</option>
+                  <option value="ADMIN">Admin</option>
                 </select>
               </div>
-              <div>
-                <label className="block text-[10px] font-bold text-zinc-500 uppercase tracking-wider mb-2">Class</label>
-                <input
-                  className="w-full bg-zinc-900/50 border border-zinc-800 rounded-xl px-4 py-2.5 text-sm focus:border-emerald-500/50 outline-none text-white transition-all placeholder:text-zinc-700"
-                  placeholder="e.g. Grade 10A"
-                  value={formData.class}
-                  onChange={e => setFormData({ ...formData, class: e.target.value })}
-                />
-              </div>
+              <GlassInput label="Cluster Link" placeholder="e.g. Node 10A" value={formData.class} onChange={(e: any) => setFormData({ ...formData, class: e.target.value })} />
             </div>
           </div>
 
-          <div className="pt-4 flex justify-end gap-3 border-t border-zinc-900/50">
-            <button type="button" onClick={onClose} className="px-4 py-2 text-xs font-bold text-zinc-500 hover:text-white transition-colors uppercase tracking-wider">Discard</button>
-            <button type="submit" className="bg-emerald-600 hover:bg-emerald-500 text-white px-6 py-2 rounded-xl text-xs font-bold uppercase tracking-wider transition-all shadow-lg shadow-emerald-900/20 active:scale-95">
-              {initialData ? 'Save Changes' : 'Create Account'}
+          <div className="pt-10 flex justify-end gap-6 border-t border-white/5">
+            <button type="button" onClick={onClose} className="px-6 text-[10px] font-black text-zinc-600 hover:text-white transition-all uppercase tracking-[0.3em]">Discard</button>
+            <button type="submit" className="bg-emerald-600 hover:bg-emerald-500 text-white px-10 py-4 rounded-2xl text-[10px] font-black uppercase tracking-[0.3em] transition-all glow-emerald shadow-xl shadow-emerald-900/20 active:scale-[0.97]">
+              {initialData ? 'Commit Sync' : 'Initialize Node'}
             </button>
           </div>
         </form>

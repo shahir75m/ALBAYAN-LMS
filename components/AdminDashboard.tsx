@@ -277,54 +277,54 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
             )}
 
             {activeTab !== 'dashboard' && (
-                <div className="flex flex-col md:flex-row gap-4 items-center justify-between mb-8 pb-6 border-b border-zinc-900/50">
-                    <div className="flex gap-2 items-center w-full md:w-auto flex-1">
-                        <div className="relative w-full md:w-80 lg:w-[28rem]">
-                            <svg className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-zinc-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>
+                <div className="flex flex-col md:flex-row gap-6 items-center justify-between mb-12 pb-8 border-b border-white/5">
+                    <div className="flex gap-4 items-center w-full md:w-auto flex-1">
+                        <div className="relative w-full md:w-96 lg:w-[32rem] group">
+                            <svg className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-zinc-600 group-focus-within:text-emerald-500 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>
                             <input
                                 type="text"
-                                placeholder={activeTab === 'users' ? "Search name, ID or class..." : activeTab === 'history' ? "Search circulation records..." : activeTab === 'books' ? "Search title, author or ISBN..." : "Search archives..."}
+                                placeholder={activeTab === 'users' ? "Search digital identities..." : activeTab === 'history' ? "Search circulation logs..." : activeTab === 'books' ? "Search inventory database..." : "Search core archives..."}
                                 value={search} onChange={(e) => setSearch(e.target.value)}
-                                className="bg-[#0c0c0e] border border-zinc-900 rounded-xl pl-10 pr-4 py-2.5 text-sm text-white/90 focus:border-zinc-700 outline-none w-full transition-all"
+                                className="glass-main border-white/5 rounded-2xl pl-12 pr-6 py-3.5 text-sm text-white placeholder:text-zinc-700 focus:glow-emerald outline-none w-full transition-all"
                             />
                         </div>
                         {activeTab === 'books' && (
-                            <select value={filter} onChange={(e) => setFilter(e.target.value)} className="bg-[#0c0c0e] border border-zinc-900 rounded-xl px-4 py-2.5 text-sm focus:border-zinc-700 outline-none text-zinc-400 transition-all cursor-pointer">
+                            <select value={filter} onChange={(e) => setFilter(e.target.value)} className="glass-main border-white/5 rounded-2xl px-6 py-3.5 text-xs font-black uppercase tracking-widest focus:glow-emerald outline-none text-zinc-500 cursor-pointer transition-all">
                                 {categories.map(c => <option key={c.name} value={c.name}>{c.name} ({c.count})</option>)}
                             </select>
                         )}
                         {activeTab === 'users' && (
-                            <select value={filter} onChange={(e) => setFilter(e.target.value)} className="bg-[#0c0c0e] border border-zinc-900 rounded-xl px-4 py-2.5 text-sm focus:border-zinc-700 outline-none text-zinc-400 transition-all cursor-pointer">
-                                <option value="All">All Roles</option>
-                                <option value="STUDENT">Students</option>
-                                <option value="ADMIN">Administrators</option>
+                            <select value={filter} onChange={(e) => setFilter(e.target.value)} className="glass-main border-white/5 rounded-2xl px-6 py-3.5 text-xs font-black uppercase tracking-widest focus:glow-emerald outline-none text-zinc-500 cursor-pointer transition-all">
+                                <option value="All">Global Nodes</option>
+                                <option value="STUDENT">Student Persona</option>
+                                <option value="ADMIN">System Admin</option>
                             </select>
                         )}
                     </div>
 
-                    <div className="flex gap-2 w-full md:w-auto items-center">
+                    <div className="flex gap-3 w-full md:w-auto items-center">
                         {activeTab === 'books' && (
                             <>
                                 <input type="file" ref={importBooksInputRef} className="hidden" accept=".csv" onChange={handleBulkBookImport} />
-                                <button onClick={() => importBooksInputRef.current?.click()} className="border border-zinc-900 hover:border-zinc-800 text-zinc-400 font-medium text-xs py-2.5 px-6 rounded-xl flex items-center gap-2 transition-all">
-                                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" /></svg>
-                                    Import
+                                <button onClick={() => importBooksInputRef.current?.click()} className="glass-card border-white/5 hover:border-white/10 text-zinc-400 font-black text-[10px] uppercase tracking-[0.2em] py-3.5 px-8 rounded-2xl flex items-center gap-3 transition-all hover:text-white">
+                                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" /></svg>
+                                    Sync Data
                                 </button>
-                                <button onClick={() => { setEditingBook(null); setShowBookForm(true); }} className="bg-emerald-600 hover:bg-emerald-500 text-white font-medium text-xs py-2.5 px-6 rounded-xl flex items-center gap-2 transition-all active:scale-95 shadow-lg shadow-emerald-900/10">
-                                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" /></svg>
-                                    Add Book
+                                <button onClick={() => { setEditingBook(null); setShowBookForm(true); }} className="bg-emerald-600 hover:bg-emerald-500 text-white font-black text-[10px] uppercase tracking-[0.2em] py-3.5 px-8 rounded-2xl flex items-center gap-3 transition-all active:scale-95 glow-emerald shadow-xl shadow-emerald-900/20">
+                                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M12 4v16m8-8H4" /></svg>
+                                    Add Entry
                                 </button>
                             </>
                         )}
                         {activeTab === 'users' && (
                             <>
                                 <input type="file" ref={importUsersInputRef} className="hidden" accept=".csv" onChange={handleBulkUserImport} />
-                                <button onClick={() => importUsersInputRef.current?.click()} className="border border-zinc-900 hover:border-zinc-800 text-zinc-400 font-medium text-xs py-2.5 px-6 rounded-xl flex items-center gap-2 transition-all">
-                                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" /></svg>
-                                    Import
+                                <button onClick={() => importUsersInputRef.current?.click()} className="glass-card border-white/5 hover:border-white/10 text-zinc-400 font-black text-[10px] uppercase tracking-[0.2em] py-3.5 px-8 rounded-2xl flex items-center gap-3 transition-all hover:text-white">
+                                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" /></svg>
+                                    Import Personas
                                 </button>
-                                <button onClick={() => { setEditingUser(null); setShowUserForm(true); }} className="bg-emerald-600 hover:bg-emerald-500 text-white font-medium text-xs py-2.5 px-6 rounded-xl flex items-center gap-2 transition-all active:scale-95 shadow-lg shadow-emerald-900/10">
-                                    Add User
+                                <button onClick={() => { setEditingUser(null); setShowUserForm(true); }} className="bg-emerald-600 hover:bg-emerald-500 text-white font-black text-[10px] uppercase tracking-[0.2em] py-3.5 px-8 rounded-2xl flex items-center gap-3 transition-all active:scale-95 glow-emerald shadow-xl shadow-emerald-900/20">
+                                    Initialize Identity
                                 </button>
                             </>
                         )}
@@ -338,54 +338,59 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
 
             {/* Dashboard Content */}
             {activeTab === 'dashboard' && (
-                <div className="space-y-10 animate-in fade-in duration-700">
-                    <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
-                        <div className="flex items-center gap-4">
-                            <h2 className="text-xl font-black text-zinc-400 uppercase tracking-widest">Library Overview</h2>
-                            <button onClick={() => setShowPassModal(true)} className="p-2 bg-zinc-900 border border-zinc-800 rounded-xl hover:bg-zinc-800 transition-all text-zinc-500 hover:text-white" title="Change Admin Password">
-                                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" /><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" /></svg>
+                <div className="space-y-12 animate-in fade-in zoom-in duration-1000">
+                    <div className="flex flex-col md:flex-row md:items-center justify-between gap-8">
+                        <div className="flex items-center gap-6">
+                            <h2 className="text-3xl font-black text-white uppercase tracking-tighter flex items-baseline gap-3">
+                                Library <span className="text-emerald-500 opacity-60">Overview</span>
+                            </h2>
+                            <button onClick={() => setShowPassModal(true)} className="p-3 glass-card rounded-2xl hover:text-white transition-all text-zinc-500 group" title="Advanced Settings">
+                                <svg className="w-5 h-5 group-hover:rotate-90 transition-transform duration-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" /><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" /></svg>
                             </button>
                         </div>
                     </div>
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                        <StatCard title="Total Books" value={totalVolume} subtitle={`${uniqueTitles} Titles`} icon="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" color="emerald" />
-                        <StatCard title="Books Issued" value={issuedBooksCount} icon="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" color="blue" />
-                        <StatCard title="New Requests" value={pendingRequestsCount} icon="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" color="amber" />
-                        <StatCard title="Active Fines" value={fines.filter(f => f.status === 'PENDING').length} icon="M12 8c-1.657 0-3 1.343-3 3s1.343 3 3 3 3-1.343 3-3-1.343-3-3-3z" color="red" />
+                        <StatCard title="Global Inventory" value={totalVolume} subtitle={`${uniqueTitles} Units`} icon="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" color="emerald" />
+                        <StatCard title="Active Circulation" value={issuedBooksCount} icon="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" color="blue" />
+                        <StatCard title="Incoming Protocols" value={pendingRequestsCount} icon="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" color="amber" />
+                        <StatCard title="Outstanding Fines" value={fines.filter(f => f.status === 'PENDING').length} icon="M12 8c-1.657 0-3 1.343-3 3s1.343 3 3 3 3-1.343 3-3-1.343-3-3-3z" color="red" />
                     </div>
-                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
                         {/* Confirmations and Returns panels */}
-                        <div className="bg-zinc-900/10 border border-zinc-800 rounded-2xl overflow-hidden shadow-sm">
-                            <div className="px-6 py-4 border-b border-zinc-900/50 flex justify-between items-center bg-zinc-900/10">
-                                <h3 className="font-semibold text-xs text-zinc-300 uppercase tracking-widest">Confirmations</h3>
+                        <div className="glass-main border-white/5 rounded-[2.5rem] overflow-hidden">
+                            <div className="px-8 py-6 border-b border-white/5 flex justify-between items-center bg-white/[0.02]">
+                                <h3 className="font-black text-[10px] text-zinc-400 uppercase tracking-[0.3em]">Operational Gate</h3>
+                                <span className="text-[9px] font-black text-emerald-500 uppercase tracking-widest bg-emerald-500/10 px-3 py-1 rounded-full">Approvals</span>
                             </div>
-                            <div className="divide-y divide-zinc-900/50 max-h-[400px] overflow-y-auto no-scrollbar">
+                            <div className="divide-y divide-white/5 max-h-[450px] overflow-y-auto no-scrollbar">
                                 {requests.filter(r => r.status === 'PENDING').map(req => (
-                                    <div key={req.id} className="p-5 flex items-center justify-between hover:bg-zinc-900/20 transition-colors">
-                                        <div><p className="text-sm font-medium text-white/90">{req.userName}</p><p className="text-[11px] text-zinc-500 mt-0.5">Requested: <span className="text-zinc-400">{req.bookTitle}</span></p></div>
-                                        <div className="flex gap-2">
-                                            <button onClick={() => onHandleRequest(req.id, 'APPROVE')} className="px-3 py-1 bg-emerald-600/10 hover:bg-emerald-600/20 text-emerald-500 rounded text-xs font-bold">Approve</button>
-                                            <button onClick={() => onHandleRequest(req.id, 'DENY')} className="px-3 py-1 bg-zinc-800/50 hover:bg-zinc-800 text-zinc-400 rounded text-xs font-medium">Deny</button>
+                                    <div key={req.id} className="p-7 flex items-center justify-between hover:bg-white/[0.04] transition-all group">
+                                        <div><p className="text-sm font-bold text-white tracking-tight">{req.userName}</p><p className="text-[10px] text-zinc-500 font-bold uppercase tracking-widest mt-1">Requesting: <span className="text-emerald-400/80">{req.bookTitle}</span></p></div>
+                                        <div className="flex gap-3">
+                                            <button onClick={() => onHandleRequest(req.id, 'APPROVE')} className="px-5 py-2 glass-card border-emerald-500/20 hover:bg-emerald-500/10 text-emerald-400 rounded-xl text-[10px] font-black uppercase tracking-widest">Execute</button>
+                                            <button onClick={() => onHandleRequest(req.id, 'DENY')} className="px-5 py-2 glass-card border-white/5 hover:bg-white/10 text-zinc-500 hover:text-zinc-200 rounded-xl text-[10px] font-black uppercase tracking-widest">Reject</button>
                                         </div>
                                     </div>
                                 ))}
-                                {requests.filter(r => r.status === 'PENDING').length === 0 && <div className="p-16 text-center text-zinc-600 text-xs italic">No pending requests</div>}
+                                {requests.filter(r => r.status === 'PENDING').length === 0 && <div className="p-20 text-center text-zinc-700 text-[10px] font-black uppercase tracking-[0.4em]">Static: No pending tasks</div>}
                             </div>
                         </div>
 
-                        <div className="bg-zinc-900/10 border border-zinc-800 rounded-2xl overflow-hidden shadow-sm">
-                            <div className="px-6 py-4 border-b border-zinc-900/50 bg-zinc-900/10 flex items-center justify-between">
-                                <h3 className="font-semibold text-xs text-zinc-300 uppercase tracking-widest">Returns</h3>
-                                <input type="text" placeholder="Search..." value={returnSearch} onChange={(e) => setReturnSearch(e.target.value)} className="w-40 bg-zinc-900 border border-zinc-800 rounded-lg px-3 py-1 text-[10px] text-zinc-400 outline-none" />
+                        <div className="glass-main border-white/5 rounded-[2.5rem] overflow-hidden">
+                            <div className="px-8 py-6 border-b border-white/5 bg-white/[0.02] flex items-center justify-between">
+                                <h3 className="font-black text-[10px] text-zinc-400 uppercase tracking-[0.3em]">Circulation Hub</h3>
+                                <div className="relative">
+                                    <input type="text" placeholder="Filter node..." value={returnSearch} onChange={(e) => setReturnSearch(e.target.value)} className="w-48 glass-main border-white/10 rounded-full px-5 py-1.5 text-[10px] font-black tracking-widest text-zinc-400 placeholder:text-zinc-700 outline-none focus:glow-emerald transition-all" />
+                                </div>
                             </div>
-                            <div className="divide-y divide-zinc-900/50 max-h-[400px] overflow-y-auto no-scrollbar">
+                            <div className="divide-y divide-white/5 max-h-[450px] overflow-y-auto no-scrollbar">
                                 {activeCirculation.map(h => (
-                                    <div key={h.id} className="p-5 flex items-center justify-between hover:bg-zinc-900/20 transition-colors">
-                                        <div className="overflow-hidden pr-4"><p className="text-sm font-medium text-white/90 truncate">{h.bookTitle}</p><p className="text-[11px] text-zinc-500 font-medium truncate">Holder: {h.userName}</p></div>
-                                        <button onClick={() => { setSelectedReturn(h); setShowFineModal(true); setHasIssue(false); setFineAmount(0); setFineReason(''); }} className="shrink-0 px-3 py-1 border border-zinc-800 text-zinc-400 hover:text-white rounded text-[10px] font-bold uppercase transition-all">Return</button>
+                                    <div key={h.id} className="p-7 flex items-center justify-between hover:bg-white/[0.04] transition-all">
+                                        <div className="overflow-hidden pr-4"><p className="text-sm font-bold text-white tracking-tight truncate">{h.bookTitle}</p><p className="text-[10px] text-zinc-500 font-bold uppercase tracking-widest mt-1">Holder: <span className="text-blue-400/80">{h.userName}</span></p></div>
+                                        <button onClick={() => { setSelectedReturn(h); setShowFineModal(true); setHasIssue(false); setFineAmount(0); setFineReason(''); }} className="shrink-0 px-5 py-2 glass-card border-white/5 hover:text-white rounded-xl text-[10px] font-black uppercase tracking-widest transition-all">Recover</button>
                                     </div>
                                 ))}
-                                {activeCirculation.length === 0 && <div className="p-16 text-center text-zinc-600 text-xs italic">No active returns</div>}
+                                {activeCirculation.length === 0 && <div className="p-20 text-center text-zinc-700 text-[10px] font-black uppercase tracking-[0.4em]">Empty: All units docked</div>}
                             </div>
                         </div>
                     </div>
@@ -394,32 +399,41 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
 
             {/* Books Tab Content */}
             {activeTab === 'books' && (
-                <div className="space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-500">
-                    <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+                <div className="space-y-10 animate-in slide-in-from-bottom duration-1000">
+                    <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-8">
                         {filteredBooks.map(book => (
-                            <div key={book.id} className="bg-zinc-900/10 border border-zinc-800 rounded-2xl overflow-hidden group hover:border-zinc-700 transition-all shadow-sm">
-                                <div className="flex h-44">
-                                    <div className="w-[30%] overflow-hidden bg-zinc-900/30 relative">
-                                        <img src={book.coverUrl} alt={book.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                            <div key={book.id} className="glass-card rounded-[2.5rem] overflow-hidden group hover:glow-emerald transition-all relative">
+                                <div className="absolute top-4 right-4 z-10 flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                                    <button onClick={() => { setEditingBook(book); setShowBookForm(true); }} className="p-2.5 glass-card bg-black/60 rounded-xl text-emerald-400 hover:scale-110 transition-all"><svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" /></svg></button>
+                                    <button onClick={() => setConfirmDialog({ show: true, title: 'Decommission Asset', message: `Proceed with removal of "${book.title}"?`, onConfirm: () => onDeleteBook(book.id) })} className="p-2.5 glass-card bg-black/60 rounded-xl text-red-400 hover:scale-110 transition-all"><svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg></button>
+                                </div>
+
+                                <div className="h-64 overflow-hidden relative group-hover:h-56 transition-all duration-700">
+                                    <img src={book.coverUrl} alt={book.title} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-1000" />
+                                    <div className="absolute inset-0 bg-gradient-to-t from-[#050507] via-transparent to-transparent opacity-60" />
+                                </div>
+
+                                <div className="p-7 flex flex-col">
+                                    <div className="flex justify-between items-start mb-3">
+                                        <span className="text-[8px] font-black text-emerald-500 uppercase tracking-[0.3em] bg-emerald-500/10 px-2.5 py-1 rounded-full">{book.category}</span>
+                                        <p className="text-[9px] text-zinc-600 font-black tracking-widest uppercase">ID.#{book.id}</p>
                                     </div>
-                                    <div className="w-[70%] p-4 flex flex-col">
-                                        <div className="flex justify-between items-start mb-1">
-                                            <span className="text-[9px] font-bold text-emerald-500/80 uppercase tracking-wider">{book.category}</span>
-                                            <p className="text-[9px] text-zinc-600 font-mono">#{book.id}</p>
-                                        </div>
-                                        <h4 className="text-sm font-bold text-zinc-200 leading-tight mb-0.5 line-clamp-2">{book.title}</h4>
-                                        <p className="text-[10px] text-zinc-500 truncate mb-3">by {book.author}</p>
-                                        <div className="mt-auto flex justify-between items-end pt-3 border-t border-zinc-800/50">
-                                            <div>
-                                                <p className="text-[9px] text-zinc-600 font-bold uppercase tracking-wider">Stock</p>
-                                                <p className={`text-xs font-bold ${book.availableCopies === 0 ? 'text-red-400' : 'text-zinc-300'}`}>{book.availableCopies} / {book.totalCopies}</p>
-                                            </div>
-                                            <div className="flex gap-1">
-                                                <button onClick={() => setSelectedBookDetail(book)} className="p-1.5 text-zinc-500 hover:text-white bg-zinc-900/50 rounded-md transition-all"><svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M15 12a3 3 0 11-6 0 3 3 0 016 0zM2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" /></svg></button>
-                                                <button onClick={() => { setEditingBook(book); setShowBookForm(true); }} className="p-1.5 text-zinc-500 hover:text-emerald-500 bg-zinc-900/50 rounded-md transition-all"><svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" /></svg></button>
-                                                <button onClick={() => setConfirmDialog({ show: true, title: 'Delete Asset', message: `Remove "${book.title}" from inventory?`, onConfirm: () => onDeleteBook(book.id) })} className="p-1.5 text-zinc-500 hover:text-red-400 bg-zinc-900/50 rounded-md transition-all"><svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg></button>
+                                    <h4 className="text-lg font-black text-white leading-tight mb-1 truncate">{book.title}</h4>
+                                    <p className="text-[10px] text-zinc-500 font-bold uppercase tracking-widest mb-6">By {book.author}</p>
+
+                                    <div className="mt-auto flex justify-between items-end">
+                                        <div className="space-y-1">
+                                            <p className="text-[8px] text-zinc-600 font-black uppercase tracking-[0.2em]">Inventory Link</p>
+                                            <div className="flex items-center gap-2">
+                                                <div className="w-24 h-1.5 bg-zinc-900 rounded-full overflow-hidden">
+                                                    <div className="h-full bg-emerald-500 rounded-full shadow-[0_0_8px_#10b981]" style={{ width: `${(book.availableCopies / book.totalCopies) * 100}%` }} />
+                                                </div>
+                                                <span className="text-[10px] font-black text-zinc-200">{book.availableCopies}/{book.totalCopies}</span>
                                             </div>
                                         </div>
+                                        <button onClick={() => setSelectedBookDetail(book)} className="p-3 glass-card hover:glow-emerald text-emerald-400 rounded-2xl transition-all">
+                                            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0zM2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" /></svg>
+                                        </button>
                                     </div>
                                 </div>
                             </div>
@@ -593,18 +607,22 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
 
 const StatCard = ({ title, value, subtitle, icon, color }: any) => {
     const colorClasses: Record<string, string> = {
-        emerald: 'text-emerald-500 bg-emerald-500/5 border-emerald-500/20',
-        blue: 'text-blue-500 bg-blue-500/5 border-blue-500/20',
-        amber: 'text-amber-500 bg-amber-500/5 border-amber-500/20',
-        red: 'text-red-500 bg-red-500/5 border-red-500/20',
-        purple: 'text-purple-500 bg-purple-500/5 border-purple-500/20',
+        emerald: 'text-emerald-400 bg-emerald-500/10 border-emerald-500/20 glow-emerald',
+        blue: 'text-blue-400 bg-blue-500/10 border-blue-500/20 glow-cyan',
+        amber: 'text-amber-400 bg-amber-500/10 border-amber-500/20 shadow-[0_0_15px_-3px_rgba(245,158,11,0.3)]',
+        red: 'text-red-400 bg-red-500/10 border-red-500/20 shadow-[0_0_15px_-3px_rgba(239,68,68,0.3)]',
     };
     return (
-        <div className="bg-[#0c0c0e] border border-zinc-900 p-6 rounded-2xl transition-all hover:border-zinc-800 flex items-center gap-4">
-            <div className={`p-3 rounded-xl border ${colorClasses[color]}`}><svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d={icon} /></svg></div>
+        <div className="glass-main border-white/5 p-8 rounded-[2.5rem] transition-all hover:bg-white/[0.04] flex items-center gap-6 group">
+            <div className={`p-4 rounded-2xl border transition-all duration-500 group-hover:scale-110 ${colorClasses[color]}`}>
+                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d={icon} /></svg>
+            </div>
             <div>
-                <p className="text-[10px] font-medium text-zinc-500 uppercase tracking-wider">{title}</p>
-                <div className="flex items-baseline gap-2"><p className="text-xl font-semibold text-white/90">{value}</p>{subtitle && <p className="text-[10px] text-zinc-600 font-medium">{subtitle}</p>}</div>
+                <p className="text-[10px] font-black text-zinc-500 uppercase tracking-[0.2em] mb-1">{title}</p>
+                <div className="flex items-baseline gap-3">
+                    <p className="text-3xl font-black text-white tracking-tighter">{value}</p>
+                    {subtitle && <p className="text-[9px] text-zinc-600 font-black uppercase tracking-widest">{subtitle}</p>}
+                </div>
             </div>
         </div>
     );
