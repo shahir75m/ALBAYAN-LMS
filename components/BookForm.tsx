@@ -1,7 +1,5 @@
-
 import React, { useState, useEffect, useRef } from 'react';
 import { Book } from '../types';
-import { Html5QrcodeScanner } from 'html5-qrcode';
 
 interface BookFormProps {
   onClose: () => void;
@@ -18,10 +16,8 @@ const BookForm: React.FC<BookFormProps> = ({ onClose, onSubmit, initialData }) =
     currentBorrowers: []
   });
 
-  const [isScanning, setIsScanning] = useState(false);
   const [isFetching, setIsFetching] = useState(false);
   const [scanStatus, setScanStatus] = useState<'idle' | 'success' | 'error'>('idle');
-  const scannerRef = useRef<Html5QrcodeScanner | null>(null);
   const isbnInputRef = useRef<HTMLInputElement>(null);
 
   // local status logic for the modal
@@ -84,70 +80,6 @@ const BookForm: React.FC<BookFormProps> = ({ onClose, onSubmit, initialData }) =
     }
   };
 
-  const startScanner = () => {
-    setIsScanning(true);
-    setScanStatus('idle');
-    setTimeout(() => {
-      // Optimized for 1D Barcodes (ISBN)
-      scannerRef.current = new Html5QrcodeScanner(
-        "barcode-reader",
-        {
-          fps: 20,
-          qrbox: { width: 280, height: 150 },
-          aspectRatio: 1.0,
-          showTorchButtonIfSupported: true,
-          experimentalFeatures: {
-            useBarCodeDetectorIfSupported: true
-          }
-        },
-        /* verbose= */ false
-      );
-      scannerRef.current.render((decodedText) => {
-        // Success
-        if (scannerRef.current) {
-          scannerRef.current.clear().catch(console.error);
-        }
-        setIsScanning(false);
-
-        if (decodedText.startsWith('ALB_SMART:')) {
-          try {
-            const jsonStr = decodedText.replace('ALB_SMART:', '');
-            const data = JSON.parse(jsonStr);
-            setFormData(prev => ({
-              ...prev,
-              id: data.id || prev.id,
-              title: data.t || prev.title,
-              author: data.a || prev.author,
-              category: data.c || prev.category
-            }));
-            setScanStatus('success');
-            setStatusMsg("Smart Label Detected! Form auto-filled.");
-          } catch (err) {
-            console.error("Failed to parse Smart QR:", err);
-            setStatusMsg("Corrupted Smart QR data", "error");
-          }
-        } else if (decodedText.startsWith('ALBAYAN:BOOK:')) {
-          const bookId = decodedText.split(':').pop() || '';
-          setFormData(prev => ({ ...prev, id: bookId }));
-          setScanStatus('success');
-          setStatusMsg("Internal Asset ID detected!");
-        } else {
-          setFormData(prev => ({ ...prev, isbn: decodedText }));
-          fetchBookDetails(decodedText);
-        }
-      }, (errorMessage) => {
-        // Silently handle scan errors (common during focus)
-      });
-    }, 100);
-  };
-
-  const stopScanner = () => {
-    if (scannerRef.current) {
-      scannerRef.current.clear().then(() => setIsScanning(false)).catch(() => setIsScanning(false));
-    } else {
-      setIsScanning(false);
-    }
-  };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -173,54 +105,6 @@ const BookForm: React.FC<BookFormProps> = ({ onClose, onSubmit, initialData }) =
         )}
 
         <div className="p-6 overflow-y-auto no-scrollbar">
-          {/* Scanner Option */}
-          <div className="relative mb-6">
-            {!isScanning ? (
-              <button
-                type="button"
-                onClick={startScanner}
-                disabled={isFetching}
-                className="w-full py-8 border border-zinc-800 border-dashed rounded-xl flex flex-col items-center justify-center gap-2 group hover:border-zinc-600 hover:bg-zinc-900/50 transition-all"
-              >
-                <div className="w-10 h-10 rounded-lg bg-zinc-900/50 border border-zinc-800 flex items-center justify-center text-emerald-500 transition-colors group-hover:border-zinc-700">
-                  {isFetching ? (
-                    <svg className="w-5 h-5 animate-spin" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" /></svg>
-                  ) : (
-                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 4v1m6 11h2m-6 0h-2v4m0-11v3m0 0h.01M12 12h4.01M16 20h4M4 12h4m12 0h.01M5 8h2a1 1 0 001-1V5a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1zm12 0h2a1 1 0 001-1V5a1 1 0 00-1-1h-2a1 1 0 00-1 1v2a1 1 0 001 1zM5 20h2a1 1 0 001-1v-2a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1z" /></svg>
-                  )}
-                </div>
-                <div className="text-center">
-                  <p className="text-[11px] font-bold text-zinc-400 uppercase tracking-wide group-hover:text-zinc-200 transition-colors">
-                    {isFetching ? 'Processing metadata...' : 'Quick Scan'}
-                  </p>
-                  <p className="text-[9px] text-zinc-600 mt-0.5">Camera or Laser Scanner</p>
-                </div>
-              </button>
-            ) : (
-              <div className="w-full bg-zinc-900/50 border border-zinc-800 rounded-xl overflow-hidden p-4 relative">
-                <div className="flex justify-between items-center mb-4">
-                  <div className="flex items-center gap-2">
-                    <span className="w-1.5 h-1.5 bg-emerald-500 rounded-full animate-pulse shadow-[0_0_8px_rgba(16,185,129,0.5)]"></span>
-                    <p className="text-[10px] font-bold text-emerald-500/90 uppercase tracking-widest">Scanner Active</p>
-                  </div>
-                  <button onClick={stopScanner} className="text-[10px] font-medium text-zinc-500 hover:text-white transition-colors">Close Camera</button>
-                </div>
-
-                <div className="relative">
-                  <div id="barcode-reader" className="overflow-hidden rounded-lg grayscale invert hue-rotate-180 brightness-110 contrast-125 border border-zinc-800"></div>
-                  {/* Visual Guide Line */}
-                  <div className="absolute top-1/2 left-0 right-0 h-[1px] bg-emerald-500/30 shadow-[0_0_8px_rgba(16,185,129,0.5)] z-10 pointer-events-none"></div>
-                </div>
-
-                <div className="mt-4 text-center">
-                  <p className="text-[9px] text-zinc-600 leading-relaxed italic">
-                    Place the book barcode clearly inside the frame.<br />
-                    Ensure good lighting and avoid reflections.
-                  </p>
-                </div>
-              </div>
-            )}
-          </div>
 
           <form onSubmit={handleSubmit} className="space-y-5">
             <div>
