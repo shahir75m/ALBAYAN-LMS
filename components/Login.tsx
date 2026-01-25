@@ -240,7 +240,7 @@ const Login: React.FC<LoginProps> = ({ onLogin, onIdentify, initialIdentity, onC
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M10 19l-7-7m0 0l7-7m-7 7h18" /></svg>
               Back
             </button>
-            <span className="text-xs font-bold text-zinc-600 uppercase tracking-widest">LIBRARY DIRECTORY</span>
+            <span className="text-xs font-bold text-zinc-600 uppercase tracking-widest">{selectedRole === 'ADMIN' ? 'ADMIN' : 'LIBRARY'} DIRECTORY</span>
           </div>
 
           <h2 className="text-2xl font-bold text-white mb-6">Select Your Profile</h2>
