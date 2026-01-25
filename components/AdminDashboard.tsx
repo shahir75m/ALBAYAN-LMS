@@ -28,6 +28,7 @@ interface AdminDashboardProps {
     onHandleRequest: (id: string, action: 'APPROVE' | 'DENY') => void;
     onReturnBook: (bid: string, uid: string, fine?: { amount: number, reason: string }) => void;
     onPayFine: (id: string) => void;
+    onBorrow: (bookId: string) => void;
     globalStatus: { msg: { text: string, type: 'success' | 'error' } | null, set: (text: string, type?: 'success' | 'error') => void };
 }
 
@@ -35,7 +36,7 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
     activeTab, books, users, requests, history, fines,
     onAddBook, onUpdateBook, onDeleteBook, onBulkAddBooks,
     onAddUser, onUpdateUser, onDeleteUser, onBulkAddUsers,
-    onHandleRequest, onReturnBook, onPayFine,
+    onHandleRequest, onReturnBook, onPayFine, onBorrow,
     globalStatus
 }) => {
     const [showBookForm, setShowBookForm] = useState(false);
@@ -624,7 +625,15 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
                                 <div><p className="text-[10px] font-black text-zinc-600 uppercase">Stock</p><p className="text-xs text-zinc-300 mt-1">{selectedBookDetail.availableCopies} / {selectedBookDetail.totalCopies}</p></div>
                                 <div><p className="text-[10px] font-black text-zinc-600 uppercase">Value</p><p className="text-xs text-zinc-300 mt-1">₹{selectedBookDetail.price}</p></div>
                             </div>
-                            <button onClick={() => { setEditingBook(selectedBookDetail); setShowBookForm(true); setSelectedBookDetail(null); }} className="w-full py-4 bg-zinc-900 border border-zinc-800 text-zinc-400 font-black uppercase text-xs tracking-widest rounded-2xl hover:text-white transition-all">Edit Specifications</button>
+                            <div className="flex flex-col gap-3">
+                                <button
+                                    onClick={() => { onBorrow(selectedBookDetail.id); setSelectedBookDetail(null); }}
+                                    className="w-full py-4 bg-emerald-600 text-white font-black uppercase text-xs tracking-widest rounded-2xl hover:bg-emerald-500 transition-all shadow-lg shadow-emerald-900/20"
+                                >
+                                    Borrow This Book (Self)
+                                </button>
+                                <button onClick={() => { setEditingBook(selectedBookDetail); setShowBookForm(true); setSelectedBookDetail(null); }} className="w-full py-4 bg-zinc-900 border border-zinc-800 text-zinc-400 font-black uppercase text-xs tracking-widest rounded-2xl hover:text-white transition-all">Edit Specifications</button>
+                            </div>
                         </div>
                     </div>
                 </div>

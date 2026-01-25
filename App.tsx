@@ -330,6 +330,7 @@ const App: React.FC = () => {
                 onAddUser={handleAddOrUpdateUser} onUpdateUser={handleAddOrUpdateUser} onDeleteUser={handleDeleteUser}
                 onBulkAddUsers={handleBulkAddUsers}
                 onHandleRequest={handleRequestAction} onReturnBook={handleReturnBook} onPayFine={handlePayFine}
+                onBorrow={handleBorrowRequest}
                 globalStatus={{ msg: statusMsg, set: setStatusMsg }}
               />
             ) : (

@@ -62,14 +62,17 @@ const Login: React.FC<LoginProps> = ({ onLogin, onIdentify, initialIdentity, onC
   };
 
   const filteredUsers = useMemo(() => {
-    const list = [...availableUsers].filter(u => u.role === selectedRole);
+    // Show all users in the general directory, or specific ones if needed
+    const list = [...availableUsers];
+
     if (selectedRole === 'ADMIN' && !list.find(u => u.id === storedAdminPass)) {
       list.push({ id: storedAdminPass, name: 'Master Admin', role: 'ADMIN', class: 'System' });
     }
+
     return list.filter(u =>
       u.name.toLowerCase().includes(userSearch.toLowerCase()) ||
       u.id.toLowerCase().includes(userSearch.toLowerCase())
-    );
+    ).sort((a, b) => a.name.localeCompare(b.name));
   }, [availableUsers, selectedRole, userSearch]);
 
   // --- Components for Sub-steps ---
@@ -191,8 +194,8 @@ const Login: React.FC<LoginProps> = ({ onLogin, onIdentify, initialIdentity, onC
               <div className="w-16 h-16 bg-zinc-950 rounded-2xl flex items-center justify-center text-emerald-500 mb-6 shadow-sm group-hover:scale-110 transition-transform duration-500">
                 <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" /></svg>
               </div>
-              <span className="text-lg font-semibold text-white mb-2">Enter as Student</span>
-              <span className="text-xs text-zinc-500 uppercase tracking-widest group-hover:text-emerald-500 transition-colors">Click to Browse</span>
+              <span className="text-lg font-semibold text-white mb-2">Enter Library Portal</span>
+              <span className="text-xs text-zinc-500 uppercase tracking-widest group-hover:text-emerald-500 transition-colors">Students, Usthads & Staff</span>
             </div>
           </button>
 
@@ -231,7 +234,7 @@ const Login: React.FC<LoginProps> = ({ onLogin, onIdentify, initialIdentity, onC
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M10 19l-7-7m0 0l7-7m-7 7h18" /></svg>
               Back
             </button>
-            <span className="text-xs font-bold text-zinc-600 uppercase tracking-widest">{selectedRole} DIRECTORY</span>
+            <span className="text-xs font-bold text-zinc-600 uppercase tracking-widest">LIBRARY DIRECTORY</span>
           </div>
 
           <h2 className="text-2xl font-bold text-white mb-6">Select Your Profile</h2>
@@ -260,8 +263,13 @@ const Login: React.FC<LoginProps> = ({ onLogin, onIdentify, initialIdentity, onC
                       {user.name.charAt(0)}
                     </div>
                     <div>
-                      <p className="text-sm font-medium text-white group-hover:text-emerald-400 transition-colors">{user.name}</p>
-                      <p className="text-[10px] text-zinc-500 uppercase tracking-wider">{user.id === storedAdminPass ? 'MASTER ADMIN' : user.id}</p>
+                      <div className="flex items-center gap-2">
+                        <p className="text-sm font-medium text-white group-hover:text-emerald-400 transition-colors">{user.name}</p>
+                        <span className={`px-1.5 py-0.5 rounded-[4px] text-[8px] font-black uppercase tracking-tighter border ${user.role === 'ADMIN' ? 'bg-purple-500/10 text-purple-500 border-purple-500/20' : user.role === 'USTHAD' ? 'bg-amber-500/10 text-amber-500 border-amber-500/20' : 'bg-emerald-500/10 text-emerald-500 border-emerald-500/20'}`}>
+                          {user.role}
+                        </span>
+                      </div>
+                      <p className="text-[10px] text-zinc-500 uppercase tracking-wider">{user.id === storedAdminPass ? 'SYSTEM ACCESS' : user.id}</p>
                     </div>
                   </button>
                 ))}
