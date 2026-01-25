@@ -235,109 +235,111 @@ const App: React.FC = () => {
 
   if (loading) return <Splash />;
 
+  if (!currentUser) {
+    return (
+      <Login
+        onLogin={handleLogin}
+        onIdentify={handleIdentify}
+        initialIdentity={cloudIdentity}
+        onClearIdentity={handleFullLogout}
+        availableUsers={users}
+      />
+    );
+  }
+
   return (
-    <div className="min-h-screen bg-[#030305] text-white selection:bg-emerald-500/30 overflow-x-hidden relative">
-      {/* Atmospheric Background Blobs */}
-      <div className="bg-blob w-[800px] h-[800px] bg-emerald-500/20 -top-40 -left-40 animate-float" />
-      <div className="bg-blob w-[600px] h-[600px] bg-blue-500/10 top-1/2 -right-20 animate-float-delayed" />
-      <div className="bg-blob w-[700px] h-[700px] bg-purple-500/10 -bottom-40 left-1/4 animate-float-fast" />
+    <div className="flex h-screen bg-zinc-950 text-zinc-300 overflow-hidden font-sans">
+      <Sidebar
+        role={currentUser.role}
+        activeTab={activeTab}
+        setActiveTab={(tab) => {
+          setActiveTab(tab);
+          setIsMobileMenuOpen(false);
+        }}
+        onLogout={handleSwitchPortal}
+        user={currentUser}
+        isMobileOpen={isMobileMenuOpen}
+        onCloseMobile={() => setIsMobileMenuOpen(false)}
+      />
 
-      {statusMsg && (
-        <div className="fixed top-6 left-1/2 -translate-x-1/2 z-[100] pointer-events-none">
-          <div className={`flex items-center gap-3 px-8 py-4 rounded-full text-[10px] font-black uppercase tracking-[0.2em] animate-in slide-in-from-top-4 border backdrop-blur-xl ${statusMsg.type === 'success' ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20' : 'bg-red-500/10 text-red-500 border-red-500/20'
-            }`}>
-            <span className={`w-2 h-2 rounded-full ${statusMsg.type === 'success' ? 'bg-emerald-500 shadow-[0_0_8px_#10b981]' : 'bg-red-500 shadow-[0_0_8px_#ef4444]'} animate-pulse`}></span>
-            {statusMsg.text}
+      <main className="flex-1 overflow-y-auto relative flex flex-col">
+
+        {/* Mobile Header */}
+        <div className="md:hidden bg-zinc-900/50 border-b border-zinc-800 p-4 flex items-center justify-between shrink-0 sticky top-0 z-40 backdrop-blur-md">
+          <button onClick={() => setIsMobileMenuOpen(true)} className="p-2 text-zinc-400 hover:text-white transition-colors">
+            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16m-7 6h7" /></svg>
+          </button>
+          <div className="flex items-center gap-2">
+            <Logo className="w-6 h-6" />
+            <span className="font-bold text-white text-sm">ALBAYAN</span>
           </div>
+          <button onClick={handleSwitchPortal} className="p-2 text-zinc-400">
+            <div className="w-8 h-8 rounded-full bg-zinc-800 flex items-center justify-center">
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7" /></svg>
+            </div>
+          </button>
         </div>
-      )}
 
-      {!currentUser ? (
-        <Login
-          onLogin={handleLogin}
-          onIdentify={handleIdentify}
-          initialIdentity={cloudIdentity}
-          onClearIdentity={handleFullLogout}
-          availableUsers={users}
-        />
-      ) : (
-        <div className="flex flex-col lg:flex-row min-h-screen relative z-10">
-          <Sidebar
-            role={currentUser.role}
-            activeTab={activeTab}
-            setActiveTab={(tab) => {
-              setActiveTab(tab);
-              setIsMobileMenuOpen(false);
-            }}
-            onLogout={handleSwitchPortal}
-            user={currentUser}
-            isMobileOpen={isMobileMenuOpen}
-            onCloseMobile={() => setIsMobileMenuOpen(false)}
-          />
-          <main className="flex-1 p-6 lg:p-12 overflow-x-hidden">
-            <header className="mb-12 flex items-center justify-between">
-              <div className="space-y-1">
-                <h1 className="text-4xl font-black tracking-tighter uppercase">
-                  {activeTab === 'dashboard' ? 'Neural Core' :
-                    activeTab === 'books' || activeTab === 'catalog' ? 'Data Vault' :
-                      activeTab === 'users' ? 'User Matrix' :
-                        activeTab === 'requests' || activeTab === 'my-requests' ? 'Access Control' :
-                          activeTab === 'fines' || activeTab === 'my-fines' ? 'Financial Hub' :
-                            activeTab === 'analytics' ? 'System Intel' :
-                              activeTab.replace('-', ' ')}
-                </h1>
-                <p className="text-[10px] font-black text-zinc-600 uppercase tracking-[0.4em] flex items-center gap-3">
-                  <span className="w-2 h-2 bg-emerald-500 rounded-full animate-pulse shadow-[0_0_8px_#10b981]" />
-                  Protocol: {activeTab.toUpperCase().replace('-', ' ')} ACTIVE
-                </p>
-              </div>
-              <div className="hidden md:flex flex-col items-end">
-                <span className="text-zinc-600 font-mono text-[9px] uppercase tracking-widest">Node ID: {currentUser.id}</span>
-                <span className="text-zinc-700 font-mono text-[8px] uppercase tracking-widest">Status: Authenticated</span>
-              </div>
+        <div className="flex-1 p-4 md:p-10 max-w-7xl mx-auto w-full">
 
-              {/* Mobile Menu Toggle */}
-              <button onClick={() => setIsMobileMenuOpen(true)} className="lg:hidden p-3 glass-card rounded-2xl text-white">
-                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16m-7 6h7" /></svg>
-              </button>
+          {/* Top Bar (Desktop) */}
+          <div className="hidden md:flex justify-end mb-8 items-center gap-4">
+
+            {statusMsg && (
+              <div className={`flex items-center gap-3 px-4 py-2 rounded-full text-xs font-medium animate-in fade-in slide-in-from-top-2 ${statusMsg.type === 'success' ? 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20' : 'bg-red-500/10 text-red-400 border border-red-500/20'}`}>
+                <span className={`w-1.5 h-1.5 rounded-full ${statusMsg.type === 'success' ? 'bg-emerald-500' : 'bg-red-500'}`}></span>
+                {statusMsg.text}
+              </div>
+            )}
+
+            <div className="h-4 w-[1px] bg-zinc-800 mx-2"></div>
+
+            <div className="flex flex-col items-end">
+              <span className={`text-[9px] font-bold uppercase tracking-wider ${isLocalMode ? 'text-amber-500' : 'text-emerald-500'}`}>
+                {isLocalMode ? 'Offline Mode' : 'System Online'}
+              </span>
+              {isSyncing && <span className="text-[9px] text-zinc-500">Syncing...</span>}
+            </div>
+
+            <button onClick={handleFullLogout} className="text-xs font-medium text-zinc-500 hover:text-white transition-colors" title="Switch User ID">
+              Switch ID
+            </button>
+          </div>
+
+          <div className="w-full">
+            <header className="mb-10">
+              <h1 className="text-3xl font-bold text-white tracking-tight capitalize">
+                {activeTab.replace('-', ' ')}
+              </h1>
+              <p className="text-zinc-500 text-sm mt-1">
+                Manage your library activities and resources.
+              </p>
             </header>
 
-            {currentUser.role === 'ADMIN' ? (
+            {activeTab === 'about' ? (
+              <About
+                booksCount={books.reduce((acc, b) => acc + (b.totalCopies || 0), 0)}
+                studentsCount={users.filter(u => u.role === 'STUDENT').length}
+              />
+            ) : currentUser.role === 'ADMIN' ? (
               <AdminDashboard
-                activeTab={activeTab}
-                books={books}
-                users={users}
-                requests={requests}
-                history={history}
-                fines={fines}
-                onAddBook={handleAddOrUpdateBook}
-                onUpdateBook={handleAddOrUpdateBook}
-                onDeleteBook={handleDeleteBook}
+                activeTab={activeTab} books={books} users={users} requests={requests} history={history} fines={fines}
+                onAddBook={handleAddOrUpdateBook} onUpdateBook={handleAddOrUpdateBook} onDeleteBook={handleDeleteBook}
                 onBulkAddBooks={handleBulkAddBooks}
-                onAddUser={handleAddOrUpdateUser}
-                onUpdateUser={handleAddOrUpdateUser}
-                onDeleteUser={handleDeleteUser}
+                onAddUser={handleAddOrUpdateUser} onUpdateUser={handleAddOrUpdateUser} onDeleteUser={handleDeleteUser}
                 onBulkAddUsers={handleBulkAddUsers}
-                onHandleRequest={handleRequestAction}
-                onReturnBook={handleReturnBook}
-                onPayFine={handlePayFine}
+                onHandleRequest={handleRequestAction} onReturnBook={handleReturnBook} onPayFine={handlePayFine}
                 globalStatus={{ msg: statusMsg, set: setStatusMsg }}
               />
             ) : (
               <StudentDashboard
-                activeTab={activeTab}
-                books={books}
-                requests={requests}
-                history={history}
-                fines={fines}
-                currentUser={currentUser}
-                onBorrow={handleBorrowRequest}
+                activeTab={activeTab} books={books} requests={requests} history={history} fines={fines} currentUser={currentUser} onBorrow={handleBorrowRequest}
                 globalStatus={{ msg: statusMsg, set: setStatusMsg }}
               />
             )}
-          </main>
+          </div>
         </div>
-      )}
+      </main>
     </div>
   );
 };

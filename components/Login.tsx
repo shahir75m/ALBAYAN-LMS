@@ -24,7 +24,7 @@ const Login: React.FC<LoginProps> = ({ onLogin, onIdentify, initialIdentity, onC
   const handleManualIdentify = (e: React.FormEvent) => {
     e.preventDefault();
     if (!manualEmail.trim()) {
-      setError("Please identify yourself.");
+      setError("Please enter your User ID or Name.");
       return;
     }
     setIsSyncing(true);
@@ -45,7 +45,7 @@ const Login: React.FC<LoginProps> = ({ onLogin, onIdentify, initialIdentity, onC
       setStep('USER_PICK');
       setError(null);
     } else {
-      setError("Access Denied: Invalid Credentials");
+      setError("Invalid password.");
     }
   };
 
@@ -64,7 +64,7 @@ const Login: React.FC<LoginProps> = ({ onLogin, onIdentify, initialIdentity, onC
   const filteredUsers = useMemo(() => {
     const list = [...availableUsers].filter(u => u.role === selectedRole);
     if (selectedRole === 'ADMIN' && !list.find(u => u.id === storedAdminPass)) {
-      list.push({ id: storedAdminPass, name: 'System Administrator', role: 'ADMIN', class: 'Core' });
+      list.push({ id: storedAdminPass, name: 'Master Admin', role: 'ADMIN', class: 'System' });
     }
     return list.filter(u =>
       u.name.toLowerCase().includes(userSearch.toLowerCase()) ||
@@ -72,70 +72,55 @@ const Login: React.FC<LoginProps> = ({ onLogin, onIdentify, initialIdentity, onC
     );
   }, [availableUsers, selectedRole, userSearch]);
 
+  // --- Components for Sub-steps ---
+
   const MinimalInput = ({ label, ...props }: any) => (
     <div className="group">
-      <label className="block text-[10px] font-black uppercase tracking-[0.25em] text-zinc-500 mb-2 group-focus-within:text-emerald-400 transition-colors">{label}</label>
+      <label className="block text-[11px] font-medium uppercase tracking-wider text-zinc-500 mb-1 group-focus-within:text-emerald-500 transition-colors">{label}</label>
       <input
         {...props}
-        className="w-full bg-white/[0.03] border border-white/5 rounded-2xl px-5 py-4 text-sm text-white outline-none focus:border-emerald-500/50 focus:bg-white/[0.05] transition-all placeholder:text-zinc-700"
+        className="w-full bg-zinc-900/50 border-b border-zinc-800 text-sm text-zinc-200 py-3 outline-none focus:border-emerald-500 transition-all placeholder:text-zinc-600 focus:bg-zinc-900"
       />
     </div>
   );
 
-  const PrimaryButton = ({ children, isLoading, color = 'emerald', ...props }: any) => (
+  const PrimaryButton = ({ children, isLoading, ...props }: any) => (
     <button
       {...props}
       disabled={isLoading}
-      className={`w-full py-4 rounded-2xl font-black uppercase text-xs tracking-[0.2em] transition-all active:scale-[0.98] disabled:opacity-50 ${color === 'emerald'
-        ? 'bg-emerald-600 hover:bg-emerald-500 text-white glow-emerald shadow-lg shadow-emerald-900/20'
-        : 'bg-white/5 hover:bg-white/10 text-white border border-white/10'
-        }`}
+      className="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-medium text-sm py-3 rounded-lg transition-all active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed"
     >
-      {isLoading ? (
-        <div className="flex items-center justify-center gap-2">
-          <div className="w-1.5 h-1.5 bg-white rounded-full animate-bounce" />
-          <div className="w-1.5 h-1.5 bg-white rounded-full animate-bounce [animation-delay:-0.15s]" />
-          <div className="w-1.5 h-1.5 bg-white rounded-full animate-bounce [animation-delay:-0.3s]" />
-        </div>
-      ) : children}
+      {isLoading ? "Processing..." : children}
     </button>
   );
 
-  // Decorative Background Components
-  const BackgroundGlows = () => (
-    <div className="fixed inset-0 z-0 overflow-hidden pointer-events-none">
-      <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-emerald-500/10 rounded-full blur-[120px] animate-pulse" />
-      <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-cyan-500/10 rounded-full blur-[120px] animate-pulse [animation-delay:2s]" />
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')] opacity-[0.03] invert" />
-    </div>
-  );
+  // --- Renders ---
 
   if (step === 'IDENTIFY') {
     return (
-      <div className="min-h-screen grid items-center justify-center p-6 relative overflow-hidden">
-        <BackgroundGlows />
-        <div className="w-full max-w-sm glass-main rounded-[3rem] p-10 relative z-10 animate-in fade-in zoom-in duration-700">
-          <div className="text-center mb-12">
-            <div className="inline-flex p-4 glass-card rounded-2xl mb-8 glow-emerald neon-border">
-              <Logo className="w-12 h-12" />
+      <div className="min-h-screen grid items-center justify-center p-6 bg-[#0f0f11]">
+        <div className="w-full max-w-sm animate-in fade-in zoom-in duration-500">
+          <div className="text-center mb-10">
+            <div className="inline-flex p-3 bg-zinc-900 rounded-2xl mb-6 shadow-sm">
+              <Logo className="w-10 h-10" />
             </div>
-            <h1 className="text-3xl font-black text-white tracking-tighter mb-3 uppercase">Initialize</h1>
-            <p className="text-zinc-500 text-[10px] font-bold uppercase tracking-[0.2em]">Bridge Access Point</p>
+            <h1 className="text-2xl font-bold text-white tracking-tight mb-2">Welcome Back</h1>
+            <p className="text-zinc-500 text-sm">Sign in to access the library portal.</p>
           </div>
 
-          <form onSubmit={handleManualIdentify} className="space-y-8">
+          <form onSubmit={handleManualIdentify} className="space-y-6">
             <MinimalInput
-              label="Digital Identity"
-              placeholder="User ID or Identifier"
+              label="User ID"
+              placeholder="Enter your ID"
               value={manualEmail}
               onChange={(e: any) => setManualEmail(e.target.value)}
               autoFocus
             />
 
-            {error && <p className="text-red-500 text-[10px] font-black uppercase tracking-wider text-center">{error}</p>}
+            {error && <p className="text-red-400 text-xs text-center">{error}</p>}
 
             <PrimaryButton type="submit" isLoading={isSyncing}>
-              Access Terminal
+              Continue
             </PrimaryButton>
           </form>
         </div>
@@ -145,30 +130,29 @@ const Login: React.FC<LoginProps> = ({ onLogin, onIdentify, initialIdentity, onC
 
   if (step === 'ADMIN_AUTH') {
     return (
-      <div className="min-h-screen grid items-center justify-center p-6 relative">
-        <BackgroundGlows />
-        <div className="w-full max-w-sm glass-main rounded-[3rem] p-10 relative z-10 animate-in fade-in zoom-in duration-500">
-          <button onClick={() => setStep('PORTAL')} className="mb-8 text-zinc-500 hover:text-white text-[10px] font-black uppercase tracking-widest flex items-center gap-3 transition-all group">
-            <svg className="w-4 h-4 group-hover:-translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M10 19l-7-7m0 0l7-7m-7 7h18" /></svg>
-            Reverse
+      <div className="min-h-screen grid items-center justify-center p-6 bg-[#0f0f11]">
+        <div className="w-full max-w-sm animate-in fade-in zoom-in duration-300">
+          <button onClick={() => setStep('PORTAL')} className="mb-6 text-zinc-500 hover:text-white text-xs flex items-center gap-2 transition-colors">
+            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M10 19l-7-7m0 0l7-7m-7 7h18" /></svg>
+            Back
           </button>
 
-          <div className="mb-10">
-            <h2 className="text-2xl font-black text-white uppercase tracking-tight">System Admin</h2>
-            <p className="text-zinc-500 text-[10px] font-bold uppercase tracking-widest mt-2">Elevated Permissions Required</p>
+          <div className="mb-8">
+            <h2 className="text-xl font-bold text-white">Admin Access</h2>
+            <p className="text-zinc-500 text-sm mt-1">Verify your credentials to proceed.</p>
           </div>
 
-          <form onSubmit={handleAdminVerify} className="space-y-8">
+          <form onSubmit={handleAdminVerify} className="space-y-6">
             <MinimalInput
-              label="Encryption Key"
+              label="Secure Password"
               type="password"
               placeholder="••••••••"
               value={adminPassInput}
               onChange={(e: any) => setAdminPassInput(e.target.value)}
               autoFocus
             />
-            {error && <p className="text-red-500 text-[10px] font-black uppercase tracking-wider">{error}</p>}
-            <PrimaryButton type="submit">Verify Protocol</PrimaryButton>
+            {error && <p className="text-red-400 text-xs">{error}</p>}
+            <PrimaryButton type="submit">Unlock Portal</PrimaryButton>
           </form>
         </div>
       </div>
@@ -177,74 +161,59 @@ const Login: React.FC<LoginProps> = ({ onLogin, onIdentify, initialIdentity, onC
 
   if (step === 'PORTAL' && initialIdentity) {
     return (
-      <div className="min-h-screen flex flex-col items-center justify-center p-6 relative animate-in fade-in duration-1000">
-        <BackgroundGlows />
+      <div className="min-h-screen flex flex-col items-center justify-center p-6 bg-[#0f0f11] animate-in fade-in duration-700">
 
-        <header className="absolute top-0 left-0 right-0 p-8 flex justify-between items-center z-20">
-          <div className="flex items-center gap-4 group cursor-pointer">
-            <div className="p-2 glass-card rounded-xl glow-emerald neon-border"><Logo className="w-8 h-8" /></div>
-            <div>
-              <span className="block font-black text-white tracking-widest text-lg leading-none uppercase">Albayan</span>
-              <span className="block text-emerald-500/80 font-bold tracking-[0.3em] text-[8px] uppercase">Library OS</span>
-            </div>
+        <header className="absolute top-0 left-0 right-0 p-6 flex justify-between items-center z-10">
+          <div className="flex items-center gap-3 opacity-80 hover:opacity-100 transition-opacity">
+            <Logo className="w-8 h-8" />
+            <span className="font-bold text-white tracking-tight">ALBAYAN LMS</span>
           </div>
 
           <button
             onClick={() => handleRoleCardClick('ADMIN')}
-            className="px-6 py-2.5 glass-card rounded-full text-[10px] font-black text-zinc-500 hover:text-white uppercase tracking-widest transition-all"
+            className="text-xs font-medium text-zinc-500 hover:text-white transition-colors"
           >
-            Admin.Node
+            Admin Access
           </button>
         </header>
 
-        <main className="w-full max-w-xl text-center relative z-10">
-          <div className="mb-16">
-            <h2 className="text-6xl md:text-8xl font-black text-white tracking-tighter mb-6 uppercase flex flex-col">
-              <span className="opacity-50">Albayan</span>
-              <span className="text-glow-emerald">LMS</span>
-            </h2>
-            <p className="text-zinc-500 max-w-sm mx-auto text-xs font-bold uppercase tracking-[0.25em] leading-relaxed">
-              Global Knowledge Repository & Management System
-            </p>
-          </div>
+        <main className="w-full max-w-lg text-center z-0">
+          <h2 className="text-4xl md:text-5xl font-bold text-white tracking-tighter mb-4">ALBAYAN LMS</h2>
+          <p className="text-zinc-500 mb-12 max-w-xs mx-auto text-sm leading-relaxed">
+            Your gateway to knowledge. Manage books, track history, and explore resources.
+          </p>
 
-          <div className="grid grid-cols-1 gap-6">
-            <button
-              onClick={() => handleRoleCardClick('STUDENT')}
-              className="group relative glass-main hover:bg-white/[0.06] rounded-[2.5rem] p-12 transition-all active:scale-[0.98] glow-emerald neon-border overflow-hidden"
-            >
-              <div className="absolute inset-0 bg-gradient-to-br from-emerald-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
-              <div className="flex flex-col items-center relative z-10">
-                <div className="w-20 h-20 glass-card rounded-[2rem] flex items-center justify-center text-emerald-400 mb-8 group-hover:scale-110 transition-transform duration-700">
-                  <svg className="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" /></svg>
-                </div>
-                <h3 className="text-2xl font-black text-white mb-3 uppercase tracking-tight">Access Library</h3>
-                <p className="text-[10px] text-zinc-500 font-bold uppercase tracking-[0.3em] group-hover:text-emerald-400 transition-colors">Digital Portal Entrance</p>
+          <button
+            onClick={() => handleRoleCardClick('STUDENT')}
+            className="group relative w-full bg-zinc-900 hover:bg-zinc-800 border border-zinc-800 hover:border-zinc-700 rounded-3xl p-10 transition-all active:scale-[0.99]"
+          >
+            <div className="flex flex-col items-center">
+              <div className="w-16 h-16 bg-zinc-950 rounded-2xl flex items-center justify-center text-emerald-500 mb-6 shadow-sm group-hover:scale-110 transition-transform duration-500">
+                <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" /></svg>
               </div>
-            </button>
-          </div>
+              <span className="text-lg font-semibold text-white mb-2">Enter as Student</span>
+              <span className="text-xs text-zinc-500 uppercase tracking-widest group-hover:text-emerald-500 transition-colors">Click to Browse</span>
+            </div>
+          </button>
 
-          <div className="mt-16">
-            <button onClick={onClearIdentity} className="text-[9px] font-black text-zinc-600 hover:text-zinc-300 uppercase tracking-[0.2em] transition-colors border-b border-zinc-800 pb-1">
-              Switching Persona: {initialIdentity.name}
+          <div className="mt-12">
+            <button onClick={onClearIdentity} className="text-xs text-zinc-600 hover:text-zinc-400 transition-colors">
+              Not {initialIdentity.name}? <span className="underline">Switch Account</span>
             </button>
           </div>
         </main>
 
-        <div className="fixed bottom-10 z-20">
-          <button
-            onClick={() => document.getElementById('about-modal')?.classList.remove('hidden')}
-            className="text-[10px] font-black text-white/20 hover:text-white/60 uppercase tracking-[0.4em] transition-all hover:scale-105"
-          >
-            Core Documentation
+        {/* About Section Teaser */}
+        <div className="fixed bottom-6 z-10">
+          <button onClick={() => document.getElementById('about-modal')?.classList.toggle('hidden')} className="text-[10px] font-bold text-zinc-700 hover:text-zinc-500 uppercase tracking-widest">
+            About The Library
           </button>
         </div>
 
-        <div id="about-modal" className="hidden fixed inset-0 bg-black/95 z-50 overflow-y-auto backdrop-blur-2xl animate-in fade-in duration-500">
-          <div className="p-10 max-w-5xl mx-auto relative">
-            <button onClick={() => document.getElementById('about-modal')?.classList.add('hidden')} className="fixed top-10 right-10 p-3 glass-card rounded-full text-white hover:glow-emerald transition-all z-[60]">
-              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M6 18L18 6M6 6l12 12" /></svg>
-            </button>
+        {/* Hidden About Modal/Section for cleaner look - could use state but staying simple */}
+        <div id="about-modal" className="hidden fixed inset-0 bg-black/90 z-50 overflow-y-auto">
+          <div className="p-8 max-w-4xl mx-auto">
+            <button onClick={() => document.getElementById('about-modal')?.classList.toggle('hidden')} className="fixed top-8 right-8 text-white">Close</button>
             <About studentsCount={availableUsers.filter(u => u.role === 'STUDENT').length} />
           </div>
         </div>
@@ -255,55 +224,50 @@ const Login: React.FC<LoginProps> = ({ onLogin, onIdentify, initialIdentity, onC
 
   if (step === 'USER_PICK' && selectedRole) {
     return (
-      <div className="min-h-screen flex flex-col relative overflow-hidden animate-in slide-in-from-bottom duration-700">
-        <BackgroundGlows />
-        <div className="max-w-3xl w-full mx-auto p-10 md:p-20 flex-1 flex flex-col relative z-10">
-          <div className="flex items-center justify-between mb-12">
-            <button onClick={() => setStep('PORTAL')} className="text-zinc-500 hover:text-white text-[10px] font-black uppercase tracking-[0.2em] flex items-center gap-3 transition-all group">
-              <svg className="w-4 h-4 group-hover:-translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M10 19l-7-7m0 0l7-7m-7 7h18" /></svg>
-              Reverse
+      <div className="min-h-screen flex flex-col bg-[#0f0f11] animate-in slide-in-from-bottom-4 duration-500">
+        <div className="max-w-2xl w-full mx-auto p-6 md:p-12 flex-1 flex flex-col">
+          <div className="flex items-center justify-between mb-8">
+            <button onClick={() => setStep('PORTAL')} className="text-zinc-500 hover:text-white text-xs flex items-center gap-2 transition-colors">
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M10 19l-7-7m0 0l7-7m-7 7h18" /></svg>
+              Back
             </button>
-            <span className="text-[10px] font-black text-emerald-500 uppercase tracking-[0.4em]">{selectedRole} DATASET</span>
+            <span className="text-xs font-bold text-zinc-600 uppercase tracking-widest">{selectedRole} DIRECTORY</span>
           </div>
 
-          <h2 className="text-4xl font-black text-white mb-4 uppercase tracking-tighter">Identity Core</h2>
-          <p className="text-zinc-500 text-xs font-bold uppercase tracking-widest mb-12">Select your profile to synchronize session</p>
+          <h2 className="text-2xl font-bold text-white mb-6">Select Your Profile</h2>
 
-          <div className="mb-10 relative group">
-            <svg className="absolute left-6 top-1/2 -translate-y-1/2 w-5 h-5 text-zinc-600 group-focus-within:text-emerald-500 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>
+          <div className="mb-6 relative">
+            <svg className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-zinc-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>
             <input
               autoFocus
-              placeholder="Filter by name or reference ID..."
-              className="w-full glass-main rounded-[2rem] py-5 pl-16 pr-6 text-sm text-white outline-none focus:glow-emerald transition-all placeholder:text-zinc-700"
+              placeholder="Search by name or ID..."
+              className="w-full bg-zinc-900 border border-zinc-800 rounded-xl py-3 pl-10 pr-4 text-sm text-white outline-none focus:border-emerald-500 transition-colors placeholder:text-zinc-600"
               value={userSearch}
               onChange={(e) => setUserSearch(e.target.value)}
             />
           </div>
 
-          <div className="flex-1 overflow-y-auto rounded-[3rem] glass-main overflow-hidden border-white/5">
+          <div className="flex-1 overflow-y-auto rounded-2xl border border-zinc-800/50 bg-zinc-900/30">
             {filteredUsers.length > 0 ? (
-              <div className="divide-y divide-white/5">
+              <div className="divide-y divide-zinc-800/50">
                 {filteredUsers.map(user => (
                   <button
                     key={user.id}
                     onClick={() => onLogin(user)}
-                    className="w-full flex items-center gap-6 p-8 hover:bg-white/[0.05] transition-all text-left group"
+                    className="w-full flex items-center gap-4 p-4 hover:bg-zinc-800/50 transition-colors text-left group"
                   >
-                    <div className="w-14 h-14 rounded-2xl glass-card flex items-center justify-center text-zinc-500 group-hover:text-emerald-400 group-hover:glow-emerald transition-all text-sm font-black">
-                      {user.avatarUrl ? <img src={user.avatarUrl} className="w-full h-full object-cover rounded-2xl" /> : user.name.charAt(0)}
+                    <div className="w-10 h-10 rounded-full bg-zinc-800 flex items-center justify-center text-zinc-400 group-hover:text-emerald-500 group-hover:bg-zinc-700 transition-colors text-xs font-bold">
+                      {user.name.charAt(0)}
                     </div>
                     <div>
-                      <p className="text-lg font-black text-white group-hover:text-emerald-400 transition-colors tracking-tight">{user.name}</p>
-                      <p className="text-[10px] text-zinc-600 font-bold uppercase tracking-[0.2em] mt-1 group-hover:text-zinc-400 transition-colors">{user.id === storedAdminPass ? 'Central Core Admin' : user.id}</p>
-                    </div>
-                    <div className="ml-auto opacity-0 group-hover:opacity-100 transition-opacity">
-                      <svg className="w-6 h-6 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M13 7l5 5m0 0l-5 5m5-5H6" /></svg>
+                      <p className="text-sm font-medium text-white group-hover:text-emerald-400 transition-colors">{user.name}</p>
+                      <p className="text-[10px] text-zinc-500 uppercase tracking-wider">{user.id === storedAdminPass ? 'MASTER ADMIN' : user.id}</p>
                     </div>
                   </button>
                 ))}
               </div>
             ) : (
-              <div className="p-20 text-center text-zinc-600 text-[10px] font-black uppercase tracking-[0.3em]">Identity not found in database</div>
+              <div className="p-12 text-center text-zinc-600 text-sm">No profiles found.</div>
             )}
           </div>
         </div>
