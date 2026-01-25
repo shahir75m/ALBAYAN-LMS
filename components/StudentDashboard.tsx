@@ -563,7 +563,21 @@ const StudentDashboard: React.FC<StudentDashboardProps> = ({
                 <ScannerModal
                     onClose={() => setShowScanner(false)}
                     onScan={(text) => {
-                        if (text.startsWith('ALBAYAN:BOOK:')) {
+                        if (text.startsWith('ALB_SMART:')) {
+                            try {
+                                const jsonStr = text.replace('ALB_SMART:', '');
+                                const data = JSON.parse(jsonStr);
+                                const book = books.find(b => b.id === data.id);
+                                if (book) {
+                                    setSelectedBook(book);
+                                    setShowScanner(false);
+                                } else {
+                                    globalStatus.set('Book not found in library catalog.', 'error');
+                                }
+                            } catch (err) {
+                                globalStatus.set('Corrupted Smart QR', 'error');
+                            }
+                        } else if (text.startsWith('ALBAYAN:BOOK:')) {
                             const bookId = text.split(':').pop();
                             const book = books.find(b => b.id === bookId);
                             if (book) {

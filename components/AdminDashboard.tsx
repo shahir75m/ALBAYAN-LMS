@@ -4,6 +4,7 @@ import BookForm from './BookForm';
 import UserForm from './UserForm';
 import QRCodeModal from './QRCodeModal';
 import ScannerModal from './ScannerModal';
+import AssetLabelGenerator from './AssetLabelGenerator';
 
 // Retrieve stored admin password or default
 const storedAdminPass = typeof window !== 'undefined' ? localStorage.getItem('adminPassword') || 'admin@484' : 'admin@484';
@@ -59,6 +60,7 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
     const [showQRModal, setShowQRModal] = useState(false);
     const [selectedBookForQR, setSelectedBookForQR] = useState<Book | null>(null);
     const [showScanner, setShowScanner] = useState(false);
+    const [showLabelGenerator, setShowLabelGenerator] = useState(false);
 
     // Fine Modal State
     const [showFineModal, setShowFineModal] = useState(false);
@@ -357,6 +359,15 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
                         >
                             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 4v1m6 11h2m-6 0h-2v4m0-11v3m0 0h.01M12 12h4.01M16 20h4M4 12h4m12 0h.01M5 8h2a1 1 0 001-1V5a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1zm12 0h2a1 1 0 001-1V5a1 1 0 00-1-1h-2a1 1 0 00-1 1v2a1 1 0 001 1zM5 20h2a1 1 0 001-1v-2a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1z" />
+                            </svg>
+                        </button>
+                        <button
+                            onClick={() => setShowLabelGenerator(true)}
+                            className="p-2.5 bg-zinc-900 border border-zinc-800 rounded-xl hover:bg-zinc-800 transition-all text-blue-500 hover:text-blue-400 group"
+                            title="Print Asset Labels"
+                        >
+                            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" />
                             </svg>
                         </button>
                         {activeTab === 'books' && (
@@ -1088,7 +1099,22 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
                 <ScannerModal
                     onClose={() => setShowScanner(false)}
                     onScan={(text) => {
-                        if (text.startsWith('ALBAYAN:BOOK:')) {
+                        if (text.startsWith('ALB_SMART:')) {
+                            try {
+                                const jsonStr = text.replace('ALB_SMART:', '');
+                                const data = JSON.parse(jsonStr);
+                                const book = books.find(b => b.id === data.id);
+                                if (book) {
+                                    setSelectedBookDetail(book);
+                                    setShowScanner(false);
+                                } else {
+                                    globalStatus.set('Book not registered yet. Details detected!', 'success');
+                                    // Optionally open registration form with auto-filled data
+                                }
+                            } catch (err) {
+                                globalStatus.set('Corrupted Smart QR', 'error');
+                            }
+                        } else if (text.startsWith('ALBAYAN:BOOK:')) {
                             const bookId = text.split(':').pop();
                             const book = books.find(b => b.id === bookId);
                             if (book) {
@@ -1101,6 +1127,14 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
                             globalStatus.set('Invalid Albayan QR code', 'error');
                         }
                     }}
+                />
+            )}
+
+            {/* Asset Label Generator */}
+            {showLabelGenerator && (
+                <AssetLabelGenerator
+                    onClose={() => setShowLabelGenerator(false)}
+                    existingBooks={books}
                 />
             )}
         </div>

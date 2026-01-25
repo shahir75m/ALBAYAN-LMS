@@ -7,21 +7,21 @@ import QRCode from 'qrcode';
  * @returns Promise with data URL of QR code image
  */
 export const generateQRCode = async (text: string, size: number = 300): Promise<string> => {
-    try {
-        const dataUrl = await QRCode.toDataURL(text, {
-            width: size,
-            margin: 2,
-            color: {
-                dark: '#000000',
-                light: '#FFFFFF',
-            },
-            errorCorrectionLevel: 'M',
-        });
-        return dataUrl;
-    } catch (error) {
-        console.error('Error generating QR code:', error);
-        throw error;
-    }
+  try {
+    const dataUrl = await QRCode.toDataURL(text, {
+      width: size,
+      margin: 2,
+      color: {
+        dark: '#000000',
+        light: '#FFFFFF',
+      },
+      errorCorrectionLevel: 'M',
+    });
+    return dataUrl;
+  } catch (error) {
+    console.error('Error generating QR code:', error);
+    throw error;
+  }
 };
 
 /**
@@ -31,9 +31,27 @@ export const generateQRCode = async (text: string, size: number = 300): Promise<
  * @returns Promise with data URL of QR code image
  */
 export const generateBookQRCode = async (bookId: string, size: number = 300): Promise<string> => {
-    // Encode book ID in a structured format
-    const qrData = `ALBAYAN:BOOK:${bookId}`;
-    return generateQRCode(qrData, size);
+  // Encode book ID in a structured format
+  const qrData = `ALBAYAN:BOOK:${bookId}`;
+  return generateQRCode(qrData, size);
+};
+
+/**
+ * Generate a "Smart" QR code containing book metadata
+ * @param book - Book object with metadata
+ * @param size - Size of QR code in pixels (default: 300)
+ * @returns Promise with data URL of QR code image
+ */
+export const generateSmartQRCode = async (book: { id: string, title: string, author: string, category: string }, size: number = 300): Promise<string> => {
+  // Use short keys to save space in QR code
+  const payload = {
+    id: book.id,
+    t: book.title,
+    a: book.author,
+    c: book.category
+  };
+  const qrData = `ALB_SMART:${JSON.stringify(payload)}`;
+  return generateQRCode(qrData, size);
 };
 
 /**
@@ -42,12 +60,12 @@ export const generateBookQRCode = async (bookId: string, size: number = 300): Pr
  * @param filename - Name for downloaded file
  */
 export const downloadQRCode = (dataUrl: string, filename: string = 'qrcode.png') => {
-    const link = document.createElement('a');
-    link.href = dataUrl;
-    link.download = filename;
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
+  const link = document.createElement('a');
+  link.href = dataUrl;
+  link.download = filename;
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
 };
 
 /**
@@ -56,10 +74,10 @@ export const downloadQRCode = (dataUrl: string, filename: string = 'qrcode.png')
  * @param bookTitle - Optional book title to include in print
  */
 export const printQRCode = (dataUrl: string, bookTitle?: string) => {
-    const printWindow = window.open('', '_blank');
-    if (!printWindow) return;
+  const printWindow = window.open('', '_blank');
+  if (!printWindow) return;
 
-    const html = `
+  const html = `
     <!DOCTYPE html>
     <html>
       <head>
@@ -98,13 +116,13 @@ export const printQRCode = (dataUrl: string, bookTitle?: string) => {
     </html>
   `;
 
-    printWindow.document.write(html);
-    printWindow.document.close();
+  printWindow.document.write(html);
+  printWindow.document.close();
 
-    // Wait for image to load before printing
-    printWindow.onload = () => {
-        setTimeout(() => {
-            printWindow.print();
-        }, 250);
-    };
+  // Wait for image to load before printing
+  printWindow.onload = () => {
+    setTimeout(() => {
+      printWindow.print();
+    }, 250);
+  };
 };

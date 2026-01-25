@@ -108,8 +108,33 @@ const BookForm: React.FC<BookFormProps> = ({ onClose, onSubmit, initialData }) =
           scannerRef.current.clear().catch(console.error);
         }
         setIsScanning(false);
-        setFormData(prev => ({ ...prev, isbn: decodedText }));
-        fetchBookDetails(decodedText);
+
+        if (decodedText.startsWith('ALB_SMART:')) {
+          try {
+            const jsonStr = decodedText.replace('ALB_SMART:', '');
+            const data = JSON.parse(jsonStr);
+            setFormData(prev => ({
+              ...prev,
+              id: data.id || prev.id,
+              title: data.t || prev.title,
+              author: data.a || prev.author,
+              category: data.c || prev.category
+            }));
+            setScanStatus('success');
+            setStatusMsg("Smart Label Detected! Form auto-filled.");
+          } catch (err) {
+            console.error("Failed to parse Smart QR:", err);
+            setStatusMsg("Corrupted Smart QR data", "error");
+          }
+        } else if (decodedText.startsWith('ALBAYAN:BOOK:')) {
+          const bookId = decodedText.split(':').pop() || '';
+          setFormData(prev => ({ ...prev, id: bookId }));
+          setScanStatus('success');
+          setStatusMsg("Internal Asset ID detected!");
+        } else {
+          setFormData(prev => ({ ...prev, isbn: decodedText }));
+          fetchBookDetails(decodedText);
+        }
       }, (errorMessage) => {
         // Silently handle scan errors (common during focus)
       });
