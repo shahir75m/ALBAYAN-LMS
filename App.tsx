@@ -281,14 +281,14 @@ const App: React.FC = () => {
                   {activeTab === 'dashboard' ? 'Neural Core' :
                     activeTab === 'books' || activeTab === 'catalog' ? 'Data Vault' :
                       activeTab === 'users' ? 'User Matrix' :
-                        activeTab === 'requests' ? 'Access Control' :
-                          activeTab === 'history' ? 'System Logs' :
-                            activeTab === 'fines' ? 'Financial Hub' :
-                              'Interface'}
+                        activeTab === 'requests' || activeTab === 'my-requests' ? 'Access Control' :
+                          activeTab === 'fines' || activeTab === 'my-fines' ? 'Financial Hub' :
+                            activeTab === 'analytics' ? 'System Intel' :
+                              activeTab.replace('-', ' ')}
                 </h1>
                 <p className="text-[10px] font-black text-zinc-600 uppercase tracking-[0.4em] flex items-center gap-3">
                   <span className="w-2 h-2 bg-emerald-500 rounded-full animate-pulse shadow-[0_0_8px_#10b981]" />
-                  Protocol: {activeTab.toUpperCase()} ACTIVE
+                  Protocol: {activeTab.toUpperCase().replace('-', ' ')} ACTIVE
                 </p>
               </div>
               <div className="hidden md:flex flex-col items-end">

@@ -260,21 +260,21 @@ const StudentDashboard: React.FC<StudentDashboardProps> = ({
             )}
 
             {activeTab === 'my-requests' && (
-                <div className="bg-zinc-900/10 border border-zinc-800 rounded-2xl overflow-hidden shadow-sm animate-in fade-in duration-700">
-                    <div className="p-6 border-b border-zinc-900/50 bg-zinc-900/10">
-                        <h3 className="font-semibold text-xs text-zinc-400 uppercase tracking-widest">Request History</h3>
+                <div className="glass-main border-white/5 rounded-[3rem] overflow-hidden animate-in slide-in-from-bottom duration-1000">
+                    <div className="px-10 py-7 border-b border-white/5 bg-white/[0.02]">
+                        <h3 className="font-black text-[10px] text-zinc-500 uppercase tracking-[0.4em]">Protocol History</h3>
                     </div>
                     <div className="overflow-x-auto no-scrollbar">
-                        <table className="w-full text-left text-sm">
+                        <table className="w-full text-left">
                             <thead>
-                                <tr className="bg-zinc-900/20 border-b border-zinc-900/50 text-zinc-500 text-[10px] font-bold uppercase tracking-wider">
-                                    <th className="px-6 py-4">Date Requested</th>
-                                    <th className="px-6 py-4">Resource Title</th>
-                                    <th className="px-6 py-4">Status</th>
-                                    <th className="px-6 py-4 text-center">Queue Position</th>
+                                <tr className="bg-white/[0.02] border-b border-white/5 text-zinc-600 text-[9px] font-black uppercase tracking-[0.3em]">
+                                    <th className="px-10 py-6">Initiation</th>
+                                    <th className="px-10 py-6">Resource Descriptor</th>
+                                    <th className="px-10 py-6">Link State</th>
+                                    <th className="px-10 py-6 text-center">Queue Rank</th>
                                 </tr>
                             </thead>
-                            <tbody className="divide-y divide-zinc-900/50">
+                            <tbody className="divide-y divide-white/5">
                                 {myRequests.map(req => {
                                     const book = books.find(b => b.id === req.bookId);
                                     const isInQueue = book && book.availableCopies === 0 && req.status === 'PENDING';
@@ -284,24 +284,27 @@ const StudentDashboard: React.FC<StudentDashboardProps> = ({
                                     const queuePosition = bookQueue.findIndex(r => r.id === req.id) + 1;
 
                                     return (
-                                        <tr key={req.id} className="hover:bg-zinc-900/20 transition-all">
-                                            <td className="px-6 py-4 text-zinc-600 font-mono text-[10px]">{new Date(req.timestamp).toLocaleDateString()}</td>
-                                            <td className="px-6 py-4 font-medium text-white/90">{req.bookTitle}</td>
-                                            <td className="px-6 py-4">
-                                                <span className={`px-2 py-0.5 rounded text-[9px] font-bold uppercase tracking-wider border ${req.status === 'PENDING' ? 'bg-amber-500/10 text-amber-500 border-amber-500/20' :
-                                                    req.status === 'APPROVED' ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20' :
+                                        <tr key={req.id} className="hover:bg-white/[0.03] transition-all group">
+                                            <td className="px-10 py-6 text-zinc-600 font-mono text-[10px] uppercase tracking-widest">{new Date(req.timestamp).toLocaleDateString()}</td>
+                                            <td className="px-10 py-6 font-black text-white text-sm tracking-tight">{req.bookTitle}</td>
+                                            <td className="px-10 py-6">
+                                                <span className={`px-4 py-1.5 rounded-full text-[8px] font-black uppercase tracking-[0.2em] border ${req.status === 'PENDING' ? 'bg-amber-500/10 text-amber-500 border-amber-500/20 glow-amber' :
+                                                    req.status === 'APPROVED' ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20 glow-emerald' :
                                                         'bg-red-500/10 text-red-500 border-red-500/20'
-                                                    }`}>{isInQueue ? 'IN QUEUE' : req.status}</span>
+                                                    }`}>{isInQueue ? 'Priority Queue' : req.status}</span>
                                             </td>
-                                            <td className="px-6 py-4 text-center">
+                                            <td className="px-10 py-6 text-center">
                                                 {isInQueue && queuePosition > 0 ? (
-                                                    <span className="text-xs text-amber-500 font-bold">#{queuePosition} of {bookQueue.length}</span>
-                                                ) : <span className="text-zinc-700">---</span>}
+                                                    <div className="inline-flex items-center gap-2 text-amber-500 font-black text-[10px] uppercase tracking-widest px-3 py-1 glass-card border-amber-500/20 rounded-lg">
+                                                        <span className="w-1 h-1 bg-amber-500 rounded-full animate-pulse" />
+                                                        Rank #{queuePosition} / {bookQueue.length}
+                                                    </div>
+                                                ) : <span className="text-zinc-700 text-[10px] font-black uppercase tracking-widest">---</span>}
                                             </td>
                                         </tr>
                                     );
                                 })}
-                                {myRequests.length === 0 && <tr><td colSpan={4} className="p-16 text-center text-zinc-600 text-xs italic">No requests found</td></tr>}
+                                {myRequests.length === 0 && <tr><td colSpan={4} className="p-24 text-center text-zinc-700 text-[10px] font-black uppercase tracking-[0.4em]">Historical Data Void</td></tr>}
                             </tbody>
                         </table>
                     </div>
@@ -309,32 +312,34 @@ const StudentDashboard: React.FC<StudentDashboardProps> = ({
             )}
 
             {activeTab === 'my-fines' && (
-                <div className="bg-zinc-900/10 border border-zinc-800 rounded-2xl overflow-hidden shadow-sm animate-in fade-in duration-700">
-                    <div className="p-6 border-b border-zinc-900/50 bg-zinc-900/10">
-                        <h3 className="font-semibold text-xs text-zinc-400 uppercase tracking-widest">My Fines</h3>
+                <div className="glass-main border-white/5 rounded-[3rem] overflow-hidden animate-in slide-in-from-bottom duration-1000">
+                    <div className="px-10 py-7 border-b border-white/5 bg-white/[0.02]">
+                        <h3 className="font-black text-[10px] text-zinc-500 uppercase tracking-[0.4em]">Financial Discrepancies</h3>
                     </div>
                     <div className="overflow-x-auto no-scrollbar">
-                        <table className="w-full text-left text-sm">
+                        <table className="w-full text-left">
                             <thead>
-                                <tr className="bg-zinc-900/20 border-b border-zinc-900/50 text-zinc-500 text-[10px] font-bold uppercase tracking-wider">
-                                    <th className="px-6 py-4">Date</th>
-                                    <th className="px-6 py-4">Reason</th>
-                                    <th className="px-6 py-4 text-right">Amount</th>
-                                    <th className="px-6 py-4 text-center">Status</th>
+                                <tr className="bg-white/[0.02] border-b border-white/5 text-zinc-600 text-[9px] font-black uppercase tracking-[0.3em]">
+                                    <th className="px-10 py-6">Log Date</th>
+                                    <th className="px-10 py-6">Protocol Breach</th>
+                                    <th className="px-10 py-6 text-right">Penalty (INR)</th>
+                                    <th className="px-10 py-6 text-center">Resolution</th>
                                 </tr>
                             </thead>
-                            <tbody className="divide-y divide-zinc-900/50">
+                            <tbody className="divide-y divide-white/5">
                                 {myFines.map(fine => (
-                                    <tr key={fine.id} className="hover:bg-zinc-900/20 transition-all">
-                                        <td className="px-6 py-4 text-zinc-600 font-mono text-[10px]">{new Date(fine.timestamp).toLocaleDateString()}</td>
-                                        <td className="px-6 py-4 text-zinc-300 text-xs">{fine.reason}</td>
-                                        <td className="px-6 py-4 text-right font-mono text-emerald-500 font-bold">₹{fine.amount}</td>
-                                        <td className="px-6 py-4 text-center">
-                                            <span className={`px-2 py-0.5 rounded text-[9px] font-bold uppercase tracking-wider border ${fine.status === 'PAID' ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20' : 'bg-red-500/10 text-red-500 border-red-500/20'}`}>{fine.status}</span>
+                                    <tr key={fine.id} className="hover:bg-white/[0.03] transition-all">
+                                        <td className="px-10 py-6 text-zinc-600 font-mono text-[10px] uppercase tracking-widest">{new Date(fine.timestamp).toLocaleDateString()}</td>
+                                        <td className="px-10 py-6 text-zinc-300 font-bold text-xs uppercase tracking-widest">{fine.reason}</td>
+                                        <td className="px-10 py-6 text-right">
+                                            <span className="text-lg font-black text-emerald-400 tracking-tighter">₹{fine.amount}</span>
+                                        </td>
+                                        <td className="px-10 py-6 text-center">
+                                            <span className={`px-4 py-1.5 rounded-full text-[8px] font-black uppercase tracking-[0.2em] border ${fine.status === 'PAID' ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20' : 'bg-red-500/10 text-red-500 border-red-500/20 glow-red'}`}>{fine.status}</span>
                                         </td>
                                     </tr>
                                 ))}
-                                {myFines.length === 0 && <tr><td colSpan={4} className="p-16 text-center text-zinc-600 text-xs italic">No fines found</td></tr>}
+                                {myFines.length === 0 && <tr><td colSpan={4} className="p-24 text-center text-zinc-700 text-[10px] font-black uppercase tracking-[0.4em]">Clean Compliance Log</td></tr>}
                             </tbody>
                         </table>
                     </div>

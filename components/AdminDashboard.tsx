@@ -444,26 +444,34 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
 
             {/* Other Records Tabs */}
             {(activeTab === 'users' || activeTab === 'requests' || activeTab === 'history' || activeTab === 'fines') && (
-                <div className="bg-zinc-900/10 border border-zinc-800 rounded-2xl overflow-hidden shadow-sm">
+                <div className="glass-main border-white/5 rounded-[3rem] overflow-hidden animate-in slide-in-from-bottom duration-1000">
                     <div className="overflow-x-auto no-scrollbar">
-                        <table className="w-full text-left text-sm">
+                        <table className="w-full text-left">
                             {activeTab === 'users' && (
                                 <>
-                                    <thead className="bg-zinc-900/20 border-b border-zinc-900/50 text-zinc-500 text-[10px] font-bold uppercase tracking-wider">
-                                        <tr><th className="px-6 py-4">Profile</th><th className="px-6 py-4">ID</th><th className="px-6 py-4">Name</th><th className="px-6 py-4">Role</th><th className="px-6 py-4">Class</th><th className="px-6 py-4 text-right">Actions</th></tr>
+                                    <thead className="bg-white/[0.02] border-b border-white/5 text-zinc-500 text-[9px] font-black uppercase tracking-[0.3em]">
+                                        <tr><th className="px-10 py-6">Identity Profile</th><th className="px-10 py-6">Ref. Hash</th><th className="px-10 py-6">Designation</th><th className="px-10 py-6">Clearance</th><th className="px-10 py-6">Cluster</th><th className="px-10 py-6 text-right">Gate Control</th></tr>
                                     </thead>
-                                    <tbody className="divide-y divide-zinc-900/50">
+                                    <tbody className="divide-y divide-white/5">
                                         {filteredUsers.map(user => (
-                                            <tr key={user.id} className="hover:bg-zinc-900/20 transition-all group">
-                                                <td className="px-6 py-4"><div className="w-8 h-8 rounded-full bg-zinc-900 border border-zinc-800 overflow-hidden flex items-center justify-center text-[10px] font-medium text-zinc-500">{user.avatarUrl ? <img src={user.avatarUrl} className="w-full h-full object-cover" /> : user.name.charAt(0)}</div></td>
-                                                <td className="px-6 py-4 font-mono text-[11px] text-zinc-600">{user.id === storedAdminPass ? '••••••••' : user.id}</td>
-                                                <td className="px-6 py-4 font-medium text-zinc-200">{user.name}</td>
-                                                <td className="px-6 py-4"><span className={`px-2 py-0.5 rounded text-[9px] font-bold uppercase tracking-wider border ${user.role === 'ADMIN' ? 'bg-purple-500/10 text-purple-400 border-purple-500/20' : 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20'}`}>{user.role}</span></td>
-                                                <td className="px-6 py-4 text-zinc-500 text-xs">{user.class || '---'}</td>
-                                                <td className="px-6 py-4 text-right">
-                                                    <div className="flex justify-end gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
-                                                        <button onClick={() => { setEditingUser(user); setShowUserForm(true); }} className="p-1.5 text-zinc-500 hover:text-emerald-500 rounded-md transition-all"><svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" /></svg></button>
-                                                        <button onClick={() => setConfirmDialog({ show: true, title: 'Remove Access', message: `Revoke access for ${user.name}?`, onConfirm: () => onDeleteUser(user.id) })} className="p-1.5 text-zinc-500 hover:text-red-400 rounded-md transition-all"><svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg></button>
+                                            <tr key={user.id} className="hover:bg-white/[0.03] transition-all group">
+                                                <td className="px-10 py-6">
+                                                    <div className="w-10 h-10 rounded-2xl glass-card border-white/10 overflow-hidden flex items-center justify-center text-[10px] font-black text-zinc-400 group-hover:glow-emerald transition-all">
+                                                        {user.avatarUrl ? <img src={user.avatarUrl} className="w-full h-full object-cover" /> : user.name.charAt(0).toUpperCase()}
+                                                    </div>
+                                                </td>
+                                                <td className="px-10 py-6 font-mono text-[11px] text-zinc-600 group-hover:text-zinc-300 transition-colors uppercase">{user.id === storedAdminPass ? '••••••••' : user.id}</td>
+                                                <td className="px-10 py-6 font-black text-white text-sm tracking-tight">{user.name}</td>
+                                                <td className="px-10 py-6">
+                                                    <span className={`px-4 py-1.5 rounded-full text-[8px] font-black uppercase tracking-[0.2em] border ${user.role === 'ADMIN' ? 'bg-purple-500/10 text-purple-400 border-purple-500/20 shadow-[0_0_10px_rgba(168,85,247,0.15)]' : 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20 shadow-[0_0_10px_rgba(16,185,129,0.15)]'}`}>
+                                                        {user.role === 'ADMIN' ? 'Level Alpha' : 'Persona Std'}
+                                                    </span>
+                                                </td>
+                                                <td className="px-10 py-6 text-zinc-500 text-[10px] font-bold uppercase tracking-widest">{user.class || 'No Link'}</td>
+                                                <td className="px-10 py-6 text-right">
+                                                    <div className="flex justify-end gap-3 opacity-0 group-hover:opacity-100 transition-all transform translate-x-4 group-hover:translate-x-0">
+                                                        <button onClick={() => { setEditingUser(user); setShowUserForm(true); }} className="p-2.5 glass-card border-white/5 hover:text-emerald-400 rounded-xl transition-all"><svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" /></svg></button>
+                                                        <button onClick={() => setConfirmDialog({ show: true, title: 'Revoke Identity', message: `Proceed with termination of persona "${user.name}"?`, onConfirm: () => onDeleteUser(user.id) })} className="p-2.5 glass-card border-white/5 hover:text-red-400 rounded-xl transition-all"><svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg></button>
                                                     </div>
                                                 </td>
                                             </tr>
@@ -473,21 +481,25 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
                             )}
                             {activeTab === 'requests' && (
                                 <>
-                                    <thead className="bg-zinc-900/20 border-b border-zinc-900/50 text-zinc-500 text-[10px] font-bold uppercase tracking-wider">
-                                        <tr><th className="px-6 py-4">Date</th><th className="px-6 py-4">User</th><th className="px-6 py-4">Book</th><th className="px-6 py-4">Status</th><th className="px-6 py-4 text-right">Actions</th></tr>
+                                    <thead className="bg-white/[0.02] border-b border-white/5 text-zinc-500 text-[9px] font-black uppercase tracking-[0.3em]">
+                                        <tr><th className="px-10 py-6">Log Timestamp</th><th className="px-10 py-6">Target Persona</th><th className="px-10 py-6">Resource Allocation</th><th className="px-10 py-6">Sync Status</th><th className="px-10 py-6 text-right">Override</th></tr>
                                     </thead>
-                                    <tbody className="divide-y divide-zinc-900/50">
+                                    <tbody className="divide-y divide-white/5">
                                         {requests.map(req => (
-                                            <tr key={req.id} className="hover:bg-zinc-900/20 transition-all">
-                                                <td className="px-6 py-4 text-zinc-600 font-mono text-[10px]">{new Date(req.timestamp).toLocaleDateString()}</td>
-                                                <td className="px-6 py-4 font-medium text-zinc-200">{req.userName}</td>
-                                                <td className="px-6 py-4 text-zinc-400 text-xs">{req.bookTitle}</td>
-                                                <td className="px-6 py-4"><span className={`px-2 py-0.5 rounded text-[9px] font-bold uppercase tracking-wider border ${req.status === 'PENDING' ? 'bg-amber-500/10 text-amber-500 border-amber-500/20' : req.status === 'APPROVED' ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20' : 'bg-red-500/10 text-red-500 border-red-500/20'}`}>{req.status}</span></td>
-                                                <td className="px-6 py-4 text-right">
+                                            <tr key={req.id} className="hover:bg-white/[0.03] transition-all group">
+                                                <td className="px-10 py-6 text-zinc-600 font-mono text-[9px] uppercase tracking-widest">{new Date(req.timestamp).toLocaleString()}</td>
+                                                <td className="px-10 py-6 font-black text-white text-sm tracking-tight">{req.userName}</td>
+                                                <td className="px-10 py-6 text-zinc-400 text-[10px] font-bold uppercase tracking-widest">{req.bookTitle}</td>
+                                                <td className="px-10 py-6">
+                                                    <span className={`px-4 py-1.5 rounded-full text-[8px] font-black uppercase tracking-[0.2em] border ${req.status === 'PENDING' ? 'bg-amber-500/10 text-amber-500 border-amber-500/20 glow-amber shadow-[0_0_10px_rgba(245,158,11,0.2)]' : req.status === 'APPROVED' ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20' : 'bg-red-500/10 text-red-500 border-red-500/20'}`}>
+                                                        {req.status === 'PENDING' ? 'Wait-Sync' : req.status}
+                                                    </span>
+                                                </td>
+                                                <td className="px-10 py-6 text-right">
                                                     {req.status === 'PENDING' && (
-                                                        <div className="flex justify-end gap-2">
-                                                            <button onClick={() => onHandleRequest(req.id, 'APPROVE')} className="px-3 py-1 bg-emerald-600/10 hover:bg-emerald-600/20 text-emerald-500 rounded text-[10px] font-bold uppercase">Approve</button>
-                                                            <button onClick={() => onHandleRequest(req.id, 'DENY')} className="px-3 py-1 bg-zinc-800/50 hover:bg-zinc-800 text-zinc-400 rounded text-[10px] font-bold uppercase">Deny</button>
+                                                        <div className="flex justify-end gap-3 opacity-0 group-hover:opacity-100 transition-all">
+                                                            <button onClick={() => onHandleRequest(req.id, 'APPROVE')} className="px-5 py-2 glass-card border-emerald-500/20 text-emerald-400 text-[9px] font-black uppercase tracking-widest hover:bg-emerald-500/10 transition-all rounded-xl">Execute</button>
+                                                            <button onClick={() => onHandleRequest(req.id, 'DENY')} className="px-5 py-2 glass-card border-white/5 text-zinc-600 hover:text-white text-[9px] font-black uppercase tracking-widest transition-all rounded-xl">Block</button>
                                                         </div>
                                                     )}
                                                 </td>
@@ -498,17 +510,21 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
                             )}
                             {activeTab === 'history' && (
                                 <>
-                                    <thead className="bg-zinc-900/20 border-b border-zinc-900/50 text-zinc-500 text-[10px] font-bold uppercase tracking-wider">
-                                        <tr><th className="px-6 py-4">Borrowed</th><th className="px-6 py-4">User</th><th className="px-6 py-4">Book</th><th className="px-6 py-4">Returned</th><th className="px-6 py-4">Status</th></tr>
+                                    <thead className="bg-white/[0.02] border-b border-white/5 text-zinc-500 text-[9px] font-black uppercase tracking-[0.3em]">
+                                        <tr><th className="px-10 py-6">Handshake</th><th className="px-10 py-6">Entity</th><th className="px-10 py-6">Resource Allocation</th><th className="px-10 py-6">Release</th><th className="px-10 py-6">State</th></tr>
                                     </thead>
-                                    <tbody className="divide-y divide-zinc-900/50">
+                                    <tbody className="divide-y divide-white/5">
                                         {history.map(record => (
-                                            <tr key={record.id} className="hover:bg-zinc-900/20 transition-all">
-                                                <td className="px-6 py-4 text-zinc-600 font-mono text-[10px]">{new Date(record.borrowDate).toLocaleDateString()}</td>
-                                                <td className="px-6 py-4 font-medium text-zinc-200">{record.userName}</td>
-                                                <td className="px-6 py-4 text-zinc-400 text-xs">{record.bookTitle}</td>
-                                                <td className="px-6 py-4 text-zinc-600 font-mono text-[10px]">{record.returnDate ? new Date(record.returnDate).toLocaleDateString() : '---'}</td>
-                                                <td className="px-6 py-4"><span className={`px-2 py-0.5 rounded text-[9px] font-bold uppercase tracking-wider border ${record.returnDate ? 'bg-zinc-800/50 text-zinc-500 border-zinc-800' : 'bg-blue-500/10 text-blue-500 border-blue-500/20'}`}>{record.returnDate ? 'Returned' : 'In Use'}</span></td>
+                                            <tr key={record.id} className="hover:bg-white/[0.03] transition-all group">
+                                                <td className="px-10 py-6 text-zinc-600 font-mono text-[9px] uppercase tracking-widest">{new Date(record.borrowDate).toLocaleDateString()}</td>
+                                                <td className="px-10 py-6 font-black text-white text-sm tracking-tight">{record.userName}</td>
+                                                <td className="px-10 py-6 text-zinc-400 text-[10px] font-bold uppercase tracking-widest">{record.bookTitle}</td>
+                                                <td className="px-10 py-6 text-zinc-600 font-mono text-[9px] uppercase tracking-widest">{record.returnDate ? new Date(record.returnDate).toLocaleDateString() : 'Active Lock'}</td>
+                                                <td className="px-10 py-6">
+                                                    <span className={`px-4 py-1.5 rounded-full text-[8px] font-black uppercase tracking-[0.2em] border ${record.returnDate ? 'bg-white/5 text-zinc-500 border-white/10' : 'bg-blue-500/10 text-blue-400 border-blue-500/20 shadow-[0_0_10px_rgba(59,130,246,0.2)]'}`}>
+                                                        {record.returnDate ? 'Asset Docked' : 'Link Established'}
+                                                    </span>
+                                                </td>
                                             </tr>
                                         ))}
                                     </tbody>
@@ -516,19 +532,29 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
                             )}
                             {activeTab === 'fines' && (
                                 <>
-                                    <thead className="bg-zinc-900/20 border-b border-zinc-900/50 text-zinc-500 text-[10px] font-bold uppercase tracking-wider">
-                                        <tr><th className="px-6 py-4">Date</th><th className="px-6 py-4">User</th><th className="px-6 py-4">Book</th><th className="px-6 py-4">Reason</th><th className="px-6 py-4 text-right">Amount</th><th className="px-6 py-4">Status</th><th className="px-6 py-4 text-right">Actions</th></tr>
+                                    <thead className="bg-white/[0.02] border-b border-white/5 text-zinc-500 text-[9px] font-black uppercase tracking-[0.3em]">
+                                        <tr><th className="px-10 py-6">Breach Date</th><th className="px-10 py-6">Persona</th><th className="px-10 py-6">Resource Link</th><th className="px-10 py-6">Discrepancy</th><th className="px-10 py-6 text-right">Fee (INR)</th><th className="px-10 py-6">Clearance</th><th className="px-10 py-6 text-right">Resolve</th></tr>
                                     </thead>
-                                    <tbody className="divide-y divide-zinc-900/50">
+                                    <tbody className="divide-y divide-white/5">
                                         {fines.map(fine => (
-                                            <tr key={fine.id} className="hover:bg-zinc-900/20 transition-all">
-                                                <td className="px-6 py-4 text-zinc-600 font-mono text-[10px]">{new Date(fine.timestamp).toLocaleDateString()}</td>
-                                                <td className="px-6 py-4 font-medium text-zinc-200">{fine.userName}</td>
-                                                <td className="px-6 py-4 text-zinc-400 text-xs">{fine.bookTitle}</td>
-                                                <td className="px-6 py-4 text-zinc-500 text-xs">{fine.reason}</td>
-                                                <td className="px-6 py-4 text-right font-mono text-xs text-emerald-500">₹{fine.amount}</td>
-                                                <td className="px-6 py-4"><span className={`px-2 py-0.5 rounded text-[9px] font-bold uppercase tracking-wider border ${fine.status === 'PAID' ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20' : 'bg-red-500/10 text-red-500 border-red-500/20'}`}>{fine.status}</span></td>
-                                                <td className="px-6 py-4 text-right">{fine.status === 'PENDING' && <button onClick={() => onPayFine(fine.id)} className="px-3 py-1 bg-emerald-600/10 hover:bg-emerald-600/20 rounded text-[9px] font-bold text-emerald-500 uppercase tracking-wider border border-transparent hover:border-emerald-500/30">Mark Paid</button>}</td>
+                                            <tr key={fine.id} className="hover:bg-white/[0.03] transition-all group">
+                                                <td className="px-10 py-6 text-zinc-600 font-mono text-[9px] uppercase tracking-widest">{new Date(fine.timestamp).toLocaleDateString()}</td>
+                                                <td className="px-10 py-6 font-black text-white text-sm tracking-tight">{fine.userName}</td>
+                                                <td className="px-10 py-6 text-zinc-400 text-[10px] font-bold uppercase tracking-widest">{fine.bookTitle}</td>
+                                                <td className="px-10 py-6 text-zinc-500 text-[10px] font-bold uppercase truncate max-w-[200px] tracking-widest">{fine.reason}</td>
+                                                <td className="px-10 py-6 text-right">
+                                                    <span className="text-sm font-black text-emerald-400 tracking-tighter">₹{fine.amount}</span>
+                                                </td>
+                                                <td className="px-10 py-6">
+                                                    <span className={`px-4 py-1.5 rounded-full text-[8px] font-black uppercase tracking-[0.2em] border ${fine.status === 'PAID' ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20' : 'bg-red-500/10 text-red-500 border-red-500/20 shadow-[0_0_10px_rgba(239,68,68,0.2)]'}`}>
+                                                        {fine.status === 'PAID' ? 'Restored' : 'Breach Active'}
+                                                    </span>
+                                                </td>
+                                                <td className="px-10 py-6 text-right">
+                                                    {fine.status === 'PENDING' && (
+                                                        <button onClick={() => onPayFine(fine.id)} className="px-5 py-2 glass-card border-emerald-500/20 text-emerald-400 text-[9px] font-black uppercase tracking-widest hover:bg-emerald-500/10 transition-all rounded-xl opacity-0 group-hover:opacity-100">Synchronize</button>
+                                                    )}
+                                                </td>
                                             </tr>
                                         ))}
                                     </tbody>
@@ -542,61 +568,133 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
             {/* Global Modals */}
             {showBookForm && <BookForm onClose={() => setShowBookForm(false)} onSubmit={(b) => { editingBook ? onUpdateBook(b) : onAddBook(b); setShowBookForm(false); }} initialData={editingBook} />}
             {showUserForm && <UserForm onClose={() => setShowUserForm(false)} onSubmit={(u) => { editingUser ? onUpdateUser(u) : onAddUser(u); setShowUserForm(false); }} initialData={editingUser} />}
+
             {showPassModal && (
-                <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-[9999] p-4">
-                    <div className="bg-zinc-900 border border-zinc-800 w-full max-w-md rounded-2xl shadow-2xl p-6 space-y-4">
-                        <div className="flex justify-between items-center mb-2"><h3 className="font-bold text-lg text-white">Advanced Settings</h3><button onClick={() => setShowPassModal(false)} className="text-zinc-500 hover:text-white"><svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /></svg></button></div>
-                        <input type="password" placeholder="Current Password" value={currentPass} onChange={(e) => setCurrentPass(e.target.value)} className="w-full bg-zinc-950 border border-zinc-800 rounded-xl px-4 py-3 text-sm text-white" />
-                        <input type="password" placeholder="New Password" value={newPass} onChange={(e) => setNewPass(e.target.value)} className="w-full bg-zinc-950 border border-zinc-800 rounded-xl px-4 py-3 text-sm text-white" />
-                        <div className="flex justify-end gap-3 pt-4"><button onClick={() => setShowPassModal(false)} className="px-6 py-2 text-sm text-zinc-500">Cancel</button><button onClick={() => { if (currentPass === storedAdminPass) { localStorage.setItem('adminPassword', newPass); setStatusMsg('Password updated!'); setShowPassModal(false); } else setStatusMsg('Invalid current password!', 'error'); }} className="bg-emerald-600 text-white px-8 py-2 rounded-lg text-sm font-bold">Save</button></div>
+                <div className="fixed inset-0 z-[12000] flex items-center justify-center p-4">
+                    <div className="absolute inset-0 bg-black/90 backdrop-blur-2xl animate-in fade-in duration-700" onClick={() => setShowPassModal(false)}></div>
+                    <div className="relative w-full max-w-md glass-main border-white/5 rounded-[3.5rem] overflow-hidden animate-in zoom-in duration-500 flex flex-col p-10 shadow-[0_0_100px_-20px_rgba(0,0,0,1)]">
+                        <div className="flex justify-between items-center mb-10">
+                            <h3 className="font-black text-[10px] text-zinc-400 uppercase tracking-[0.4em]">Internal Security</h3>
+                            <button onClick={() => setShowPassModal(false)} className="p-3 glass-card rounded-full text-zinc-600 hover:text-white transition-all">
+                                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M6 18L18 6M6 6l12 12" /></svg>
+                            </button>
+                        </div>
+                        <div className="space-y-6">
+                            <div>
+                                <label className="block text-[8px] font-black text-zinc-500 uppercase tracking-[0.4em] mb-2 px-1">Active Credentials</label>
+                                <input type="password" placeholder="Current Password" value={currentPass} onChange={(e) => setCurrentPass(e.target.value)} className="w-full bg-white/[0.03] border border-white/5 rounded-2xl px-6 py-4 text-sm text-white focus:glow-emerald outline-none transition-all placeholder:text-zinc-800" />
+                            </div>
+                            <div>
+                                <label className="block text-[8px] font-black text-zinc-500 uppercase tracking-[0.4em] mb-2 px-1">New Descriptor</label>
+                                <input type="password" placeholder="Define security string..." value={newPass} onChange={(e) => setNewPass(e.target.value)} className="w-full bg-white/[0.03] border border-white/5 rounded-2xl px-6 py-4 text-sm text-white focus:glow-emerald outline-none transition-all placeholder:text-zinc-800" />
+                            </div>
+                        </div>
+                        <div className="flex justify-end gap-6 pt-10 mt-4 border-t border-white/5">
+                            <button onClick={() => setShowPassModal(false)} className="px-6 text-[10px] font-black text-zinc-600 hover:text-white transition-all uppercase tracking-[0.3em]">Discard</button>
+                            <button onClick={() => { if (currentPass === storedAdminPass) { localStorage.setItem('adminPassword', newPass); setStatusMsg('Internal Security Synchronized'); setShowPassModal(false); } else setStatusMsg('Verification Failed', 'error'); }} className="bg-emerald-600 hover:bg-emerald-500 text-white px-10 py-4 rounded-2xl text-[10px] font-black uppercase tracking-[0.3em] transition-all glow-emerald">Commit Sync</button>
+                        </div>
                     </div>
                 </div>
             )}
 
             {showFineModal && selectedReturn && (
-                <div className="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center z-[9999] p-4">
-                    <div className="bg-zinc-900 border border-zinc-800 w-full max-w-md rounded-3xl p-8 space-y-6 animate-in zoom-in-95 duration-200">
-                        <h3 className="text-xl font-black text-white uppercase tracking-tight">Confirm Return</h3>
-                        <p className="text-xs text-zinc-500">{selectedReturn.bookTitle} - {selectedReturn.userName}</p>
-                        <div className="flex items-center justify-between p-4 bg-zinc-950 rounded-2xl border border-zinc-800"><span className="text-sm font-bold text-zinc-300">Are there any issues?</span><button onClick={() => setHasIssue(!hasIssue)} className={`w-12 h-6 rounded-full relative transition-all ${hasIssue ? 'bg-red-600' : 'bg-zinc-800'}`}><div className={`absolute top-1 w-4 h-4 bg-white rounded-full transition-all ${hasIssue ? 'left-7' : 'left-1'}`}></div></button></div>
-                        {hasIssue && (
-                            <div className="space-y-4">
-                                <input type="number" value={fineAmount} onChange={(e) => setFineAmount(Number(e.target.value))} className="w-full bg-zinc-950 border border-zinc-800 rounded-xl px-4 py-3 text-sm text-white" placeholder="Fine Amount ($)" />
-                                <textarea value={fineReason} onChange={(e) => setFineReason(e.target.value)} className="w-full bg-zinc-950 border border-zinc-800 rounded-xl px-4 py-3 text-sm text-white h-24" placeholder="Reason..." />
+                <div className="fixed inset-0 z-[12000] flex items-center justify-center p-4">
+                    <div className="absolute inset-0 bg-black/90 backdrop-blur-2xl animate-in fade-in duration-700" onClick={() => setShowFineModal(false)}></div>
+                    <div className="relative w-full max-w-md glass-main border-white/5 rounded-[3.5rem] overflow-hidden animate-in zoom-in duration-500 flex flex-col shadow-[0_0_100px_-20px_rgba(0,0,0,1)]">
+                        <div className="px-10 py-8 border-b border-white/5 bg-white/[0.02] flex justify-between items-center">
+                            <h3 className="font-black text-[10px] text-zinc-400 uppercase tracking-[0.4em]">Asset Recovery</h3>
+                            <button onClick={() => setShowFineModal(false)} className="p-3 glass-card rounded-full text-zinc-600 hover:text-white transition-all">
+                                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M6 18L18 6M6 6l12 12" /></svg>
+                            </button>
+                        </div>
+                        <div className="p-10 space-y-8">
+                            <div className="glass-card p-6 rounded-[2.5rem] border-white/10">
+                                <p className="text-[8px] font-black text-zinc-600 uppercase tracking-[0.4em] mb-1">Target Identity</p>
+                                <p className="text-lg font-black text-white">{selectedReturn.userName}</p>
+                                <p className="text-[9px] font-bold text-emerald-400/60 uppercase tracking-widest mt-1">{selectedReturn.bookTitle}</p>
                             </div>
-                        )}
-                        <div className="flex gap-3"><button onClick={() => setShowFineModal(false)} className="flex-1 py-3 text-sm font-bold text-zinc-500 bg-zinc-800/50 rounded-xl">Cancel</button><button onClick={() => { onReturnBook(selectedReturn.bookId, selectedReturn.userId, hasIssue ? { amount: fineAmount, reason: fineReason } : undefined); setShowFineModal(false); }} className="flex-1 bg-emerald-600 text-white py-3 rounded-xl text-sm font-bold">Confirm</button></div>
+                            <div className="flex items-center justify-between p-6 glass-card rounded-[2.5rem] border-white/5">
+                                <div className="space-y-0.5">
+                                    <span className="text-[10px] font-black text-zinc-400 uppercase tracking-widest">Asset Integrity Issue?</span>
+                                    <p className="text-[8px] text-zinc-600 font-bold uppercase tracking-widest">Damage or Late return penalties</p>
+                                </div>
+                                <button onClick={() => setHasIssue(!hasIssue)} className={`w-14 h-7 rounded-full relative transition-all duration-500 ${hasIssue ? 'bg-red-500/20 border border-red-500/40 glow-red shadow-[0_0_15px_rgba(239,68,68,0.2)]' : 'bg-white/5 border border-white/10'}`}>
+                                    <div className={`absolute top-1 w-4.5 h-4.5 bg-white rounded-full transition-all duration-500 shadow-lg ${hasIssue ? 'left-8 scale-110 bg-red-400' : 'left-1 scale-90 bg-zinc-600'}`}></div>
+                                </button>
+                            </div>
+                            {hasIssue && (
+                                <div className="space-y-6 animate-in slide-in-from-top-4 duration-500">
+                                    <div>
+                                        <label className="block text-[8px] font-black text-zinc-500 uppercase tracking-[0.4em] mb-2 px-1">Penalty Value (INR)</label>
+                                        <input type="number" value={fineAmount} onChange={(e) => setFineAmount(Number(e.target.value))} className="w-full bg-white/[0.03] border border-white/5 rounded-2xl px-6 py-4 text-sm text-white focus:glow-emerald outline-none transition-all placeholder:text-zinc-800" placeholder="0.00" />
+                                    </div>
+                                    <div>
+                                        <label className="block text-[8px] font-black text-zinc-500 uppercase tracking-[0.4em] mb-2 px-1">Discrepancy Log</label>
+                                        <textarea value={fineReason} onChange={(e) => setFineReason(e.target.value)} className="w-full bg-white/[0.03] border border-white/5 rounded-2xl px-6 py-4 text-sm text-white focus:glow-emerald outline-none transition-all h-28 placeholder:text-zinc-800" placeholder="Describe asset status..." />
+                                    </div>
+                                </div>
+                            )}
+                            <div className="flex gap-6 pt-10 border-t border-white/5">
+                                <button onClick={() => setShowFineModal(false)} className="flex-1 py-4 text-[10px] font-black uppercase text-zinc-600 tracking-[0.3em]">Discard</button>
+                                <button onClick={() => { onReturnBook(selectedReturn.bookId, selectedReturn.userId, hasIssue ? { amount: fineAmount, reason: fineReason } : undefined); setShowFineModal(false); }} className="flex-1 bg-emerald-600 hover:bg-emerald-500 text-white py-4 rounded-2xl text-[10px] font-black uppercase tracking-[0.3em] transition-all glow-emerald">Initialize Sync</button>
+                            </div>
+                        </div>
                     </div>
                 </div>
             )}
 
             {confirmDialog.show && (
-                <div className="fixed inset-0 bg-black/80 backdrop-blur-md flex items-center justify-center z-[11000] p-4">
-                    <div className="bg-zinc-900 border border-zinc-800 w-full max-w-sm rounded-[2rem] p-8 text-center animate-in zoom-in-95 duration-200">
-                        <div className="w-16 h-16 bg-red-500/10 rounded-2xl flex items-center justify-center mx-auto mb-6"><svg className="w-8 h-8 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" /></svg></div>
-                        <h3 className="text-xl font-black text-white uppercase tracking-tight">{confirmDialog.title}</h3>
-                        <p className="text-sm text-zinc-500 mt-3">{confirmDialog.message}</p>
-                        <div className="mt-8 flex gap-3"><button onClick={() => setConfirmDialog({ ...confirmDialog, show: false })} className="flex-1 py-3 text-xs font-black uppercase text-zinc-500">Discard</button><button onClick={() => { confirmDialog.onConfirm(); setConfirmDialog({ ...confirmDialog, show: false }); }} className="flex-1 bg-red-600 text-white py-3 rounded-xl text-[10px] font-black uppercase">Confirm</button></div>
+                <div className="fixed inset-0 z-[13000] flex items-center justify-center p-4">
+                    <div className="absolute inset-0 bg-black/95 backdrop-blur-3xl animate-in fade-in duration-700" onClick={() => setConfirmDialog({ ...confirmDialog, show: false })}></div>
+                    <div className="relative w-full max-w-sm glass-main border-white/5 rounded-[3.5rem] p-10 text-center animate-in zoom-in duration-500 shadow-[0_0_100px_rgba(0,0,0,1)]">
+                        <div className="w-20 h-20 bg-red-500/10 rounded-3xl flex items-center justify-center mx-auto mb-8 border border-red-500/20 shadow-inner group">
+                            <svg className="w-10 h-10 text-red-500 animate-pulse" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" /></svg>
+                        </div>
+                        <h3 className="text-2xl font-black text-white uppercase tracking-tighter leading-none">{confirmDialog.title}</h3>
+                        <p className="text-[10px] font-bold text-zinc-500 mt-4 uppercase tracking-[0.2em] leading-relaxed px-4">{confirmDialog.message}</p>
+                        <div className="mt-12 flex gap-4">
+                            <button onClick={() => setConfirmDialog({ ...confirmDialog, show: false })} className="flex-1 py-4 text-[10px] font-black uppercase tracking-[0.3em] text-zinc-600 hover:text-white transition-all">Abort</button>
+                            <button onClick={() => { confirmDialog.onConfirm(); setConfirmDialog({ ...confirmDialog, show: false }); }} className="flex-1 bg-red-600 hover:bg-red-500 text-white py-4 rounded-2xl text-[10px] font-black uppercase tracking-[0.3em] transition-all shadow-[0_0_20px_rgba(220,38,38,0.2)]">Execute</button>
+                        </div>
                     </div>
                 </div>
             )}
 
             {selectedBookDetail && (
                 <div className="fixed inset-0 z-[10000] flex items-center justify-center p-4">
-                    <div className="absolute inset-0 bg-black/80 backdrop-blur-xl" onClick={() => setSelectedBookDetail(null)}></div>
-                    <div className="relative w-full max-w-5xl bg-zinc-950 border border-zinc-800 rounded-[2.5rem] overflow-hidden flex flex-col md:row max-h-[90vh]">
-                        <div className="w-full md:w-1/3 h-64 md:h-auto bg-zinc-900"><img src={selectedBookDetail.coverUrl} className="w-full h-full object-cover" /></div>
-                        <div className="flex-1 p-8 md:p-12 overflow-y-auto no-scrollbar relative">
-                            <button onClick={() => setSelectedBookDetail(null)} className="absolute top-8 right-8 text-zinc-500"><svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /></svg></button>
-                            <span className="text-[10px] font-black text-emerald-500 uppercase tracking-widest bg-emerald-500/10 px-3 py-1 rounded-full">{selectedBookDetail.category}</span>
-                            <h2 className="text-3xl font-black text-white mt-4 uppercase">{selectedBookDetail.title}</h2>
-                            <p className="text-zinc-500 text-lg mb-8">by {selectedBookDetail.author}</p>
-                            <div className="grid grid-cols-3 gap-8 mb-10 pb-8 border-b border-zinc-900">
-                                <div><p className="text-[10px] font-black text-zinc-600 uppercase">Specs</p><p className="text-xs text-zinc-300 mt-1">ISBN: {selectedBookDetail.isbn}</p><p className="text-xs text-zinc-300">ID: #{selectedBookDetail.id}</p></div>
-                                <div><p className="text-[10px] font-black text-zinc-600 uppercase">Stock</p><p className="text-xs text-zinc-300 mt-1">{selectedBookDetail.availableCopies} / {selectedBookDetail.totalCopies}</p></div>
-                                <div><p className="text-[10px] font-black text-zinc-600 uppercase">Value</p><p className="text-xs text-zinc-300 mt-1">₹{selectedBookDetail.price}</p></div>
+                    <div className="absolute inset-0 bg-black/90 backdrop-blur-2xl animate-in fade-in duration-700" onClick={() => setSelectedBookDetail(null)}></div>
+                    <div className="relative w-full max-w-5xl glass-main border-white/10 rounded-[4rem] overflow-hidden flex flex-col md:flex-row max-h-[90vh] animate-in zoom-in duration-500 shadow-[0_0_100px_rgba(0,0,0,1)]">
+                        <div className="w-full md:w-2/5 aspect-[3/4.2] md:aspect-auto bg-black/40 relative">
+                            <img src={selectedBookDetail.coverUrl} className="w-full h-full object-cover" />
+                            <div className="absolute inset-0 bg-gradient-to-r from-transparent to-[#050507]/60" />
+                        </div>
+                        <div className="flex-1 p-10 md:p-16 overflow-y-auto no-scrollbar relative flex flex-col">
+                            <button onClick={() => setSelectedBookDetail(null)} className="absolute top-10 right-10 p-3 glass-card rounded-full text-zinc-600 hover:text-white transition-all z-20">
+                                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M6 18L18 6M6 6l12 12" /></svg>
+                            </button>
+                            <div className="relative z-10 flex-1">
+                                <span className="text-[10px] font-black text-emerald-500 tracking-[0.4em] uppercase bg-emerald-500/10 px-4 py-2 rounded-full border border-emerald-500/10">{selectedBookDetail.category}</span>
+                                <h2 className="text-4xl md:text-5xl font-black text-white mt-10 uppercase tracking-tighter leading-[0.9]">{selectedBookDetail.title}</h2>
+                                <p className="text-zinc-500 text-xl mt-6 font-black uppercase tracking-[0.2em] opacity-60">Origin: {selectedBookDetail.author}</p>
+
+                                <div className="grid grid-cols-2 gap-10 mt-16 pt-16 border-t border-white/5">
+                                    <div className="space-y-3">
+                                        <p className="text-[10px] font-black text-zinc-600 uppercase tracking-widest">Global Protocol</p>
+                                        <p className="text-zinc-300 font-bold text-[11px] font-mono">ISBN: {selectedBookDetail.isbn}</p>
+                                        <p className="text-zinc-300 font-bold text-[11px] font-mono">ID: #{selectedBookDetail.id}</p>
+                                    </div>
+                                    <div className="space-y-3">
+                                        <p className="text-[10px] font-black text-zinc-600 uppercase tracking-widest">Inventory Health</p>
+                                        <p className="text-zinc-300 font-black text-2xl tracking-tighter">{selectedBookDetail.availableCopies} <span className="text-xs uppercase opacity-40 ml-1">/ {selectedBookDetail.totalCopies} Nodes</span></p>
+                                    </div>
+                                </div>
                             </div>
-                            <button onClick={() => { setEditingBook(selectedBookDetail); setShowBookForm(true); setSelectedBookDetail(null); }} className="w-full py-4 bg-zinc-900 border border-zinc-800 text-zinc-400 font-black uppercase text-xs tracking-widest rounded-2xl hover:text-white transition-all">Edit Specifications</button>
+                            <div className="mt-16">
+                                <button onClick={() => { setEditingBook(selectedBookDetail); setShowBookForm(true); setSelectedBookDetail(null); }} className="w-full py-5 bg-white/5 border border-white/10 hover:border-emerald-500/40 text-emerald-400 font-black uppercase text-xs tracking-[0.4em] rounded-3xl transition-all hover:bg-emerald-500/5 group flex items-center justify-center gap-4">
+                                    Modify Protocol
+                                    <svg className="w-4 h-4 transition-transform group-hover:rotate-12" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" /></svg>
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>
