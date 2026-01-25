@@ -2,6 +2,8 @@ import React, { useState, useMemo, useRef } from 'react';
 import { Book, User, BorrowRequest, HistoryRecord, Fine } from '../types';
 import BookForm from './BookForm';
 import UserForm from './UserForm';
+import QRCodeModal from './QRCodeModal';
+import ScannerModal from './ScannerModal';
 
 // Retrieve stored admin password or default
 const storedAdminPass = typeof window !== 'undefined' ? localStorage.getItem('adminPassword') || 'admin@484' : 'admin@484';
@@ -52,6 +54,11 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
     const [newPass, setNewPass] = useState('');
 
     const [selectedBookDetail, setSelectedBookDetail] = useState<Book | null>(null);
+
+    // QR Code Modal State
+    const [showQRModal, setShowQRModal] = useState(false);
+    const [selectedBookForQR, setSelectedBookForQR] = useState<Book | null>(null);
+    const [showScanner, setShowScanner] = useState(false);
 
     // Fine Modal State
     const [showFineModal, setShowFineModal] = useState(false);
@@ -343,6 +350,15 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
                                 className="bg-[#0c0c0e] border border-zinc-900 rounded-xl pl-10 pr-4 py-2.5 text-sm text-white/90 focus:border-zinc-700 outline-none w-full transition-all"
                             />
                         </div>
+                        <button
+                            onClick={() => setShowScanner(true)}
+                            className="p-2.5 bg-zinc-900 border border-zinc-800 rounded-xl hover:bg-zinc-800 transition-all text-emerald-500 hover:text-emerald-400 group"
+                            title="Scan QR Code"
+                        >
+                            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 4v1m6 11h2m-6 0h-2v4m0-11v3m0 0h.01M12 12h4.01M16 20h4M4 12h4m12 0h.01M5 8h2a1 1 0 001-1V5a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1zm12 0h2a1 1 0 001-1V5a1 1 0 00-1-1h-2a1 1 0 00-1 1v2a1 1 0 001 1zM5 20h2a1 1 0 001-1v-2a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1z" />
+                            </svg>
+                        </button>
                         {activeTab === 'books' && (
                             <select
                                 value={filter} onChange={(e) => setFilter(e.target.value)}
@@ -541,6 +557,9 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
                                                 </p>
                                             </div>
                                             <div className="flex gap-1">
+                                                <button onClick={() => { setSelectedBookForQR(book); setShowQRModal(true); }} className="p-1.5 text-zinc-500 hover:text-blue-400 hover:bg-blue-500/10 rounded-md transition-all" title="Generate QR Code">
+                                                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 4v1m6 11h2m-6 0h-2v4m0-11v3m0 0h.01M12 12h4.01M16 20h4M4 12h4m12 0h.01M5 8h2a1 1 0 001-1V5a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1zm12 0h2a1 1 0 001-1V5a1 1 0 00-1-1h-2a1 1 0 00-1 1v2a1 1 0 001 1zM5 20h2a1 1 0 001-1v-2a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1z" /></svg>
+                                                </button>
                                                 <button onClick={() => setSelectedBookDetail(book)} className="p-1.5 text-zinc-500 hover:text-white hover:bg-zinc-800 rounded-md transition-all" title="View Details">
                                                     <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" /><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" /></svg>
                                                 </button>
@@ -1051,6 +1070,38 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
                         </div>
                     </div>
                 </div>
+            )}
+
+            {/* QR Code Modal */}
+            {showQRModal && selectedBookForQR && (
+                <QRCodeModal
+                    book={selectedBookForQR}
+                    onClose={() => {
+                        setShowQRModal(false);
+                        setSelectedBookForQR(null);
+                    }}
+                />
+            )}
+
+            {/* Scanner Modal */}
+            {showScanner && (
+                <ScannerModal
+                    onClose={() => setShowScanner(false)}
+                    onScan={(text) => {
+                        if (text.startsWith('ALBAYAN:BOOK:')) {
+                            const bookId = text.split(':').pop();
+                            const book = books.find(b => b.id === bookId);
+                            if (book) {
+                                setSelectedBookDetail(book);
+                                setShowScanner(false);
+                            } else {
+                                globalStatus.set('Book not found in system!', 'error');
+                            }
+                        } else {
+                            globalStatus.set('Invalid Albayan QR code', 'error');
+                        }
+                    }}
+                />
             )}
         </div>
     );
