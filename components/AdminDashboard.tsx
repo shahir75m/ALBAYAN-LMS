@@ -297,6 +297,7 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
                             <select value={filter} onChange={(e) => setFilter(e.target.value)} className="bg-[#0c0c0e] border border-zinc-900 rounded-xl px-4 py-2.5 text-sm focus:border-zinc-700 outline-none text-zinc-400 transition-all cursor-pointer">
                                 <option value="All">All Roles</option>
                                 <option value="STUDENT">Students</option>
+                                <option value="USTHAD">Usthads</option>
                                 <option value="ADMIN">Administrators</option>
                             </select>
                         )}
@@ -444,7 +445,11 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
                                                 <td className="px-6 py-4"><div className="w-8 h-8 rounded-full bg-zinc-900 border border-zinc-800 overflow-hidden flex items-center justify-center text-[10px] font-medium text-zinc-500">{user.avatarUrl ? <img src={user.avatarUrl} className="w-full h-full object-cover" /> : user.name.charAt(0)}</div></td>
                                                 <td className="px-6 py-4 font-mono text-[11px] text-zinc-600">{user.id === storedAdminPass ? '••••••••' : user.id}</td>
                                                 <td className="px-6 py-4 font-medium text-zinc-200">{user.name}</td>
-                                                <td className="px-6 py-4"><span className={`px-2 py-0.5 rounded text-[9px] font-bold uppercase tracking-wider border ${user.role === 'ADMIN' ? 'bg-purple-500/10 text-purple-400 border-purple-500/20' : 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20'}`}>{user.role}</span></td>
+                                                <td className="px-6 py-4">
+                                                    <span className={`px-2 py-0.5 rounded text-[9px] font-bold uppercase tracking-wider border ${user.role === 'ADMIN' ? 'bg-purple-500/10 text-purple-400 border-purple-500/20' : user.role === 'USTHAD' ? 'bg-amber-500/10 text-amber-500 border-amber-500/20' : 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20'}`}>
+                                                        {user.role}
+                                                    </span>
+                                                </td>
                                                 <td className="px-6 py-4 text-zinc-500 text-xs">{user.class || '---'}</td>
                                                 <td className="px-6 py-4 text-right">
                                                     <div className="flex justify-end gap-1 opacity-0 group-hover:opacity-100 transition-opacity">

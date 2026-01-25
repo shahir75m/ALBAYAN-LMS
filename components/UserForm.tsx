@@ -98,6 +98,7 @@ const UserForm: React.FC<UserFormProps> = ({ onClose, onSubmit, initialData }) =
                   onChange={e => setFormData({ ...formData, role: e.target.value as Role })}
                 >
                   <option value="STUDENT">Student</option>
+                  <option value="USTHAD">Usthad</option>
                   <option value="ADMIN">Administrator</option>
                 </select>
               </div>
