@@ -154,7 +154,7 @@ const AssetLabelGenerator: React.FC<AssetLabelGeneratorProps> = ({ onClose, exis
                     {/* Preview Area */}
                     <div className="flex-1 bg-zinc-900/50 overflow-y-auto p-12 no-scrollbar print:p-0 print:bg-white print:overflow-visible">
                         {labels.length > 0 ? (
-                            <div className="space-y-12 print:space-y-0">
+                            <div className="space-y-12 print:space-y-0" id="print-area">
                                 <div className="flex justify-between items-center mb-8 print:hidden">
                                     <h4 className="text-xs font-black text-zinc-600 uppercase tracking-widest">Preview & Print Layout</h4>
                                     <button
@@ -186,9 +186,16 @@ const AssetLabelGenerator: React.FC<AssetLabelGeneratorProps> = ({ onClose, exis
                                 <style dangerouslySetInnerHTML={{
                                     __html: `
                                     @media print {
-                                        body * { visibility: hidden; }
-                                        .print\\:relative, .print\\:relative * { visibility: visible; }
-                                        .print\\:relative { position: absolute; left: 0; top: 0; width: 100%; }
+                                        body { visibility: hidden; background: white; }
+                                        #print-area, #print-area * { visibility: visible; }
+                                        #print-area { 
+                                            position: absolute; 
+                                            left: 0; 
+                                            top: 0; 
+                                            width: 100%; 
+                                            margin: 0;
+                                            padding: 0;
+                                        }
                                     }
                                 `}} />
                             </div>
