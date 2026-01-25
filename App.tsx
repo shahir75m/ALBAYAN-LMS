@@ -167,7 +167,8 @@ const App: React.FC = () => {
             bookTitle: req.bookTitle,
             userId: req.userId,
             userName: req.userName,
-            borrowDate: Date.now()
+            borrowDate: Date.now(),
+            issuedBy: currentUser?.name || 'Admin'
           });
         }
       }

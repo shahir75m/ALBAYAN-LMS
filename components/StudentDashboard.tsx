@@ -1,5 +1,20 @@
 import React, { useState, useMemo } from 'react';
 import { Book, User, BorrowRequest, HistoryRecord, Fine } from '../types';
+import { jsPDF } from 'jspdf';
+import autoTable from 'jspdf-autotable';
+
+const StatCompact = ({ title, value, color }: any) => {
+    const colors: Record<string, string> = { emerald: 'text-emerald-500', amber: 'text-amber-500', red: 'text-red-500', blue: 'text-blue-500' };
+    return (
+        <div className="bg-zinc-900/10 border border-zinc-800 p-6 rounded-2xl transition-all hover:border-zinc-700">
+            <h3 className="text-[10px] font-bold text-zinc-500 uppercase tracking-widest mb-2">{title}</h3>
+            <div className="flex items-center gap-2">
+                <p className="text-2xl font-bold text-zinc-200">{value}</p>
+                <div className={`w-1.5 h-1.5 rounded-full ${colors[color]} bg-current opacity-60`}></div>
+            </div>
+        </div>
+    );
+};
 
 interface StudentDashboardProps {
     activeTab: string;
@@ -73,6 +88,30 @@ const StudentDashboard: React.FC<StudentDashboardProps> = ({
         setStatusMsg(`Priority Notification Set: You will be alerted when "${title}" returns.`);
     };
 
+    const handleDownloadCatalog = () => {
+        const doc = new jsPDF();
+        doc.setFontSize(18);
+        doc.text('ALBAYAN LIBRARY CATALOG', 14, 22);
+        doc.setFontSize(11);
+        doc.setTextColor(100);
+        doc.text(`Generated on: ${new Date().toLocaleDateString()}`, 14, 30);
+
+        const tableData = filteredBooks.map(book => [book.id, book.title]);
+
+        autoTable(doc, {
+            startY: 40,
+            head: [['ID', 'TITLE']],
+            body: tableData,
+            theme: 'grid',
+            headStyles: { fillColor: [16, 185, 129], textColor: [255, 255, 255], fontStyle: 'bold' },
+            styles: { fontSize: 10, cellPadding: 3 },
+            alternateRowStyles: { fillColor: [245, 245, 245] },
+        });
+
+        doc.save('Albayan_Library_Catalog.pdf');
+        setStatusMsg('Catalog downloaded as PDF!');
+    };
+
     return (
         <div className="relative">
             {/* Global Status Message Banner */}
@@ -120,6 +159,7 @@ const StudentDashboard: React.FC<StudentDashboardProps> = ({
                                                 <div className="flex flex-col py-1">
                                                     <h4 className="font-bold text-zinc-200 text-sm leading-tight line-clamp-2">{h.bookTitle}</h4>
                                                     <p className="text-[10px] text-zinc-500 mt-1 uppercase tracking-wider">Borrowed: {new Date(h.borrowDate).toLocaleDateString()}</p>
+                                                    <p className="text-[9px] text-zinc-600 mt-0.5 uppercase tracking-widest font-bold">Issued by: {h.issuedBy || 'Admin'}</p>
                                                     <div className="mt-auto">
                                                         <span className="inline-block px-2 py-0.5 bg-emerald-500/10 text-emerald-500 text-[9px] font-bold uppercase tracking-wider rounded border border-emerald-500/10">Active</span>
                                                     </div>
@@ -167,22 +207,26 @@ const StudentDashboard: React.FC<StudentDashboardProps> = ({
                                     <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" /></svg>
                                 </div>
                             </div>
-                        </div>
-                        <div className="flex gap-2 overflow-x-auto pb-2 w-full no-scrollbar">
-                            {categories.map(c => (
-                                <button
-                                    key={c.name} onClick={() => setFilter(c.name)}
-                                    className={`px-4 py-2 rounded-lg text-xs font-medium transition-all border whitespace-nowrap flex items-center gap-2 shrink-0 ${filter === c.name
-                                        ? 'bg-emerald-600/10 text-emerald-400 border-emerald-500/20'
-                                        : 'bg-[#0c0c0e] text-zinc-500 hover:text-zinc-300 border-zinc-900'
-                                        }`}
-                                >
-                                    {c.name}
-                                    <span className={`text-[10px] px-1.5 py-0.5 rounded-md ${filter === c.name ? 'bg-emerald-500/20 text-emerald-400' : 'bg-zinc-800 text-zinc-600'}`}>
-                                        {c.count}
-                                    </span>
-                                </button>
-                            ))}
+                            <div className="flex gap-2 overflow-x-auto pb-2 w-full no-scrollbar">
+                                {categories.map(c => (
+                                    <button
+                                        key={c.name} onClick={() => setFilter(c.name)}
+                                        className={`px-4 py-2 rounded-lg text-xs font-medium transition-all border whitespace-nowrap flex items-center gap-2 shrink-0 ${filter === c.name
+                                            ? 'bg-emerald-600/10 text-emerald-400 border-emerald-500/20'
+                                            : 'bg-[#0c0c0e] text-zinc-500 hover:text-zinc-300 border-zinc-900'
+                                            }`}
+                                    >
+                                        {c.name}
+                                        <span className={`text-[10px] px-1.5 py-0.5 rounded-md ${filter === c.name ? 'bg-emerald-500/20 text-emerald-400' : 'bg-zinc-800 text-zinc-600'}`}>
+                                            {c.count}
+                                        </span>
+                                    </button>
+                                ))}
+                            </div>
+                            <button onClick={handleDownloadCatalog} className="bg-[#0c0c0e] border border-zinc-900 hover:border-zinc-800 text-zinc-400 font-medium text-xs py-2.5 px-6 rounded-xl flex items-center gap-2 transition-all whitespace-nowrap">
+                                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" /></svg>
+                                Download PDF Catalog
+                            </button>
                         </div>
                     </div>
 
@@ -315,6 +359,43 @@ const StudentDashboard: React.FC<StudentDashboardProps> = ({
                 </div>
             )}
 
+            {activeTab === 'history' && (
+                <div className="bg-zinc-900/10 border border-zinc-800 rounded-2xl overflow-hidden shadow-sm animate-in fade-in duration-700">
+                    <div className="p-6 border-b border-zinc-900/50 bg-zinc-900/10">
+                        <h3 className="font-semibold text-xs text-zinc-400 uppercase tracking-widest">Borrowing History</h3>
+                    </div>
+                    <div className="overflow-x-auto no-scrollbar">
+                        <table className="w-full text-left text-sm">
+                            <thead>
+                                <tr className="bg-zinc-900/20 border-b border-zinc-900/50 text-zinc-500 text-[10px] font-bold uppercase tracking-wider">
+                                    <th className="px-6 py-4">Borrowed</th>
+                                    <th className="px-6 py-4">Book Title</th>
+                                    <th className="px-6 py-4">Issued By</th>
+                                    <th className="px-6 py-4">Returned</th>
+                                    <th className="px-6 py-4">Status</th>
+                                </tr>
+                            </thead>
+                            <tbody className="divide-y divide-zinc-900/50">
+                                {myHistory.map(record => (
+                                    <tr key={record.id} className="hover:bg-zinc-900/20 transition-all">
+                                        <td className="px-6 py-4 text-zinc-600 font-mono text-[10px]">{new Date(record.borrowDate).toLocaleDateString()}</td>
+                                        <td className="px-6 py-4 font-medium text-white/90">{record.bookTitle}</td>
+                                        <td className="px-6 py-4 text-zinc-500 text-xs">{record.issuedBy || '---'}</td>
+                                        <td className="px-6 py-4 text-zinc-600 font-mono text-[10px]">{record.returnDate ? new Date(record.returnDate).toLocaleDateString() : '---'}</td>
+                                        <td className="px-6 py-4">
+                                            <span className={`px-2 py-0.5 rounded text-[9px] font-bold uppercase tracking-wider border ${record.returnDate ? 'bg-zinc-800/50 text-zinc-500 border-zinc-800' : 'bg-blue-500/10 text-blue-500 border-blue-500/20'}`}>
+                                                {record.returnDate ? 'Returned' : 'In Use'}
+                                            </span>
+                                        </td>
+                                    </tr>
+                                ))}
+                                {myHistory.length === 0 && <tr><td colSpan={5} className="p-16 text-center text-zinc-600 text-xs italic">No borrowing history found</td></tr>}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            )}
+
             {activeTab === 'my-fines' && (
                 <div className="bg-zinc-900/10 border border-zinc-800 rounded-2xl overflow-hidden shadow-sm animate-in fade-in duration-700">
                     <div className="p-6 border-b border-zinc-900/50 bg-zinc-900/10">
@@ -373,19 +454,6 @@ const StudentDashboard: React.FC<StudentDashboardProps> = ({
                     </div>
                 </div>
             )}
-        </div>
-    );
-};
-
-const StatCompact = ({ title, value, color }: any) => {
-    const colors: Record<string, string> = { emerald: 'text-emerald-500', amber: 'text-amber-500', red: 'text-red-500', blue: 'text-blue-500' };
-    return (
-        <div className="bg-zinc-900/10 border border-zinc-800 p-6 rounded-2xl transition-all hover:border-zinc-700">
-            <h3 className="text-[10px] font-bold text-zinc-500 uppercase tracking-widest mb-2">{title}</h3>
-            <div className="flex items-center gap-2">
-                <p className="text-2xl font-bold text-zinc-200">{value}</p>
-                <div className={`w-1.5 h-1.5 rounded-full ${colors[color]} bg-current opacity-60`}></div>
-            </div>
         </div>
     );
 };

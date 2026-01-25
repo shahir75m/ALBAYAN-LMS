@@ -79,7 +79,8 @@ const historySchema = new mongoose.Schema({
   userId: { type: String, required: true },
   userName: String,
   borrowDate: { type: Number, default: Date.now },
-  returnDate: Number
+  returnDate: Number,
+  issuedBy: String
 });
 
 const fineSchema = new mongoose.Schema({

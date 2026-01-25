@@ -3,6 +3,9 @@ import { Book, User, BorrowRequest, HistoryRecord, Fine } from '../types';
 import BookForm from './BookForm';
 import UserForm from './UserForm';
 import AnalyticsDashboard from './AnalyticsDashboard';
+import { jsPDF } from 'jspdf';
+import autoTable from 'jspdf-autotable';
+
 
 // Retrieve stored admin password or default
 const storedAdminPass = typeof window !== 'undefined' ? localStorage.getItem('adminPassword') || 'admin@484' : 'admin@484';
@@ -249,7 +252,35 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
         reader.readAsText(file);
     };
 
+    const handleDownloadCatalog = () => {
+        const doc = new jsPDF();
+
+        // Add Title
+        doc.setFontSize(18);
+        doc.text('ALBAYAN LIBRARY CATALOG', 14, 22);
+
+        doc.setFontSize(11);
+        doc.setTextColor(100);
+        doc.text(`Generated on: ${new Date().toLocaleDateString()}`, 14, 30);
+
+        const tableData = filteredBooks.map(book => [book.id, book.title]);
+
+        autoTable(doc, {
+            startY: 40,
+            head: [['ID', 'TITLE']],
+            body: tableData,
+            theme: 'grid',
+            headStyles: { fillColor: [16, 185, 129], textColor: [255, 255, 255], fontStyle: 'bold' },
+            styles: { fontSize: 10, cellPadding: 3 },
+            alternateRowStyles: { fillColor: [245, 245, 245] },
+        });
+
+        doc.save('Albayan_Library_Catalog.pdf');
+        setStatusMsg('Catalog downloaded as PDF!');
+    };
+
     const totalVolume = books.reduce((acc, b) => acc + b.totalCopies, 0);
+
     const uniqueTitles = books.length;
     const issuedBooksCount = history.filter(h => !h.returnDate).length;
     const pendingRequestsCount = requests.filter(r => r.status === 'PENDING').length;
@@ -311,7 +342,12 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
                                     <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" /></svg>
                                     Import
                                 </button>
+                                <button onClick={handleDownloadCatalog} className="border border-zinc-900 hover:border-zinc-800 text-zinc-400 font-medium text-xs py-2.5 px-6 rounded-xl flex items-center gap-2 transition-all">
+                                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" /></svg>
+                                    Download Catalog
+                                </button>
                                 <button onClick={() => { setEditingBook(null); setShowBookForm(true); }} className="bg-emerald-600 hover:bg-emerald-500 text-white font-medium text-xs py-2.5 px-6 rounded-xl flex items-center gap-2 transition-all active:scale-95 shadow-lg shadow-emerald-900/10">
+
                                     <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" /></svg>
                                     Add Book
                                 </button>
@@ -490,7 +526,7 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
                             {activeTab === 'history' && (
                                 <>
                                     <thead className="bg-zinc-900/20 border-b border-zinc-900/50 text-zinc-500 text-[10px] font-bold uppercase tracking-wider">
-                                        <tr><th className="px-6 py-4">Borrowed</th><th className="px-6 py-4">User</th><th className="px-6 py-4">Book</th><th className="px-6 py-4">Returned</th><th className="px-6 py-4">Status</th></tr>
+                                        <tr><th className="px-6 py-4">Borrowed</th><th className="px-6 py-4">User</th><th className="px-6 py-4">Book</th><th className="px-6 py-4">Issued By</th><th className="px-6 py-4">Returned</th><th className="px-6 py-4">Status</th></tr>
                                     </thead>
                                     <tbody className="divide-y divide-zinc-900/50">
                                         {history.map(record => (
@@ -498,6 +534,7 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
                                                 <td className="px-6 py-4 text-zinc-600 font-mono text-[10px]">{new Date(record.borrowDate).toLocaleDateString()}</td>
                                                 <td className="px-6 py-4 font-medium text-zinc-200">{record.userName}</td>
                                                 <td className="px-6 py-4 text-zinc-400 text-xs">{record.bookTitle}</td>
+                                                <td className="px-6 py-4 text-zinc-500 text-xs">{record.issuedBy || '---'}</td>
                                                 <td className="px-6 py-4 text-zinc-600 font-mono text-[10px]">{record.returnDate ? new Date(record.returnDate).toLocaleDateString() : '---'}</td>
                                                 <td className="px-6 py-4"><span className={`px-2 py-0.5 rounded text-[9px] font-bold uppercase tracking-wider border ${record.returnDate ? 'bg-zinc-800/50 text-zinc-500 border-zinc-800' : 'bg-blue-500/10 text-blue-500 border-blue-500/20'}`}>{record.returnDate ? 'Returned' : 'In Use'}</span></td>
                                             </tr>
