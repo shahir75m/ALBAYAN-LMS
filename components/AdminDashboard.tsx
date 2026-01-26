@@ -617,17 +617,17 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
             {selectedBookDetail && (
                 <div className="fixed inset-0 z-[10000] flex items-center justify-center p-4">
                     <div className="absolute inset-0 bg-black/80 backdrop-blur-xl" onClick={() => setSelectedBookDetail(null)}></div>
-                    <div className="relative w-full max-w-5xl bg-zinc-950 border border-zinc-800 rounded-[2.5rem] overflow-hidden flex flex-col md:row max-h-[90vh]">
-                        <div className="w-full md:w-1/3 h-64 md:h-auto bg-zinc-900"><img src={selectedBookDetail.coverUrl} className="w-full h-full object-cover" /></div>
+                    <div className="relative w-full max-w-5xl bg-zinc-950 border border-zinc-800 rounded-[2.5rem] overflow-hidden flex flex-col md:flex-row max-h-[90vh]">
+                        <div className="w-full md:w-1/3 h-64 md:h-auto bg-zinc-900 border-r border-zinc-800"><img src={selectedBookDetail.coverUrl} className="w-full h-full object-cover" /></div>
                         <div className="flex-1 p-8 md:p-12 overflow-y-auto no-scrollbar relative">
-                            <button onClick={() => setSelectedBookDetail(null)} className="absolute top-8 right-8 text-zinc-500"><svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /></svg></button>
-                            <span className="text-[10px] font-black text-emerald-500 uppercase tracking-widest bg-emerald-500/10 px-3 py-1 rounded-full">{selectedBookDetail.category}</span>
-                            <h2 className="text-3xl font-black text-white mt-4 uppercase">{selectedBookDetail.title}</h2>
-                            <p className="text-zinc-500 text-lg mb-8">by {selectedBookDetail.author}</p>
+                            <button onClick={() => setSelectedBookDetail(null)} className="absolute top-8 right-8 text-zinc-500 hover:text-white transition-colors"><svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /></svg></button>
+                            <span className="text-[10px] font-black text-emerald-400 uppercase tracking-widest bg-emerald-500/10 px-3 py-1 rounded-full border border-emerald-500/10">{selectedBookDetail.category}</span>
+                            <h2 className="text-3xl font-black text-white mt-4 uppercase tracking-tight">{selectedBookDetail.title}</h2>
+                            <p className="text-zinc-400 text-lg mb-8 font-medium">by {selectedBookDetail.author}</p>
                             <div className="grid grid-cols-3 gap-8 mb-10 pb-8 border-b border-zinc-900">
-                                <div><p className="text-[10px] font-black text-zinc-600 uppercase">Specs</p><p className="text-xs text-zinc-300 mt-1">ISBN: {selectedBookDetail.isbn}</p><p className="text-xs text-zinc-300">ID: #{selectedBookDetail.id}</p></div>
-                                <div><p className="text-[10px] font-black text-zinc-600 uppercase">Stock</p><p className="text-xs text-zinc-300 mt-1">{selectedBookDetail.availableCopies} / {selectedBookDetail.totalCopies}</p></div>
-                                <div><p className="text-[10px] font-black text-zinc-600 uppercase">Value</p><p className="text-xs text-zinc-300 mt-1">₹{selectedBookDetail.price}</p></div>
+                                <div><p className="text-[10px] font-black text-zinc-500 uppercase tracking-wider">Specs</p><p className="text-xs text-zinc-300 mt-2 font-mono">ISBN: {selectedBookDetail.isbn}</p><p className="text-xs text-zinc-300 font-mono">ID: #{selectedBookDetail.id}</p></div>
+                                <div><p className="text-[10px] font-black text-zinc-500 uppercase tracking-wider">Stock</p><p className="text-xs text-zinc-300 mt-2 font-bold">{selectedBookDetail.availableCopies} / {selectedBookDetail.totalCopies}</p></div>
+                                <div><p className="text-[10px] font-black text-zinc-500 uppercase tracking-wider">Value</p><p className="text-xs text-emerald-400 mt-2 font-bold">₹{selectedBookDetail.price}</p></div>
                             </div>
                             <div className="flex flex-col gap-6">
                                 <div className="p-6 bg-zinc-900/40 border border-zinc-800 rounded-2xl">
