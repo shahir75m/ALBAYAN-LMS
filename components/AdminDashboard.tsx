@@ -100,7 +100,7 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
     );
 
     const filteredUsers = users.filter(u =>
-        (filter === 'All' || u.role === filter) &&
+        (filter === 'All' ? u.role !== 'ADMIN' : u.role === filter) &&
         (u.name.toLowerCase().includes(search.toLowerCase()) ||
             u.id.toLowerCase().includes(search.toLowerCase()) ||
             u.class?.toLowerCase().includes(search.toLowerCase()))
@@ -331,10 +331,9 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
                         )}
                         {activeTab === 'users' && (
                             <select value={filter} onChange={(e) => setFilter(e.target.value)} className="bg-[#0c0c0e] border border-zinc-900 rounded-xl px-4 py-2.5 text-sm focus:border-zinc-700 outline-none text-zinc-400 transition-all cursor-pointer">
-                                <option value="All">All Roles</option>
-                                <option value="STUDENT">Students</option>
-                                <option value="USTHAD">Usthads</option>
-                                <option value="ADMIN">Administrators</option>
+                                <option value="All">All Students/Usthads</option>
+                                <option value="STUDENT">Students Only</option>
+                                <option value="USTHAD">Usthads Only</option>
                             </select>
                         )}
                     </div>
@@ -643,7 +642,7 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
                                             />
                                             {issueSearch && (
                                                 <div className="absolute top-full left-0 right-0 mt-2 bg-zinc-900 border border-zinc-800 rounded-xl shadow-2xl z-[100] max-h-48 overflow-y-auto no-scrollbar">
-                                                    {users.filter(u => u.name.toLowerCase().includes(issueSearch.toLowerCase()) || u.id.toLowerCase().includes(issueSearch.toLowerCase())).map(u => (
+                                                    {users.filter(u => u.role !== 'ADMIN' && (u.name.toLowerCase().includes(issueSearch.toLowerCase()) || u.id.toLowerCase().includes(issueSearch.toLowerCase()))).map(u => (
                                                         <button
                                                             key={u.id}
                                                             onClick={() => { setIssuingToUserId(u.id); setIssueSearch(u.name); }}
