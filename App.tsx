@@ -213,6 +213,38 @@ const App: React.FC = () => {
     await refreshAllData();
   };
 
+  const handleIssueBook = async (bookId: string, userId: string) => {
+    try {
+      const book = books.find(b => b.id === bookId);
+      const user = users.find(u => u.id === userId);
+
+      if (!book || !user) throw new Error("Book or User not found");
+      if ((book.availableCopies || 0) <= 0) throw new Error("No copies available");
+
+      const updatedBook = {
+        ...book,
+        availableCopies: Number(book.availableCopies || 0) - 1,
+        currentBorrowers: [...(book.currentBorrowers || []), { userId: user.id, userName: user.name }]
+      };
+
+      await api.saveBook(updatedBook);
+      await api.addHistoryRecord({
+        id: `H${Date.now()}`,
+        bookId: book.id,
+        bookTitle: book.title,
+        userId: user.id,
+        userName: user.name,
+        borrowDate: Date.now(),
+        issuedBy: currentUser?.name || 'Admin'
+      });
+
+      setStatusMsg(`Book issued to ${user.name}`);
+      await refreshAllData();
+    } catch (err: any) {
+      setStatusMsg("Issuance failed: " + err.message, 'error');
+    }
+  };
+
   const handlePayFine = async (fineId: string) => {
     await api.updateFineStatus(fineId, 'PAID');
     await refreshAllData();
@@ -331,6 +363,7 @@ const App: React.FC = () => {
                 onBulkAddUsers={handleBulkAddUsers}
                 onHandleRequest={handleRequestAction} onReturnBook={handleReturnBook} onPayFine={handlePayFine}
                 onBorrow={handleBorrowRequest}
+                onIssueBook={handleIssueBook}
                 globalStatus={{ msg: statusMsg, set: setStatusMsg }}
               />
             ) : (

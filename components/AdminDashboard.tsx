@@ -29,6 +29,7 @@ interface AdminDashboardProps {
     onReturnBook: (bid: string, uid: string, fine?: { amount: number, reason: string }) => void;
     onPayFine: (id: string) => void;
     onBorrow: (bookId: string) => void;
+    onIssueBook: (bookId: string, userId: string) => void;
     globalStatus: { msg: { text: string, type: 'success' | 'error' } | null, set: (text: string, type?: 'success' | 'error') => void };
 }
 
@@ -36,7 +37,7 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
     activeTab, books, users, requests, history, fines,
     onAddBook, onUpdateBook, onDeleteBook, onBulkAddBooks,
     onAddUser, onUpdateUser, onDeleteUser, onBulkAddUsers,
-    onHandleRequest, onReturnBook, onPayFine, onBorrow,
+    onHandleRequest, onReturnBook, onPayFine, onBorrow, onIssueBook,
     globalStatus
 }) => {
     const [showBookForm, setShowBookForm] = useState(false);
@@ -83,6 +84,9 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
         start: new Date(new Date().setDate(new Date().getDate() - 30)).toISOString().split('T')[0],
         end: new Date().toISOString().split('T')[0]
     });
+
+    const [issuingToUserId, setIssuingToUserId] = useState('');
+    const [issueSearch, setIssueSearch] = useState('');
 
     // Inline Status Message logic moved to App.tsx (globalStatus)
     const statusMsg = globalStatus.msg;
@@ -625,14 +629,63 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
                                 <div><p className="text-[10px] font-black text-zinc-600 uppercase">Stock</p><p className="text-xs text-zinc-300 mt-1">{selectedBookDetail.availableCopies} / {selectedBookDetail.totalCopies}</p></div>
                                 <div><p className="text-[10px] font-black text-zinc-600 uppercase">Value</p><p className="text-xs text-zinc-300 mt-1">₹{selectedBookDetail.price}</p></div>
                             </div>
-                            <div className="flex flex-col gap-3">
-                                <button
-                                    onClick={() => { onBorrow(selectedBookDetail.id); setSelectedBookDetail(null); }}
-                                    className="w-full py-4 bg-emerald-600 text-white font-black uppercase text-xs tracking-widest rounded-2xl hover:bg-emerald-500 transition-all shadow-lg shadow-emerald-900/20"
-                                >
-                                    Borrow This Book (Self)
-                                </button>
-                                <button onClick={() => { setEditingBook(selectedBookDetail); setShowBookForm(true); setSelectedBookDetail(null); }} className="w-full py-4 bg-zinc-900 border border-zinc-800 text-zinc-400 font-black uppercase text-xs tracking-widest rounded-2xl hover:text-white transition-all">Edit Specifications</button>
+                            <div className="flex flex-col gap-6">
+                                <div className="p-6 bg-zinc-900/40 border border-zinc-800 rounded-2xl">
+                                    <p className="text-[10px] font-black text-zinc-500 uppercase tracking-[0.2em] mb-4">Direct Issuance</p>
+                                    <div className="flex flex-col md:flex-row gap-3">
+                                        <div className="relative flex-1">
+                                            <input
+                                                type="text"
+                                                placeholder="Search user..."
+                                                value={issueSearch}
+                                                onChange={(e) => setIssueSearch(e.target.value)}
+                                                className="w-full bg-zinc-950 border border-zinc-800 rounded-xl px-4 py-3 text-sm text-white outline-none focus:border-emerald-500/50 transition-all font-medium"
+                                            />
+                                            {issueSearch && (
+                                                <div className="absolute top-full left-0 right-0 mt-2 bg-zinc-900 border border-zinc-800 rounded-xl shadow-2xl z-[100] max-h-48 overflow-y-auto no-scrollbar">
+                                                    {users.filter(u => u.name.toLowerCase().includes(issueSearch.toLowerCase()) || u.id.toLowerCase().includes(issueSearch.toLowerCase())).map(u => (
+                                                        <button
+                                                            key={u.id}
+                                                            onClick={() => { setIssuingToUserId(u.id); setIssueSearch(u.name); }}
+                                                            className="w-full px-4 py-3 text-left text-sm text-zinc-300 hover:bg-zinc-800 hover:text-white transition-all border-b border-zinc-800/50 last:border-0"
+                                                        >
+                                                            <div className="font-bold">{u.name}</div>
+                                                            <div className="text-[10px] text-zinc-500">ID: {u.id} • {u.role}</div>
+                                                        </button>
+                                                    ))}
+                                                </div>
+                                            )}
+                                        </div>
+                                        <button
+                                            onClick={() => {
+                                                if (!issuingToUserId) {
+                                                    setStatusMsg('Please select a user first!', 'error');
+                                                    return;
+                                                }
+                                                onIssueBook(selectedBookDetail.id, issuingToUserId);
+                                                setSelectedBookDetail(null);
+                                                setIssuingToUserId('');
+                                                setIssueSearch('');
+                                            }}
+                                            disabled={!issuingToUserId}
+                                            className={`px-8 py-3 rounded-xl font-black uppercase text-[10px] tracking-widest transition-all ${issuingToUserId ? 'bg-emerald-600 text-white hover:bg-emerald-500' : 'bg-zinc-800 text-zinc-600 cursor-not-allowed'}`}
+                                        >
+                                            Issue Book
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <div className="flex flex-col md:flex-row gap-3">
+                                    <button
+                                        onClick={() => { onIssueBook(selectedBookDetail.id, (localStorage.getItem('albayan_active_session') ? JSON.parse(localStorage.getItem('albayan_active_session')!).id : 'Admin')); setSelectedBookDetail(null); }}
+                                        className="flex-1 py-4 bg-zinc-900 border border-zinc-800 text-white font-black uppercase text-xs tracking-widest rounded-2xl hover:bg-zinc-800 transition-all group relative overflow-hidden"
+                                    >
+                                        <span className="relative z-10 flex items-center justify-center gap-2">
+                                            Quick Borrow (Self)
+                                        </span>
+                                    </button>
+                                    <button onClick={() => { setEditingBook(selectedBookDetail); setShowBookForm(true); setSelectedBookDetail(null); }} className="flex-1 py-4 bg-zinc-900 border border-zinc-800 text-zinc-400 font-black uppercase text-xs tracking-widest rounded-2xl hover:text-white transition-all">Edit Specs</button>
+                                </div>
                             </div>
                         </div>
                     </div>
