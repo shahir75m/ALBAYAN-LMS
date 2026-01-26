@@ -16,9 +16,12 @@ export const downloadCatalogPDF = async (books: Book[], setStatusMsg: (msg: stri
 
     // Create a hidden container for the report
     const reportContainer = document.createElement('div');
-    reportContainer.style.position = 'absolute';
-    reportContainer.style.top = '-9999px';
-    reportContainer.style.left = '-9999px';
+    // Use fixed position with z-index instead of large negative coordinates 
+    // to avoid massive canvas size issues which crash rendering
+    reportContainer.style.position = 'fixed';
+    reportContainer.style.zIndex = '-9999';
+    reportContainer.style.top = '0';
+    reportContainer.style.left = '0';
     reportContainer.style.width = '800px'; // A4 width approx in px at standard dpi
     reportContainer.style.padding = '40px';
     reportContainer.style.background = '#ffffff';
@@ -74,7 +77,10 @@ export const downloadCatalogPDF = async (books: Book[], setStatusMsg: (msg: stri
         // Use html2canvas to render the element
         const canvas = await html2canvas(reportContainer, {
             scale: 2, // Higher scale for better quality
-            backgroundColor: '#ffffff'
+            backgroundColor: '#ffffff',
+            useCORS: true,
+            logging: false,
+            windowWidth: 800
         });
 
         const imgData = canvas.toDataURL('image/png');
@@ -84,13 +90,6 @@ export const downloadCatalogPDF = async (books: Book[], setStatusMsg: (msg: stri
         const pdfHeight = pdf.internal.pageSize.getHeight();
         const imgWidth = pdfWidth;
         const imgHeight = (canvas.height * pdfWidth) / canvas.width;
-
-        // If image height exceeds page height, basic split logic (for MVP, scaling down or cutting off)
-        // For a proper multi-page solution with html2canvas, complex splitting is needed. 
-        // For now, we add the image. If it's too long, it might essentially require multi-page logic 
-        // which html2canvas alone doesn't solve perfectly without looping rows.
-        // However, user catalog usually fits or we simply scale it.
-        // Let's implement basic multi-page splitting for very long catalogs.
 
         let heightLeft = imgHeight;
         let position = 0;
@@ -106,11 +105,13 @@ export const downloadCatalogPDF = async (books: Book[], setStatusMsg: (msg: stri
         }
 
         pdf.save('Albayan_Library_Catalog.pdf');
-        setStatusMsg('Catalog downloaded as PDF! (Image-based)');
-    } catch (err) {
+        setStatusMsg('Catalog downloaded as PDF! (Fixed)');
+    } catch (err: any) {
         console.error("PDF generation failed:", err);
-        setStatusMsg('PDF generation failed. Please try again.');
+        setStatusMsg(`PDF Error: ${err.message || 'Unknown error'}`);
     } finally {
-        document.body.removeChild(reportContainer);
+        if (document.body.contains(reportContainer)) {
+            document.body.removeChild(reportContainer);
+        }
     }
 };
