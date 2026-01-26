@@ -78,7 +78,19 @@ const Login: React.FC<LoginProps> = ({ onLogin, onIdentify, initialIdentity, onC
     return list.filter(u =>
       u.name.toLowerCase().includes(userSearch.toLowerCase()) ||
       u.id.toLowerCase().includes(userSearch.toLowerCase())
-    ).sort((a, b) => a.name.localeCompare(b.name));
+    ).sort((a, b) => {
+      // 1. Role priority: USTHAD first
+      if (a.role === 'USTHAD' && b.role !== 'USTHAD') return -1;
+      if (a.role !== 'USTHAD' && b.role === 'USTHAD') return 1;
+
+      // 2. Numeric ID sorting
+      const idA = parseInt(a.id.replace(/\D/g, '')) || 0;
+      const idB = parseInt(b.id.replace(/\D/g, '')) || 0;
+      if (idA !== idB) return idA - idB;
+
+      // 3. Fallback to name
+      return a.name.localeCompare(b.name);
+    });
   }, [availableUsers, selectedRole, userSearch]);
 
   // --- Components for Sub-steps ---
