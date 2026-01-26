@@ -1,7 +1,6 @@
 import React, { useState, useMemo } from 'react';
 import { Book, User, BorrowRequest, HistoryRecord, Fine } from '../types';
-import { jsPDF } from 'jspdf';
-import autoTable from 'jspdf-autotable';
+import { downloadCatalogPDF } from '../utils/pdfGenerator';
 
 const StatCompact = ({ title, value, color }: any) => {
     const colors: Record<string, string> = { emerald: 'text-emerald-500', amber: 'text-amber-500', red: 'text-red-500', blue: 'text-blue-500' };
@@ -89,27 +88,7 @@ const StudentDashboard: React.FC<StudentDashboardProps> = ({
     };
 
     const handleDownloadCatalog = () => {
-        const doc = new jsPDF();
-        doc.setFontSize(18);
-        doc.text('ALBAYAN LIBRARY CATALOG', 14, 22);
-        doc.setFontSize(11);
-        doc.setTextColor(100);
-        doc.text(`Generated on: ${new Date().toLocaleDateString()}`, 14, 30);
-
-        const tableData = filteredBooks.map(book => [book.id, book.title]);
-
-        autoTable(doc, {
-            startY: 40,
-            head: [['ID', 'TITLE']],
-            body: tableData,
-            theme: 'grid',
-            headStyles: { fillColor: [16, 185, 129], textColor: [255, 255, 255], fontStyle: 'bold' },
-            styles: { fontSize: 10, cellPadding: 3 },
-            alternateRowStyles: { fillColor: [245, 245, 245] },
-        });
-
-        doc.save('Albayan_Library_Catalog.pdf');
-        setStatusMsg('Catalog downloaded as PDF!');
+        downloadCatalogPDF(filteredBooks, setStatusMsg);
     };
 
     return (

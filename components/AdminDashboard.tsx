@@ -3,8 +3,7 @@ import { Book, User, BorrowRequest, HistoryRecord, Fine } from '../types';
 import BookForm from './BookForm';
 import UserForm from './UserForm';
 import AnalyticsDashboard from './AnalyticsDashboard';
-import { jsPDF } from 'jspdf';
-import autoTable from 'jspdf-autotable';
+import { downloadCatalogPDF } from '../utils/pdfGenerator';
 
 
 // Retrieve stored admin password or default
@@ -97,7 +96,11 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
         (b.title.toLowerCase().includes(search.toLowerCase()) ||
             b.author.toLowerCase().includes(search.toLowerCase()) ||
             b.id.toLowerCase().includes(search.toLowerCase()))
-    );
+    ).sort((a, b) => {
+        const idA = parseInt(a.id.replace(/\D/g, '')) || 0;
+        const idB = parseInt(b.id.replace(/\D/g, '')) || 0;
+        return idA - idB;
+    });
 
     const filteredUsers = users.filter(u =>
         (filter === 'All' ? u.role !== 'ADMIN' : u.role === filter) &&
@@ -258,30 +261,7 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
     };
 
     const handleDownloadCatalog = () => {
-        const doc = new jsPDF();
-
-        // Add Title
-        doc.setFontSize(18);
-        doc.text('ALBAYAN LIBRARY CATALOG', 14, 22);
-
-        doc.setFontSize(11);
-        doc.setTextColor(100);
-        doc.text(`Generated on: ${new Date().toLocaleDateString()}`, 14, 30);
-
-        const tableData = filteredBooks.map(book => [book.id, book.title]);
-
-        autoTable(doc, {
-            startY: 40,
-            head: [['ID', 'TITLE']],
-            body: tableData,
-            theme: 'grid',
-            headStyles: { fillColor: [16, 185, 129], textColor: [255, 255, 255], fontStyle: 'bold' },
-            styles: { fontSize: 10, cellPadding: 3 },
-            alternateRowStyles: { fillColor: [245, 245, 245] },
-        });
-
-        doc.save('Albayan_Library_Catalog.pdf');
-        setStatusMsg('Catalog downloaded as PDF!');
+        downloadCatalogPDF(filteredBooks, setStatusMsg);
     };
 
     const totalVolume = books.reduce((acc, b) => acc + b.totalCopies, 0);
