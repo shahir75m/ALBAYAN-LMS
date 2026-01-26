@@ -197,8 +197,8 @@ const Login: React.FC<LoginProps> = ({ onLogin, onIdentify, initialIdentity, onC
             className="group relative w-full bg-zinc-900 hover:bg-zinc-800 border border-zinc-800 hover:border-zinc-700 rounded-3xl p-10 transition-all active:scale-[0.99]"
           >
             <div className="flex flex-col items-center">
-              <div className="w-16 h-16 bg-zinc-950 rounded-2xl flex items-center justify-center text-emerald-500 mb-6 shadow-sm group-hover:scale-110 transition-transform duration-500">
-                <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" /></svg>
+              <div className="w-16 h-16 bg-zinc-950 rounded-2xl flex items-center justify-center mb-6 shadow-sm group-hover:scale-110 transition-transform duration-500">
+                <Logo className="w-10 h-10" />
               </div>
               <span className="text-lg font-semibold text-white mb-2">Enter Library Portal</span>
               <span className="text-xs text-zinc-500 uppercase tracking-widest group-hover:text-emerald-500 transition-colors">Students, Usthads & Staff</span>
