@@ -1,12 +1,9 @@
-import { jsPDF } from 'jspdf';
-import html2canvas from 'html2canvas';
 import { Book } from '../types';
 
-export const downloadCatalogPDF = async (books: Book[], setStatusMsg: (msg: string) => void) => {
-    setStatusMsg('Preparing catalog for download...');
+export const downloadCatalogPDF = (books: Book[], setStatusMsg: (msg: string) => void) => {
+    setStatusMsg('Preparing print dialog...');
 
     // 1. Group and sort books
-    // Sort by Category first, then numerically by ID
     const sortedBooks = [...books].sort((a, b) => {
         if (a.category !== b.category) return a.category.localeCompare(b.category);
         const idA = parseInt(a.id.replace(/\D/g, '')) || 0;
@@ -14,32 +11,39 @@ export const downloadCatalogPDF = async (books: Book[], setStatusMsg: (msg: stri
         return idA - idB;
     });
 
-    // Create a hidden container for the report
-    const reportContainer = document.createElement('div');
-    // Use fixed position with z-index instead of large negative coordinates 
-    // to avoid massive canvas size issues which crash rendering
-    reportContainer.style.position = 'fixed';
-    reportContainer.style.zIndex = '-9999';
-    reportContainer.style.top = '0';
-    reportContainer.style.left = '0';
-    reportContainer.style.width = '800px'; // A4 width approx in px at standard dpi
-    reportContainer.style.padding = '40px';
-    reportContainer.style.background = '#ffffff';
-    reportContainer.style.fontFamily = "'Noto Sans Malayalam', sans-serif"; // Ensure font is used/fallback
-    reportContainer.style.color = '#000';
-
-    // Build the HTML content
     const dateStr = new Date().toLocaleDateString();
+
     let htmlContent = `
-        <div style="margin-bottom: 20px;">
-            <h1 style="font-size: 24px; font-weight: bold; margin-bottom: 5px; color: #10b981;">ALBAYAN LIBRARY CATALOG</h1>
-            <p style="font-size: 14px; color: #666;">Generated on: ${dateStr}</p>
-        </div>
-        <table style="width: 100%; border-collapse: collapse; font-size: 14px;">
+    <html>
+    <head>
+        <title>Albayan Library Catalog</title>
+        <style>
+            body { font-family: 'Noto Sans Malayalam', 'Arial', sans-serif; padding: 20px; color: #000; }
+            h1 { font-size: 24px; font-weight: bold; margin-bottom: 5px; color: #10b981; text-align: center; }
+            p { font-size: 14px; color: #666; text-align: center; margin-bottom: 20px; }
+            table { width: 100%; border-collapse: collapse; font-size: 12px; }
+            th { background-color: #10b981; color: white; padding: 10px; text-align: left; border: 1px solid #e5e7eb; }
+            td { padding: 8px 10px; border: 1px solid #e5e7eb; vertical-align: top; }
+            tr.category-row td { background-color: #f3f4f6; font-weight: bold; text-align: center; color: #374151; padding: 10px; font-size: 14px; }
+            /* Print Specifics */
+            @media print {
+                @page { margin: 15mm; size: A4; }
+                body { padding: 0; }
+                h1 { color: #000 !important; }
+                th { background-color: #eee !important; color: #000 !important; font-weight: bold; }
+                tr.category-row td { background-color: #ddd !important; }
+            }
+        </style>
+        <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Malayalam:wght@400;500;700&display=swap" rel="stylesheet">
+    </head>
+    <body>
+        <h1>ALBAYAN LIBRARY CATALOG</h1>
+        <p>Generated on: ${dateStr}</p>
+        <table>
             <thead>
-                <tr style="background-color: #10b981; color: white;">
-                    <th style="padding: 10px; text-align: left; border: 1px solid #e5e7eb;">ID</th>
-                    <th style="padding: 10px; text-align: left; border: 1px solid #e5e7eb;">TITLE</th>
+                <tr>
+                    <th style="width: 15%">ID</th>
+                    <th>TITLE</th>
                 </tr>
             </thead>
             <tbody>
@@ -50,17 +54,15 @@ export const downloadCatalogPDF = async (books: Book[], setStatusMsg: (msg: stri
         if (book.category !== currentCategory) {
             currentCategory = book.category;
             htmlContent += `
-                <tr style="background-color: #f3f4f6;">
-                    <td colspan="2" style="padding: 8px 10px; font-weight: bold; text-align: center; border: 1px solid #e5e7eb; color: #374151;">
-                        ${currentCategory}
-                    </td>
+                <tr class="category-row">
+                    <td colspan="2">${currentCategory}</td>
                 </tr>
             `;
         }
         htmlContent += `
             <tr>
-                <td style="padding: 8px 10px; border: 1px solid #e5e7eb;">${book.id}</td>
-                <td style="padding: 8px 10px; border: 1px solid #e5e7eb; font-weight: 500;">${book.title}</td>
+                <td>${book.id}</td>
+                <td style="font-weight: 500;">${book.title}</td>
             </tr>
         `;
     });
@@ -68,50 +70,32 @@ export const downloadCatalogPDF = async (books: Book[], setStatusMsg: (msg: stri
     htmlContent += `
             </tbody>
         </table>
+    </body>
+    </html>
     `;
 
-    reportContainer.innerHTML = htmlContent;
-    document.body.appendChild(reportContainer);
+    // Open a new window for printing
+    const printWindow = window.open('', '_blank');
+    if (printWindow) {
+        printWindow.document.write(htmlContent);
+        printWindow.document.close();
 
-    try {
-        // Use html2canvas to render the element
-        const canvas = await html2canvas(reportContainer, {
-            scale: 2, // Higher scale for better quality
-            backgroundColor: '#ffffff',
-            useCORS: true,
-            logging: false,
-            windowWidth: 800
-        });
-
-        const imgData = canvas.toDataURL('image/png');
-        const pdf = new jsPDF('p', 'mm', 'a4');
-
-        const pdfWidth = pdf.internal.pageSize.getWidth();
-        const pdfHeight = pdf.internal.pageSize.getHeight();
-        const imgWidth = pdfWidth;
-        const imgHeight = (canvas.height * pdfWidth) / canvas.width;
-
-        let heightLeft = imgHeight;
-        let position = 0;
-
-        pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
-        heightLeft -= pdfHeight;
-
-        while (heightLeft >= 0) {
-            position = heightLeft - imgHeight; // Top position for next page
-            pdf.addPage();
-            pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
-            heightLeft -= pdfHeight;
-        }
-
-        pdf.save('Albayan_Library_Catalog.pdf');
-        setStatusMsg('Catalog downloaded as PDF! (Fixed)');
-    } catch (err: any) {
-        console.error("PDF generation failed:", err);
-        setStatusMsg(`PDF Error: ${err.message || 'Unknown error'}`);
-    } finally {
-        if (document.body.contains(reportContainer)) {
-            document.body.removeChild(reportContainer);
-        }
+        // Wait for content (especially fonts) to load then print
+        printWindow.onload = () => {
+            printWindow.focus();
+            printWindow.print();
+            // Optional: printWindow.close(); // Don't auto-close, let user decide
+            setStatusMsg('Print dialog opened. Please save as PDF.');
+        };
+        // Fallback if onload doesn't fire immediately
+        setTimeout(() => {
+            if (printWindow.document.readyState === 'complete') {
+                printWindow.focus();
+                printWindow.print();
+                setStatusMsg('Print dialog opened. Please save as PDF.');
+            }
+        }, 1000);
+    } else {
+        setStatusMsg('Popup blocked. Please allow popups to print/download catalog.');
     }
 };
