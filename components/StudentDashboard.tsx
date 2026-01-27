@@ -186,21 +186,21 @@ const StudentDashboard: React.FC<StudentDashboardProps> = ({
                                     <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" /></svg>
                                 </div>
                             </div>
-                            <div className="flex gap-2 overflow-x-auto pb-2 w-full no-scrollbar">
-                                {categories.map(c => (
-                                    <button
-                                        key={c.name} onClick={() => setFilter(c.name)}
-                                        className={`px-4 py-2 rounded-lg text-xs font-medium transition-all border whitespace-nowrap flex items-center gap-2 shrink-0 ${filter === c.name
-                                            ? 'bg-emerald-600/10 text-emerald-400 border-emerald-500/20'
-                                            : 'bg-[#0c0c0e] text-zinc-500 hover:text-zinc-300 border-zinc-900'
-                                            }`}
-                                    >
-                                        {c.name}
-                                        <span className={`text-[10px] px-1.5 py-0.5 rounded-md ${filter === c.name ? 'bg-emerald-500/20 text-emerald-400' : 'bg-zinc-800 text-zinc-600'}`}>
-                                            {c.count}
-                                        </span>
-                                    </button>
-                                ))}
+                            <div className="relative w-full md:w-48">
+                                <select
+                                    value={filter}
+                                    onChange={(e) => setFilter(e.target.value)}
+                                    className="w-full bg-[#0c0c0e] border border-zinc-900 rounded-xl px-4 py-2.5 text-xs text-zinc-400 outline-none focus:border-zinc-700 appearance-none cursor-pointer"
+                                >
+                                    {categories.map(c => (
+                                        <option key={c.name} value={c.name}>
+                                            {c.name} ({c.count})
+                                        </option>
+                                    ))}
+                                </select>
+                                <div className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-zinc-600">
+                                    <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" /></svg>
+                                </div>
                             </div>
                             <button onClick={handleDownloadCatalog} className="bg-[#0c0c0e] border border-zinc-900 hover:border-zinc-800 text-zinc-400 font-medium text-xs py-2.5 px-6 rounded-xl flex items-center gap-2 transition-all whitespace-nowrap">
                                 <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" /></svg>
