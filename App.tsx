@@ -281,7 +281,7 @@ const App: React.FC = () => {
   }
 
   return (
-    <div className="flex h-screen text-zinc-100 overflow-hidden font-sans">
+    <div className="flex h-screen text-gray-800 overflow-hidden font-sans">
       <Sidebar
         role={currentUser.role}
         activeTab={activeTab}
