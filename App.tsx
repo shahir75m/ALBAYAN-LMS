@@ -281,7 +281,7 @@ const App: React.FC = () => {
   }
 
   return (
-    <div className="flex h-screen bg-zinc-950 text-zinc-300 overflow-hidden font-sans">
+    <div className="flex h-screen text-zinc-100 overflow-hidden font-sans">
       <Sidebar
         role={currentUser.role}
         activeTab={activeTab}
@@ -298,7 +298,7 @@ const App: React.FC = () => {
       <main className="flex-1 overflow-y-auto relative flex flex-col">
 
         {/* Mobile Header */}
-        <div className="md:hidden bg-zinc-900/50 border-b border-zinc-800 p-4 flex items-center justify-between shrink-0 sticky top-0 z-40 backdrop-blur-md">
+        <div className="md:hidden glass-panel border-b border-white/10 p-4 flex items-center justify-between shrink-0 sticky top-0 z-40 shadow-lg">
           <button onClick={() => setIsMobileMenuOpen(true)} className="p-2 text-zinc-400 hover:text-white transition-colors">
             <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16m-7 6h7" /></svg>
           </button>
@@ -307,7 +307,7 @@ const App: React.FC = () => {
             <span className="font-bold text-white text-sm">ALBAYAN</span>
           </div>
           <button onClick={handleSwitchPortal} className="p-2 text-zinc-400">
-            <div className="w-8 h-8 rounded-full bg-zinc-800 flex items-center justify-center">
+            <div className="w-8 h-8 rounded-full glass-panel flex items-center justify-center border border-white/10">
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7" /></svg>
             </div>
           </button>
@@ -319,8 +319,8 @@ const App: React.FC = () => {
           <div className="hidden md:flex justify-end mb-8 items-center gap-4">
 
             {statusMsg && (
-              <div className={`flex items-center gap-3 px-4 py-2 rounded-full text-xs font-medium animate-in fade-in slide-in-from-top-2 ${statusMsg.type === 'success' ? 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20' : 'bg-red-500/10 text-red-400 border border-red-500/20'}`}>
-                <span className={`w-1.5 h-1.5 rounded-full ${statusMsg.type === 'success' ? 'bg-emerald-500' : 'bg-red-500'}`}></span>
+              <div className={`flex items-center gap-3 px-4 py-2 rounded-full text-xs font-medium animate-in fade-in slide-in-from-top-2 glass-panel border ${statusMsg.type === 'success' ? 'border-emerald-500/30 text-emerald-400' : 'border-red-500/30 text-red-400'}`}>
+                <span className={`w-1.5 h-1.5 rounded-full ${statusMsg.type === 'success' ? 'bg-emerald-400 shadow-lg shadow-emerald-500/50' : 'bg-red-400 shadow-lg shadow-red-500/50'}`}></span>
                 {statusMsg.text}
               </div>
             )}

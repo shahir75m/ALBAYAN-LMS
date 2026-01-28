@@ -97,10 +97,10 @@ const Login: React.FC<LoginProps> = ({ onLogin, onIdentify, initialIdentity, onC
 
   const MinimalInput = ({ label, ...props }: any) => (
     <div className="group">
-      <label className="block text-[11px] font-medium uppercase tracking-wider text-zinc-500 mb-1 group-focus-within:text-emerald-500 transition-colors">{label}</label>
+      <label className="block text-[11px] font-medium uppercase tracking-wider text-zinc-400 mb-2 group-focus-within:text-pink-400 transition-colors">{label}</label>
       <input
         {...props}
-        className="w-full bg-zinc-900/50 border-b border-zinc-800 text-sm text-zinc-200 py-3 outline-none focus:border-emerald-500 transition-all placeholder:text-zinc-600 focus:bg-zinc-900"
+        className="w-full glass-input rounded-lg text-sm py-3 px-4 outline-none focus:border-pink-400/30 transition-all placeholder:text-zinc-500"
       />
     </div>
   );
@@ -109,7 +109,7 @@ const Login: React.FC<LoginProps> = ({ onLogin, onIdentify, initialIdentity, onC
     <button
       {...props}
       disabled={isLoading}
-      className="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-medium text-sm py-3 rounded-lg transition-all active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed"
+      className="w-full bg-gradient-to-r from-emerald-600/80 to-teal-600/80 hover:from-emerald-500 hover:to-teal-500 text-white font-semibold text-sm py-3.5 rounded-lg transition-all active:scale-[0.97] disabled:opacity-50 disabled:cursor-not-allowed shadow-lg hover:shadow-xl backdrop-blur-sm border border-white/10"
     >
       {isLoading ? "Processing..." : children}
     </button>
@@ -119,17 +119,17 @@ const Login: React.FC<LoginProps> = ({ onLogin, onIdentify, initialIdentity, onC
 
   if (step === 'IDENTIFY') {
     return (
-      <div className="min-h-screen grid items-center justify-center p-6 bg-[#0f0f11]">
+      <div className="min-h-screen grid items-center justify-center p-6">
         <div className="w-full max-w-sm animate-in fade-in zoom-in duration-500">
           <div className="text-center mb-10">
-            <div className="inline-flex p-3 bg-zinc-900 rounded-2xl mb-6 shadow-sm">
-              <Logo className="w-10 h-10" />
+            <div className="inline-flex p-4 glass-panel rounded-2xl mb-6 shadow-2xl">
+              <Logo className="w-12 h-12" />
             </div>
-            <h1 className="text-2xl font-bold text-white tracking-tight mb-2">Welcome Back</h1>
-            <p className="text-zinc-500 text-sm">Sign in to access the library portal.</p>
+            <h1 className="text-3xl font-bold text-white tracking-tight mb-2 text-glow">Welcome Back</h1>
+            <p className="text-zinc-400 text-sm">Sign in to access the library portal.</p>
           </div>
 
-          <form onSubmit={handleManualIdentify} className="space-y-6">
+          <form onSubmit={handleManualIdentify} className="glass-panel rounded-2xl p-8 space-y-6 shadow-2xl">
             <MinimalInput
               label="User ID"
               placeholder="Enter your ID"
@@ -138,7 +138,7 @@ const Login: React.FC<LoginProps> = ({ onLogin, onIdentify, initialIdentity, onC
               autoFocus
             />
 
-            {error && <p className="text-red-400 text-xs text-center">{error}</p>}
+            {error && <p className="text-red-400 text-xs text-center font-medium">{error}</p>}
 
             <PrimaryButton type="submit" isLoading={isSyncing}>
               Continue
@@ -151,30 +151,32 @@ const Login: React.FC<LoginProps> = ({ onLogin, onIdentify, initialIdentity, onC
 
   if (step === 'ADMIN_AUTH') {
     return (
-      <div className="min-h-screen grid items-center justify-center p-6 bg-[#0f0f11]">
+      <div className="min-h-screen grid items-center justify-center p-6">
         <div className="w-full max-w-sm animate-in fade-in zoom-in duration-300">
-          <button onClick={() => setStep('PORTAL')} className="mb-6 text-zinc-500 hover:text-white text-xs flex items-center gap-2 transition-colors">
+          <button onClick={() => setStep('PORTAL')} className="mb-6 text-zinc-400 hover:text-white text-xs flex items-center gap-2 transition-colors">
             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M10 19l-7-7m0 0l7-7m-7 7h18" /></svg>
             Back
           </button>
 
-          <div className="mb-8">
-            <h2 className="text-xl font-bold text-white">Admin Access</h2>
-            <p className="text-zinc-500 text-sm mt-1">Verify your credentials to proceed.</p>
-          </div>
+          <div className="glass-panel rounded-2xl p-8 shadow-2xl">
+            <div className="mb-8">
+              <h2 className="text-2xl font-bold text-white text-glow">Admin Access</h2>
+              <p className="text-zinc-400 text-sm mt-2">Verify your credentials to proceed.</p>
+            </div>
 
-          <form onSubmit={handleAdminVerify} className="space-y-6">
-            <MinimalInput
-              label="Secure Password"
-              type="password"
-              placeholder="••••••••"
-              value={adminPassInput}
-              onChange={(e: any) => setAdminPassInput(e.target.value)}
-              autoFocus
-            />
-            {error && <p className="text-red-400 text-xs">{error}</p>}
-            <PrimaryButton type="submit">Unlock Portal</PrimaryButton>
-          </form>
+            <form onSubmit={handleAdminVerify} className="space-y-6">
+              <MinimalInput
+                label="Secure Password"
+                type="password"
+                placeholder="••••••••"
+                value={adminPassInput}
+                onChange={(e: any) => setAdminPassInput(e.target.value)}
+                autoFocus
+              />
+              {error && <p className="text-red-400 text-xs font-medium">{error}</p>}
+              <PrimaryButton type="submit">Unlock Portal</PrimaryButton>
+            </form>
+          </div>
         </div>
       </div>
     );
@@ -182,43 +184,43 @@ const Login: React.FC<LoginProps> = ({ onLogin, onIdentify, initialIdentity, onC
 
   if (step === 'PORTAL' && initialIdentity) {
     return (
-      <div className="min-h-screen flex flex-col items-center justify-center p-6 bg-[#0f0f11] animate-in fade-in duration-700">
+      <div className="min-h-screen flex flex-col items-center justify-center p-6 animate-in fade-in duration-700">
 
-        <header className="absolute top-0 left-0 right-0 p-6 flex justify-between items-center z-10">
-          <div className="flex items-center gap-3 opacity-80 hover:opacity-100 transition-opacity">
+        <header className="absolute top-0 left-0 right-0 p-6 flex justify-between items-center z-10 backdrop-blur-md">
+          <div className="flex items-center gap-3 opacity-90 hover:opacity-100 transition-opacity">
             <Logo className="w-8 h-8" />
             <span className="font-bold text-white tracking-tight">ALBAYAN LMS</span>
           </div>
 
           <button
             onClick={() => handleRoleCardClick('ADMIN')}
-            className="text-xs font-medium text-zinc-500 hover:text-white transition-colors"
+            className="text-xs font-medium text-zinc-400 hover:text-white transition-colors px-4 py-2 glass-button rounded-lg"
           >
             Admin Access
           </button>
         </header>
 
         <main className="w-full max-w-lg text-center z-0">
-          <h2 className="text-4xl md:text-5xl font-bold text-white tracking-tighter mb-4">ALBAYAN LMS</h2>
-          <p className="text-zinc-500 mb-12 max-w-xs mx-auto text-sm leading-relaxed">
+          <h2 className="text-4xl md:text-5xl font-bold text-white tracking-tighter mb-4 text-glow">ALBAYAN LMS</h2>
+          <p className="text-zinc-400 mb-12 max-w-xs mx-auto text-sm leading-relaxed">
             Your gateway to knowledge. Manage books, track history, and explore resources.
           </p>
 
           <button
             onClick={() => handleRoleCardClick('STUDENT')}
-            className="group relative w-full bg-zinc-900 hover:bg-zinc-800 border border-zinc-800 hover:border-zinc-700 rounded-3xl p-10 transition-all active:scale-[0.99]"
+            className="group relative w-full glass-card rounded-3xl p-10 transition-all active:scale-[0.99]"
           >
             <div className="flex flex-col items-center">
-              <div className="w-16 h-16 bg-zinc-950 rounded-2xl flex items-center justify-center mb-6 shadow-sm group-hover:scale-110 transition-transform duration-500">
+              <div className="w-16 h-16 glass-panel rounded-2xl flex items-center justify-center mb-6 shadow-xl group-hover:scale-110 transition-transform duration-500">
                 <Logo className="w-10 h-10" />
               </div>
               <span className="text-lg font-semibold text-white mb-2">Enter Library Portal</span>
-              <span className="text-xs text-zinc-500 uppercase tracking-widest group-hover:text-emerald-500 transition-colors">Students, Usthads & Staff</span>
+              <span className="text-xs text-zinc-400 uppercase tracking-widest group-hover:text-emerald-400 transition-colors">Students, Usthads & Staff</span>
             </div>
           </button>
 
           <div className="mt-12">
-            <button onClick={onClearIdentity} className="text-xs text-zinc-600 hover:text-zinc-400 transition-colors">
+            <button onClick={onClearIdentity} className="text-xs text-zinc-500 hover:text-zinc-300 transition-colors">
               Not {initialIdentity.name}? <span className="underline">Switch Account</span>
             </button>
           </div>
@@ -226,15 +228,15 @@ const Login: React.FC<LoginProps> = ({ onLogin, onIdentify, initialIdentity, onC
 
         {/* About Section Teaser */}
         <div className="fixed bottom-6 z-10">
-          <button onClick={() => document.getElementById('about-modal')?.classList.toggle('hidden')} className="text-[10px] font-bold text-zinc-700 hover:text-zinc-500 uppercase tracking-widest">
+          <button onClick={() => document.getElementById('about-modal')?.classList.toggle('hidden')} className="text-[10px] font-bold text-zinc-600 hover:text-zinc-400 uppercase tracking-widest px-4 py-2 glass-button rounded-lg">
             About The Library
           </button>
         </div>
 
         {/* Hidden About Modal/Section for cleaner look - could use state but staying simple */}
-        <div id="about-modal" className="hidden fixed inset-0 bg-black/90 z-50 overflow-y-auto">
+        <div id="about-modal" className="hidden fixed inset-0 bg-black/90 backdrop-blur-xl z-50 overflow-y-auto">
           <div className="p-8 max-w-4xl mx-auto">
-            <button onClick={() => document.getElementById('about-modal')?.classList.toggle('hidden')} className="fixed top-8 right-8 text-white">Close</button>
+            <button onClick={() => document.getElementById('about-modal')?.classList.toggle('hidden')} className="fixed top-8 right-8 text-white glass-button px-6 py-3 rounded-lg">Close</button>
             <About studentsCount={availableUsers.filter(u => u.role === 'STUDENT').length} />
           </div>
         </div>
@@ -245,45 +247,45 @@ const Login: React.FC<LoginProps> = ({ onLogin, onIdentify, initialIdentity, onC
 
   if (step === 'USER_PICK' && selectedRole) {
     return (
-      <div className="min-h-screen flex flex-col bg-[#0f0f11] animate-in slide-in-from-bottom-4 duration-500">
+      <div className="min-h-screen flex flex-col animate-in slide-in-from-bottom-4 duration-500">
         <div className="max-w-2xl w-full mx-auto p-6 md:p-12 flex-1 flex flex-col">
           <div className="flex items-center justify-between mb-8">
-            <button onClick={() => setStep('PORTAL')} className="text-zinc-500 hover:text-white text-xs flex items-center gap-2 transition-colors">
+            <button onClick={() => setStep('PORTAL')} className="text-zinc-400 hover:text-white text-xs flex items-center gap-2 transition-colors">
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M10 19l-7-7m0 0l7-7m-7 7h18" /></svg>
               Back
             </button>
-            <span className="text-xs font-bold text-zinc-600 uppercase tracking-widest">{selectedRole === 'ADMIN' ? 'ADMIN' : 'LIBRARY'} DIRECTORY</span>
+            <span className="text-xs font-bold text-zinc-500 uppercase tracking-widest">{selectedRole === 'ADMIN' ? 'ADMIN' : 'LIBRARY'} DIRECTORY</span>
           </div>
 
-          <h2 className="text-2xl font-bold text-white mb-6">Select Your Profile</h2>
+          <h2 className="text-3xl font-bold text-white mb-6 text-glow">Select Your Profile</h2>
 
           <div className="mb-6 relative">
-            <svg className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-zinc-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>
+            <svg className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-zinc-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>
             <input
               autoFocus
               placeholder="Search by name or ID..."
-              className="w-full bg-zinc-900 border border-zinc-800 rounded-xl py-3 pl-10 pr-4 text-sm text-white outline-none focus:border-emerald-500 transition-colors placeholder:text-zinc-600"
+              className="w-full glass-input rounded-xl py-3 pl-10 pr-4 text-sm outline-none focus:border-emerald-400/30 transition-colors placeholder:text-zinc-500"
               value={userSearch}
               onChange={(e) => setUserSearch(e.target.value)}
             />
           </div>
 
-          <div className="flex-1 overflow-y-auto rounded-2xl border border-zinc-800/50 bg-zinc-900/30">
+          <div className="flex-1 overflow-y-auto rounded-2xl glass-panel shadow-2xl">
             {filteredUsers.length > 0 ? (
-              <div className="divide-y divide-zinc-800/50">
+              <div className="divide-y divide-white/5">
                 {filteredUsers.map(user => (
                   <button
                     key={user.id}
                     onClick={() => onLogin(user)}
-                    className="w-full flex items-center gap-4 p-4 hover:bg-zinc-800/50 transition-colors text-left group"
+                    className="w-full flex items-center gap-4 p-4 hover:bg-white/5 transition-all text-left group"
                   >
-                    <div className="w-10 h-10 rounded-full bg-zinc-800 flex items-center justify-center text-zinc-400 group-hover:text-emerald-500 group-hover:bg-zinc-700 transition-colors text-xs font-bold">
+                    <div className="w-10 h-10 rounded-full glass-panel flex items-center justify-center text-zinc-400 group-hover:text-emerald-400 transition-colors text-xs font-bold shadow-lg">
                       {user.name.charAt(0)}
                     </div>
                     <div>
                       <div className="flex items-center gap-2">
                         <p className="text-sm font-medium text-white group-hover:text-emerald-400 transition-colors">{user.name}</p>
-                        <span className={`px-1.5 py-0.5 rounded-[4px] text-[8px] font-black uppercase tracking-tighter border ${user.role === 'ADMIN' ? 'bg-purple-500/10 text-purple-500 border-purple-500/20' : user.role === 'USTHAD' ? 'bg-amber-500/10 text-amber-500 border-amber-500/20' : 'bg-emerald-500/10 text-emerald-500 border-emerald-500/20'}`}>
+                        <span className={`px-1.5 py-0.5 rounded-[4px] text-[8px] font-black uppercase tracking-tighter border ${user.role === 'ADMIN' ? 'bg-purple-500/10 text-purple-400 border-purple-500/20' : user.role === 'USTHAD' ? 'bg-amber-500/10 text-amber-400 border-amber-500/20' : 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20'}`}>
                           {user.role}
                         </span>
                       </div>
@@ -293,7 +295,7 @@ const Login: React.FC<LoginProps> = ({ onLogin, onIdentify, initialIdentity, onC
                 ))}
               </div>
             ) : (
-              <div className="p-12 text-center text-zinc-600 text-sm">No profiles found.</div>
+              <div className="p-12 text-center text-zinc-500 text-sm">No profiles found.</div>
             )}
           </div>
         </div>

@@ -46,8 +46,8 @@ const Sidebar: React.FC<SidebarProps> = ({
 
       <div className={`
         fixed md:static inset-y-0 left-0 z-[80]
-        w-64 bg-zinc-950 border-r border-zinc-900 flex flex-col shrink-0
-        transition-transform duration-300 ease-in-out
+        w-64 glass-panel border-r border-white/10 flex flex-col shrink-0
+        transition-transform duration-300 ease-in-out shadow-2xl
         ${isMobileOpen ? 'translate-x-0' : '-translate-x-full'}
         md:translate-x-0
       `}>
@@ -77,14 +77,14 @@ const Sidebar: React.FC<SidebarProps> = ({
                 key={item.id}
                 onClick={() => setActiveTab(item.id)}
                 className={`w-full flex items-center gap-3 px-4 py-3 text-xs font-bold uppercase tracking-wider rounded-xl transition-all relative group ${activeTab === item.id
-                  ? 'text-emerald-500 bg-emerald-500/5'
-                  : 'text-zinc-500 hover:text-zinc-300 hover:bg-zinc-900/50'
+                  ? 'text-emerald-400 bg-emerald-500/10 border border-emerald-500/20'
+                  : 'text-zinc-400 hover:text-zinc-200 hover:bg-white/5'
                   }`}
               >
                 {activeTab === item.id && (
-                  <div className="absolute left-0 w-1 h-5 bg-emerald-500 rounded-r-full" />
+                  <div className="absolute left-0 w-1 h-5 bg-emerald-400 rounded-r-full shadow-lg shadow-emerald-500/50" />
                 )}
-                <svg className={`w-5 h-5 transition-colors ${activeTab === item.id ? 'text-emerald-500' : 'text-zinc-500 group-hover:text-zinc-400'}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg className={`w-5 h-5 transition-colors ${activeTab === item.id ? 'text-emerald-400' : 'text-zinc-500 group-hover:text-zinc-300'}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d={item.icon} />
                 </svg>
                 {item.label}
@@ -93,9 +93,9 @@ const Sidebar: React.FC<SidebarProps> = ({
           </nav>
         </div>
 
-        <div className="p-6 border-t border-zinc-900 bg-zinc-900/20">
-          <div className="flex items-center gap-3 mb-6 p-2 rounded-xl border border-transparent hover:border-zinc-800/50 transition-all">
-            <div className="w-10 h-10 rounded-xl bg-zinc-900 flex items-center justify-center text-zinc-500 border border-zinc-800 font-medium shadow-sm overflow-hidden shrink-0">
+        <div className="p-6 border-t border-white/10 glass-panel">
+          <div className="flex items-center gap-3 mb-6 p-2 rounded-xl border border-transparent hover:border-white/10 transition-all">
+            <div className="w-10 h-10 rounded-xl glass-panel flex items-center justify-center text-zinc-400 border border-white/10 font-medium shadow-lg overflow-hidden shrink-0">
               {user.avatarUrl ? (
                 <img src={user.avatarUrl} alt={user.name} className="w-full h-full object-cover" />
               ) : (
