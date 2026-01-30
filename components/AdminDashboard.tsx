@@ -301,16 +301,16 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
                                 type="text"
                                 placeholder={activeTab === 'users' ? "Search name, ID or class..." : activeTab === 'history' ? "Search circulation records..." : activeTab === 'books' ? "Search title, author or ISBN..." : "Search archives..."}
                                 value={search} onChange={(e) => setSearch(e.target.value)}
-                                className="neo-input rounded-2xl pl-12 pr-6 py-3.5 text-sm text-gray-800 w-full"
+                                className="glass-input rounded-2xl pl-12 pr-6 py-3.5 text-sm text-gray-800 w-full shadow-sm"
                             />
                         </div>
                         {activeTab === 'books' && (
-                            <select value={filter} onChange={(e) => setFilter(e.target.value)} className="neo-input rounded-2xl px-6 py-3.5 text-sm outline-none cursor-pointer">
+                            <select value={filter} onChange={(e) => setFilter(e.target.value)} className="glass-input rounded-2xl px-6 py-3.5 text-sm outline-none cursor-pointer shadow-sm">
                                 {categories.map(c => <option key={c.name} value={c.name}>{c.name} ({c.count})</option>)}
                             </select>
                         )}
                         {activeTab === 'users' && (
-                            <select value={filter} onChange={(e) => setFilter(e.target.value)} className="neo-input rounded-2xl px-6 py-3.5 text-sm outline-none cursor-pointer">
+                            <select value={filter} onChange={(e) => setFilter(e.target.value)} className="glass-input rounded-2xl px-6 py-3.5 text-sm outline-none cursor-pointer shadow-sm">
                                 <option value="All">All Members</option>
                                 <option value="STUDENT">Students</option>
                                 <option value="USTHAD">Usthads</option>
@@ -322,15 +322,15 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
                         {activeTab === 'books' && (
                             <>
                                 <input type="file" ref={importBooksInputRef} className="hidden" accept=".csv" onChange={handleBulkBookImport} />
-                                <button onClick={() => importBooksInputRef.current?.click()} className="neo-button py-3 px-6 text-[10px] font-black uppercase tracking-widest flex items-center gap-2 group text-gray-500 hover:text-teal-600">
+                                <button onClick={() => importBooksInputRef.current?.click()} className="glass-button py-3 px-6 text-[10px] font-black uppercase tracking-widest flex items-center gap-2 group text-gray-400 hover:text-teal-600">
                                     <svg className="w-4 h-4 group-hover:-translate-y-0.5 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" /></svg>
                                     Import
                                 </button>
-                                <button onClick={handleDownloadCatalog} className="neo-button py-3 px-6 text-[10px] font-black uppercase tracking-widest flex items-center gap-2 group text-gray-500 hover:text-teal-600">
+                                <button onClick={handleDownloadCatalog} className="glass-button py-3 px-6 text-[10px] font-black uppercase tracking-widest flex items-center gap-2 group text-gray-400 hover:text-teal-600">
                                     <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" /></svg>
                                     Catalog
                                 </button>
-                                <button onClick={() => { setEditingBook(null); setShowBookForm(true); }} className="accent-teal shadow-[0_10px_20px_rgba(155,194,185,0.3)] hover:scale-[1.02] py-3 px-8 rounded-2xl text-[10px] font-black uppercase tracking-widest flex items-center gap-2 transition-all">
+                                <button onClick={() => { setEditingBook(null); setShowBookForm(true); }} className="bg-teal-600 hover:bg-teal-700 shadow-lg shadow-teal-500/10 hover:scale-[1.02] py-3.5 px-8 rounded-2xl text-[10px] font-black uppercase tracking-widest text-white flex items-center gap-2 transition-all">
                                     <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M12 4v16m8-8H4" /></svg>
                                     Add New
                                 </button>
@@ -339,11 +339,11 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
                         {activeTab === 'users' && (
                             <>
                                 <input type="file" ref={importUsersInputRef} className="hidden" accept=".csv" onChange={handleBulkUserImport} />
-                                <button onClick={() => importUsersInputRef.current?.click()} className="neo-button py-3 px-6 text-[10px] font-black uppercase tracking-widest flex items-center gap-2 group text-gray-500 hover:text-teal-600">
+                                <button onClick={() => importUsersInputRef.current?.click()} className="glass-button py-3 px-6 text-[10px] font-black uppercase tracking-widest flex items-center gap-2 group text-gray-400 hover:text-teal-600">
                                     <svg className="w-4 h-4 group-hover:-translate-y-0.5 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" /></svg>
                                     Import
                                 </button>
-                                <button onClick={() => { setEditingUser(null); setShowUserForm(true); }} className="accent-teal shadow-[0_10px_20px_rgba(155,194,185,0.3)] hover:scale-[1.02] py-3 px-8 rounded-2xl text-[10px] font-black uppercase tracking-widest flex items-center gap-2 transition-all">
+                                <button onClick={() => { setEditingUser(null); setShowUserForm(true); }} className="bg-teal-600 hover:bg-teal-700 shadow-lg shadow-teal-500/10 hover:scale-[1.02] py-3.5 px-8 rounded-2xl text-[10px] font-black uppercase tracking-widest text-white flex items-center gap-2 transition-all">
                                     Add Member
                                 </button>
                             </>
@@ -375,53 +375,53 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
                     </div>
                     <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
                         {/* Confirmations and Returns panels */}
-                        <div className="neo-card rounded-[2.5rem] overflow-hidden">
-                            <div className="px-8 py-6 border-b border-white/40 flex justify-between items-center bg-white/10 uppercase tracking-widest text-[10px] font-black text-gray-400">
+                        <div className="glass-card rounded-[2.5rem] overflow-hidden">
+                            <div className="px-8 py-6 border-b border-gray-100 flex justify-between items-center bg-white/40 uppercase tracking-[0.2em] text-[10px] font-black text-gray-400">
                                 <h3>Pending Actions</h3>
-                                <span className="bg-amber-500/20 text-amber-600 px-3 py-1 rounded-full">{requests.filter(r => r.status === 'PENDING').length} To Do</span>
+                                <span className="bg-amber-500/10 text-amber-600 border border-amber-500/20 px-3 py-1 rounded-full">{requests.filter(r => r.status === 'PENDING').length} To Do</span>
                             </div>
-                            <div className="divide-y divide-white/20 max-h-[450px] overflow-y-auto no-scrollbar">
+                            <div className="divide-y divide-gray-100 max-h-[450px] overflow-y-auto no-scrollbar">
                                 {requests.filter(r => r.status === 'PENDING').map(req => (
-                                    <div key={req.id} className="p-6 flex items-center justify-between hover:bg-white/40 transition-colors">
+                                    <div key={req.id} className="p-6 flex items-center justify-between hover:bg-gray-50 transition-colors">
                                         <div>
                                             <p className="text-sm font-bold text-gray-800 tracking-tight">{req.userName}</p>
-                                            <p className="text-[10px] text-gray-500 mt-1 uppercase font-black tracking-widest leading-none">Wants: <span className="text-teal-600">{req.bookTitle}</span></p>
+                                            <p className="text-[10px] text-gray-400 mt-1 uppercase font-black tracking-widest leading-none">Wants: <span className="text-teal-500">{req.bookTitle}</span></p>
                                         </div>
                                         <div className="flex gap-3">
-                                            <button onClick={() => onHandleRequest(req.id, 'APPROVE')} className="w-8 h-8 rounded-xl neo-flat flex items-center justify-center text-teal-600 hover:accent-teal hover:text-white transition-all">
+                                            <button onClick={() => onHandleRequest(req.id, 'APPROVE')} className="w-9 h-9 rounded-xl glass-button flex items-center justify-center text-teal-600 hover:bg-teal-500 hover:text-white transition-all">
                                                 <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 13l4 4L19 7" /></svg>
                                             </button>
-                                            <button onClick={() => onHandleRequest(req.id, 'DENY')} className="w-8 h-8 rounded-xl neo-flat flex items-center justify-center text-gray-400 hover:text-rose-500 transition-all">
+                                            <button onClick={() => onHandleRequest(req.id, 'DENY')} className="w-9 h-9 rounded-xl glass-button flex items-center justify-center text-gray-400 hover:text-rose-500 transition-all">
                                                 <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M6 18L18 6M6 6l12 12" /></svg>
                                             </button>
                                         </div>
                                     </div>
                                 ))}
-                                {requests.filter(r => r.status === 'PENDING').length === 0 && <div className="p-20 text-center text-gray-400 text-xs italic">Clear for now</div>}
+                                {requests.filter(r => r.status === 'PENDING').length === 0 && <div className="p-20 text-center text-gray-300 text-xs italic tracking-widest uppercase font-black opacity-40">Clear for now</div>}
                             </div>
                         </div>
 
-                        <div className="neo-card rounded-[2.5rem] overflow-hidden">
-                            <div className="px-8 py-6 border-b border-white/40 bg-white/10 flex items-center justify-between uppercase tracking-widest text-[10px] font-black text-gray-400">
+                        <div className="glass-card rounded-[2.5rem] overflow-hidden">
+                            <div className="px-8 py-6 border-b border-gray-100 bg-white/40 flex items-center justify-between uppercase tracking-[0.2em] text-[10px] font-black text-gray-400">
                                 <h3>Active Returns</h3>
                                 <div className="relative">
-                                    <input type="text" placeholder="Scan or search..." value={returnSearch} onChange={(e) => setReturnSearch(e.target.value)} className="w-48 neo-input rounded-full px-4 py-1.5 text-[10px] pr-10" />
-                                    <svg className="absolute right-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 opacity-40" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>
+                                    <input type="text" placeholder="Scan or search..." value={returnSearch} onChange={(e) => setReturnSearch(e.target.value)} className="w-48 glass-input rounded-full px-5 py-2 text-[10px] pr-10 border-gray-200" />
+                                    <svg className="absolute right-4 top-1/2 -translate-y-1/2 w-3.5 h-3.5 opacity-40" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>
                                 </div>
                             </div>
-                            <div className="divide-y divide-white/20 max-h-[450px] overflow-y-auto no-scrollbar">
+                            <div className="divide-y divide-gray-100 max-h-[450px] overflow-y-auto no-scrollbar">
                                 {activeCirculation.map(h => (
-                                    <div key={h.id} className="p-6 flex items-center justify-between hover:bg-white/40 transition-colors">
+                                    <div key={h.id} className="p-6 flex items-center justify-between hover:bg-gray-50 transition-colors">
                                         <div className="overflow-hidden pr-4">
                                             <p className="text-sm font-bold text-gray-800 truncate tracking-tight">{h.bookTitle}</p>
-                                            <p className="text-[10px] text-gray-500 font-black uppercase tracking-widest mt-1 truncate">By {h.userName}</p>
+                                            <p className="text-[10px] text-gray-400 font-black uppercase tracking-widest mt-1 truncate">By {h.userName}</p>
                                         </div>
-                                        <button onClick={() => { setSelectedReturn(h); setShowFineModal(true); setHasIssue(false); setFineAmount(0); setFineReason(''); }} className="neo-button p-2 text-[10px] font-black text-teal-600 hover:text-teal-700">
+                                        <button onClick={() => { setSelectedReturn(h); setShowFineModal(true); setHasIssue(false); setFineAmount(0); setFineReason(''); }} className="glass-button p-2.5 text-teal-600 hover:text-teal-700">
                                             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 15l-3-3m0 0l3-3m-3 3h8M3 12a9 9 0 1118 0 9 9 0 01-18 0z" /></svg>
                                         </button>
                                     </div>
                                 ))}
-                                {activeCirculation.length === 0 && <div className="p-20 text-center text-gray-400 text-xs italic">All items returned</div>}
+                                {activeCirculation.length === 0 && <div className="p-20 text-center text-gray-300 text-xs italic tracking-widest uppercase font-black opacity-40">All items returned</div>}
                             </div>
                         </div>
                     </div>
@@ -433,26 +433,26 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
                 <div className="space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-500">
                     <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8">
                         {filteredBooks.map(book => (
-                            <div key={book.id} className="neo-card rounded-3xl overflow-hidden group hover:neo-card-hover transition-all">
+                            <div key={book.id} className="glass-card rounded-[2rem] overflow-hidden group hover:glass-card-hover transition-all border-white/60">
                                 <div className="flex h-48">
-                                    <div className="w-[35%] overflow-hidden neo-inset relative">
-                                        <img src={book.coverUrl} alt={book.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
+                                    <div className="w-[35%] overflow-hidden bg-gray-50/50 relative border-r border-white/20">
+                                        <img src={book.coverUrl} alt={book.title} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
                                     </div>
                                     <div className="w-[65%] p-6 flex flex-col">
                                         <div className="flex justify-between items-start mb-2">
-                                            <span className="text-[8px] font-black text-teal-600 neo-inset px-2.5 py-1 rounded-full uppercase tracking-[0.15em]">{book.category}</span>
-                                            <p className="text-[8px] text-gray-400 font-bold tracking-widest">#{book.id}</p>
+                                            <span className="text-[8px] font-black text-teal-600 bg-teal-500/10 border border-teal-500/20 px-2.5 py-1 rounded-full uppercase tracking-[0.15em]">{book.category}</span>
+                                            <p className="text-[9px] text-gray-300 font-bold tracking-widest uppercase opacity-60">#{book.id}</p>
                                         </div>
-                                        <h4 className="text-sm font-bold text-gray-800 leading-snug mb-1 line-clamp-2 pr-4">{book.title}</h4>
-                                        <p className="text-[10px] text-gray-400 font-bold tracking-widest uppercase">by {book.author}</p>
+                                        <h4 className="text-sm font-black text-gray-900 leading-snug mb-1 line-clamp-2 pr-4">{book.title}</h4>
+                                        <p className="text-[10px] text-gray-400 font-bold tracking-[0.15em] uppercase opacity-70">by {book.author}</p>
                                         <div className="mt-auto flex justify-between items-center pt-4 border-t border-white/40">
                                             <div className="flex items-center gap-2">
                                                 <div className={`w-1.5 h-1.5 rounded-full ${book.availableCopies === 0 ? 'bg-rose-400' : 'bg-teal-400'}`}></div>
-                                                <p className="text-[10px] font-black text-gray-700">{book.availableCopies}/{book.totalCopies}</p>
+                                                <p className="text-[10px] font-black text-gray-600 uppercase tracking-tighter opacity-80">{book.availableCopies} / {book.totalCopies} Available</p>
                                             </div>
                                             <div className="flex gap-2">
-                                                <button onClick={() => setSelectedBookDetail(book)} className="w-8 h-8 rounded-xl neo-button flex items-center justify-center text-gray-400 hover:text-gray-900 transition-all"><svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M15 12a3 3 0 11-6 0 3 3 0 016 0zM2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" /></svg></button>
-                                                <button onClick={() => { setEditingBook(book); setShowBookForm(true); }} className="w-8 h-8 rounded-xl neo-button flex items-center justify-center text-gray-400 hover:text-teal-600 transition-all"><svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" /></svg></button>
+                                                <button onClick={() => setSelectedBookDetail(book)} className="w-9 h-9 rounded-xl glass-button flex items-center justify-center text-gray-400 hover:text-gray-900 transition-all shadow-sm"><svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0zM2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" /></svg></button>
+                                                <button onClick={() => { setEditingBook(book); setShowBookForm(true); }} className="w-9 h-9 rounded-xl glass-button flex items-center justify-center text-gray-400 hover:text-teal-600 transition-all shadow-sm"><svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" /></svg></button>
                                             </div>
                                         </div>
                                     </div>
@@ -473,22 +473,26 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
                                     <thead className="bg-gray-50 border-b border-gray-100 text-gray-500 text-[10px] font-bold uppercase tracking-wider">
                                         <tr><th className="px-6 py-4">Profile</th><th className="px-6 py-4">ID</th><th className="px-6 py-4">Name</th><th className="px-6 py-4">Role</th><th className="px-6 py-4">Class</th><th className="px-6 py-4 text-right">Actions</th></tr>
                                     </thead>
-                                    <tbody className="divide-y divide-gray-100">
+                                    <tbody className="divide-y divide-gray-100/50">
                                         {filteredUsers.map(user => (
-                                            <tr key={user.id} className="hover:bg-gray-50 transition-all group zebra-row">
-                                                <td className="px-6 py-4"><div className="w-8 h-8 rounded-full bg-gray-100 border border-gray-200 overflow-hidden flex items-center justify-center text-[10px] font-medium text-gray-500">{user.avatarUrl ? <img src={user.avatarUrl} className="w-full h-full object-cover" /> : user.name.charAt(0)}</div></td>
-                                                <td className="px-6 py-4 font-mono text-[11px] text-gray-500">{user.id === '••••••••' ? '••••••••' : user.id}</td>
-                                                <td className="px-6 py-4 font-medium text-gray-900">{user.name}</td>
+                                            <tr key={user.id} className="hover:bg-white/40 transition-all group zebra-row">
                                                 <td className="px-6 py-4">
-                                                    <span className={`px-2 py-0.5 rounded text-[9px] font-bold uppercase tracking-wider border ${user.role === 'ADMIN' ? 'bg-purple-50 text-purple-600 border-purple-100' : user.role === 'USTHAD' ? 'accent-amber border-amber-100' : 'accent-emerald border-emerald-100'}`}>
+                                                    <div className="w-9 h-9 rounded-full bg-white/60 border border-white/80 overflow-hidden flex items-center justify-center text-[10px] font-black text-gray-400 shadow-sm ring-1 ring-gray-100">
+                                                        {user.avatarUrl ? <img src={user.avatarUrl} className="w-full h-full object-cover" /> : user.name.charAt(0)}
+                                                    </div>
+                                                </td>
+                                                <td className="px-6 py-4 font-mono text-[10px] text-gray-400 uppercase tracking-widest">{user.id === '••••••••' ? '••••••••' : user.id}</td>
+                                                <td className="px-6 py-4 font-black text-gray-900 tracking-tight">{user.name}</td>
+                                                <td className="px-6 py-4">
+                                                    <span className={`px-2.5 py-1 rounded-lg text-[9px] font-black uppercase tracking-widest border ${user.role === 'ADMIN' ? 'bg-purple-500/10 text-purple-600 border-purple-500/20 shadow-sm' : user.role === 'USTHAD' ? 'bg-amber-500/10 text-amber-600 border-amber-500/20 shadow-sm' : 'bg-teal-500/10 text-teal-600 border-teal-500/20 shadow-sm'}`}>
                                                         {user.role}
                                                     </span>
                                                 </td>
-                                                <td className="px-6 py-4 text-gray-500 text-xs">{user.class || '---'}</td>
+                                                <td className="px-6 py-4 text-gray-400 font-bold text-[11px] uppercase tracking-wide">{user.class || '---'}</td>
                                                 <td className="px-6 py-4 text-right">
-                                                    <div className="flex justify-end gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
-                                                        <button onClick={() => { setEditingUser(user); setShowUserForm(true); }} className="p-1.5 text-gray-400 hover:text-emerald-500 rounded-md transition-all"><svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" /></svg></button>
-                                                        <button onClick={() => setConfirmDialog({ show: true, title: 'Remove Access', message: `Revoke access for ${user.name}?`, onConfirm: () => onDeleteUser(user.id) })} className="p-1.5 text-gray-400 hover:text-red-400 rounded-md transition-all"><svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg></button>
+                                                    <div className="flex justify-end gap-2 opacity-0 group-hover:opacity-100 transition-all transform group-hover:translate-x-0 translate-x-1">
+                                                        <button onClick={() => { setEditingUser(user); setShowUserForm(true); }} className="w-8 h-8 flex items-center justify-center text-gray-400 hover:text-teal-600 glass-button rounded-lg"><svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" /></svg></button>
+                                                        <button onClick={() => setConfirmDialog({ show: true, title: 'Remove Access', message: `Revoke access for ${user.name}?`, onConfirm: () => onDeleteUser(user.id) })} className="w-8 h-8 flex items-center justify-center text-gray-300 hover:text-red-500 glass-button rounded-lg"><svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg></button>
                                                     </div>
                                                 </td>
                                             </tr>
@@ -601,16 +605,16 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
             )}
 
             {confirmDialog.show && (
-                <div className="fixed inset-0 bg-gray-900/40 backdrop-blur-md flex items-center justify-center z-[11000] p-4">
-                    <div className="glass-panel w-full max-w-sm rounded-[2.5rem] p-10 text-center animate-in zoom-in-95 duration-300 shadow-[0_40px_100px_-20px_rgba(0,0,0,0.4)]">
-                        <div className="w-20 h-20 bg-rose-50 border border-rose-100 rounded-[1.5rem] flex items-center justify-center mx-auto mb-8 shadow-sm">
-                            <svg className="w-10 h-10 text-rose-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" /></svg>
+                <div className="fixed inset-0 bg-gray-900/10 backdrop-blur-xl flex items-center justify-center z-[11000] p-4">
+                    <div className="glass-panel w-full max-w-sm rounded-[2.5rem] p-10 text-center animate-in zoom-in-95 duration-300 shadow-[0_32px_128px_rgba(0,0,0,0.1)] border-white/60">
+                        <div className="w-16 h-16 bg-rose-500/10 border border-rose-500/20 rounded-2xl flex items-center justify-center mx-auto mb-8 shadow-sm">
+                            <svg className="w-8 h-8 text-rose-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" /></svg>
                         </div>
-                        <h3 className="text-2xl font-black text-gray-900 uppercase tracking-tight">{confirmDialog.title}</h3>
-                        <p className="text-sm text-gray-500 mt-4 leading-relaxed">{confirmDialog.message}</p>
+                        <h3 className="text-xl font-black text-gray-900 uppercase tracking-tight">{confirmDialog.title}</h3>
+                        <p className="text-xs text-gray-400 mt-4 leading-relaxed font-bold tracking-wide uppercase opacity-70">{confirmDialog.message}</p>
                         <div className="mt-10 flex gap-4">
-                            <button onClick={() => setConfirmDialog({ ...confirmDialog, show: false })} className="flex-1 py-4 text-xs font-black uppercase text-gray-400">Discard</button>
-                            <button onClick={() => { confirmDialog.onConfirm(); setConfirmDialog({ ...confirmDialog, show: false }); }} className="flex-1 bg-rose-600 text-white py-4 rounded-2xl text-[10px] font-black uppercase tracking-widest shadow-xl shadow-rose-200">Confirm Action</button>
+                            <button onClick={() => setConfirmDialog({ ...confirmDialog, show: false })} className="flex-1 py-4 text-[10px] font-black uppercase tracking-[0.2em] text-gray-400 hover:text-gray-900 transition-colors">Discard</button>
+                            <button onClick={() => { confirmDialog.onConfirm(); setConfirmDialog({ ...confirmDialog, show: false }); }} className="flex-1 bg-gray-900 text-white py-4 rounded-2xl text-[10px] font-black uppercase tracking-[0.2em] shadow-lg shadow-gray-200 hover:bg-black transition-all">Confirm</button>
                         </div>
                     </div>
                 </div>
@@ -618,41 +622,46 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
 
             {selectedBookDetail && (
                 <div className="fixed inset-0 z-[10000] flex items-center justify-center p-4">
-                    <div className="absolute inset-0 bg-gray-900/40 backdrop-blur-xl" onClick={() => setSelectedBookDetail(null)}></div>
-                    <div className="relative w-full max-w-5xl glass-panel rounded-[2.5rem] overflow-hidden flex flex-col md:flex-row max-h-[90vh] shadow-[0_40px_100px_-20px_rgba(0,0,0,0.4)]">
-                        <div className="w-full md:w-1/3 h-64 md:h-auto bg-gray-50 border-r border-gray-100"><img src={selectedBookDetail.coverUrl} className="w-full h-full object-cover" /></div>
-                        <div className="flex-1 p-8 md:p-12 overflow-y-auto no-scrollbar relative">
-                            <button onClick={() => setSelectedBookDetail(null)} className="absolute top-8 right-8 text-gray-400 hover:text-gray-900 transition-colors"><svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /></svg></button>
-                            <span className="text-[10px] font-black accent-emerald px-3 py-1 rounded-full border border-emerald-100 uppercase tracking-widest">{selectedBookDetail.category}</span>
-                            <h2 className="text-3xl font-black text-gray-900 mt-4 uppercase tracking-tight">{selectedBookDetail.title}</h2>
-                            <p className="text-gray-500 text-lg mb-8 font-medium">by {selectedBookDetail.author}</p>
-                            <div className="grid grid-cols-3 gap-8 mb-10 pb-8 border-b border-gray-100">
-                                <div><p className="text-[10px] font-black text-gray-400 uppercase tracking-wider">Specs</p><p className="text-xs text-gray-700 mt-2 font-mono">ISBN: {selectedBookDetail.isbn}</p><p className="text-xs text-gray-700 font-mono">ID: #{selectedBookDetail.id}</p></div>
-                                <div><p className="text-[10px] font-black text-gray-400 uppercase tracking-wider">Stock</p><p className="text-xs text-gray-700 mt-2 font-bold">{selectedBookDetail.availableCopies} / {selectedBookDetail.totalCopies}</p></div>
-                                <div><p className="text-[10px] font-black text-gray-400 uppercase tracking-wider">Value</p><p className="text-xs text-emerald-600 mt-2 font-bold">₹{selectedBookDetail.price}</p></div>
+                    <div className="absolute inset-0 bg-white/20 backdrop-blur-2xl" onClick={() => setSelectedBookDetail(null)}></div>
+                    <div className="relative w-full max-w-5xl glass-panel rounded-[2.5rem] overflow-hidden flex flex-col md:flex-row max-h-[90vh] shadow-[0_32px_128px_rgba(0,0,0,0.08)] border-white/60">
+                        <div className="w-full md:w-1/3 h-64 md:h-auto bg-gray-50/50 border-r border-gray-100/50">
+                            <img src={selectedBookDetail.coverUrl} className="w-full h-full object-cover" />
+                        </div>
+                        <div className="flex-1 p-8 md:p-14 overflow-y-auto no-scrollbar relative">
+                            <button onClick={() => setSelectedBookDetail(null)} className="absolute top-8 right-8 w-10 h-10 flex items-center justify-center glass-button rounded-xl text-gray-400 hover:text-gray-900 transition-all"><svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /></svg></button>
+
+                            <span className="text-[10px] font-black text-teal-600 bg-teal-500/10 px-4 py-1.5 rounded-full border border-teal-500/20 uppercase tracking-widest">{selectedBookDetail.category}</span>
+                            <h2 className="text-4xl font-black text-gray-900 mt-6 uppercase tracking-tight leading-none">{selectedBookDetail.title}</h2>
+                            <p className="text-gray-400 text-lg mt-3 font-bold uppercase tracking-wide opacity-70">by {selectedBookDetail.author}</p>
+
+                            <div className="grid grid-cols-3 gap-10 my-10 py-8 border-y border-gray-100/50">
+                                <div><p className="text-[10px] font-black text-gray-300 uppercase tracking-widest mb-3 opacity-60">Identity</p><p className="text-xs text-gray-800 font-black tracking-widest">ISBN: {selectedBookDetail.isbn}</p><p className="text-[10px] text-gray-400 font-bold tracking-widest mt-1 uppercase">ID: #{selectedBookDetail.id}</p></div>
+                                <div><p className="text-[10px] font-black text-gray-300 uppercase tracking-widest mb-3 opacity-60">Availability</p><p className="text-sm text-gray-900 font-black tracking-tight">{selectedBookDetail.availableCopies} <span className="text-[10px] text-gray-400 uppercase">/ {selectedBookDetail.totalCopies} Copies</span></p></div>
+                                <div><p className="text-[10px] font-black text-gray-300 uppercase tracking-widest mb-3 opacity-60">Inventory Value</p><p className="text-sm text-teal-600 font-black tracking-tight">₹{selectedBookDetail.price}</p></div>
                             </div>
-                            <div className="flex flex-col gap-6">
-                                <div className="p-6 bg-gray-50/50 border border-gray-100 rounded-2xl shadow-inner">
-                                    <p className="text-[10px] font-black text-gray-400 uppercase tracking-[0.2em] mb-4">Direct Issuance</p>
-                                    <div className="flex flex-col md:flex-row gap-3">
+
+                            <div className="space-y-8">
+                                <div className="p-8 bg-white/40 border border-white/60 rounded-[2rem] shadow-sm">
+                                    <p className="text-[10px] font-black text-gray-400 uppercase tracking-[0.3em] mb-6">Direct Issuance Terminal</p>
+                                    <div className="flex flex-col md:flex-row gap-4">
                                         <div className="relative flex-1">
                                             <input
                                                 type="text"
-                                                placeholder="Search user..."
+                                                placeholder="Enter Member Name or ID..."
                                                 value={issueSearch}
                                                 onChange={(e) => setIssueSearch(e.target.value)}
-                                                className="w-full glass-input rounded-xl px-4 py-3 text-sm text-gray-900 outline-none transition-all font-medium"
+                                                className="w-full glass-input rounded-2xl px-6 py-4 text-sm text-gray-900 outline-none transition-all font-black tracking-tight border-gray-100"
                                             />
                                             {issueSearch && (
-                                                <div className="absolute top-full left-0 right-0 mt-2 glass-panel rounded-xl shadow-2xl z-[100] max-h-48 overflow-y-auto no-scrollbar">
+                                                <div className="absolute top-full left-0 right-0 mt-3 glass-panel rounded-2xl shadow-2xl z-[100] max-h-60 overflow-y-auto no-scrollbar border-white/80">
                                                     {users.filter(u => u.role !== 'ADMIN' && (u.name.toLowerCase().includes(issueSearch.toLowerCase()) || u.id.toLowerCase().includes(issueSearch.toLowerCase()))).map(u => (
                                                         <button
                                                             key={u.id}
                                                             onClick={() => { setIssuingToUserId(u.id); setIssueSearch(u.name); }}
-                                                            className="w-full px-4 py-3 text-left text-sm text-gray-700 hover:bg-gray-50 transition-all border-b border-gray-100 last:border-0"
+                                                            className="w-full px-6 py-4 text-left hover:bg-teal-50/50 transition-all border-b border-gray-50 last:border-0 group"
                                                         >
-                                                            <div className="font-bold">{u.name}</div>
-                                                            <div className="text-[10px] text-gray-500">ID: {u.id} • {u.role}</div>
+                                                            <div className="font-black text-gray-900 text-sm group-hover:text-teal-600 transition-colors uppercase tracking-tight">{u.name}</div>
+                                                            <div className="text-[9px] text-gray-400 font-bold uppercase tracking-widest mt-1 opacity-60">ID: {u.id} • {u.role}</div>
                                                         </button>
                                                     ))}
                                                 </div>
@@ -670,23 +679,21 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
                                                 setIssueSearch('');
                                             }}
                                             disabled={!issuingToUserId}
-                                            className={`px-8 py-3 rounded-xl font-black uppercase text-[10px] tracking-widest transition-all shadow-lg ${issuingToUserId ? 'bg-emerald-600 text-white hover:bg-emerald-500 shadow-emerald-200' : 'bg-gray-100 text-gray-400 cursor-not-allowed'}`}
+                                            className={`px-10 py-4 rounded-2xl font-black uppercase text-[10px] tracking-[0.2em] transition-all shadow-xl ${issuingToUserId ? 'bg-teal-600 text-white hover:bg-teal-700 shadow-teal-500/20' : 'bg-gray-100 text-gray-400 cursor-not-allowed opacity-50'}`}
                                         >
-                                            Issue Book
+                                            Process Issue
                                         </button>
                                     </div>
                                 </div>
 
-                                <div className="flex flex-col md:flex-row gap-3">
+                                <div className="flex flex-col md:flex-row gap-4">
                                     <button
                                         onClick={() => { onIssueBook(selectedBookDetail.id, (localStorage.getItem('albayan_active_session') ? JSON.parse(localStorage.getItem('albayan_active_session')!).id : 'Admin')); setSelectedBookDetail(null); }}
-                                        className="flex-1 py-4 glass-button text-gray-900 font-black uppercase text-xs tracking-widest rounded-2xl hover:bg-gray-50 transition-all group shadow-md"
+                                        className="flex-1 py-5 glass-button text-gray-900 font-black uppercase text-[10px] tracking-[0.25em] rounded-2xl hover:bg-teal-50/50 transition-all shadow-sm border-white/60"
                                     >
-                                        <span className="relative z-10 flex items-center justify-center gap-2">
-                                            Quick Borrow (Self)
-                                        </span>
+                                        Self Checkout
                                     </button>
-                                    <button onClick={() => { setEditingBook(selectedBookDetail); setShowBookForm(true); setSelectedBookDetail(null); }} className="flex-1 py-4 glass-button text-gray-500 font-black uppercase text-xs tracking-widest rounded-2xl hover:text-gray-900 transition-all shadow-md">Edit Specs</button>
+                                    <button onClick={() => { setEditingBook(selectedBookDetail); setShowBookForm(true); setSelectedBookDetail(null); }} className="flex-1 py-5 glass-button text-gray-400 font-black uppercase text-[10px] tracking-[0.25em] rounded-2xl hover:text-teal-600 border-white/60">Modify Metadata</button>
                                 </div>
                             </div>
                         </div>
@@ -698,18 +705,20 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
 };
 
 const StatCard = ({ title, value, subtitle, icon, color }: any) => {
-    const colors: Record<string, string> = { emerald: 'text-teal-accent', blue: 'text-blue-500', amber: 'text-amber-500', red: 'text-rose-500' };
+    const colors: Record<string, string> = { emerald: 'teal', blue: 'blue', amber: 'amber', red: 'rose' };
+    const colorClass = colors[color];
+
     return (
-        <div className="neo-card p-8 rounded-[2rem] transition-all hover:scale-[1.02] group">
-            <div className="flex items-start justify-between mb-4">
-                <div className={`p-3 rounded-2xl neo-inset ${colors[color]} opacity-80 group-hover:opacity-100 transition-opacity`}>
+        <div className="glass-card p-8 rounded-[2.5rem] transition-all hover:glass-card-hover group border-white/60">
+            <div className="flex items-start justify-between mb-6">
+                <div className={`p-3.5 rounded-2xl bg-${colorClass}-500/10 border border-${colorClass}-500/20 text-${colorClass}-600 group-hover:scale-110 transition-transform duration-500`}>
                     <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d={icon} /></svg>
                 </div>
-                {subtitle && <span className="text-[8px] font-black text-gray-400 uppercase tracking-widest">{subtitle}</span>}
+                {subtitle && <span className="text-[10px] font-black text-gray-300 uppercase tracking-widest opacity-60">{subtitle}</span>}
             </div>
             <div>
-                <p className="text-[10px] font-black text-gray-500 uppercase tracking-[0.2em]">{title}</p>
-                <p className="text-3xl font-black text-gray-800 tracking-tight mt-1">{value}</p>
+                <p className="text-[10px] font-black text-gray-400 uppercase tracking-[0.25em]">{title}</p>
+                <p className="text-4xl font-black text-gray-900 tracking-tight mt-2">{value}</p>
             </div>
         </div>
     );

@@ -8,31 +8,31 @@ interface AboutProps {
 
 const About: React.FC<AboutProps> = ({ booksCount, studentsCount }) => {
     return (
-        <div className="max-w-6xl mx-auto px-6 py-24 space-y-32 animate-in fade-in duration-1000 bg-[#f0f2f5]">
+        <div className="max-w-6xl mx-auto px-6 py-24 space-y-32 animate-in fade-in duration-1000 bg-transparent">
             {/* Hero Section - The Future of Knowledge */}
             <section className="relative flex flex-col md:flex-row items-center gap-20">
                 <div className="flex-1 space-y-10">
                     <div className="flex items-center gap-6 mb-4">
-                        <div className="p-4 neo-card rounded-2xl">
+                        <div className="p-4 glass-panel rounded-2xl border-white shadow-sm">
                             <Logo className="w-10 h-10" />
                         </div>
-                        <div className="px-6 py-2 rounded-full neo-inset text-teal-600 text-[10px] font-black uppercase tracking-[0.3em]">
-                            Vision 2026
+                        <div className="px-6 py-2 rounded-full glass-inset text-teal-600 text-[10px] font-black uppercase tracking-[0.35em] border-white shadow-sm">
+                            INTEGRITY • EXCELLENCE
                         </div>
                     </div>
                     <h1 className="text-7xl md:text-9xl font-black text-gray-900 leading-[0.85] tracking-tighter uppercase opacity-90">
-                        THE FUTURE OF <br />
-                        <span className="text-teal-600/30">KNOWLEDGE</span>
+                        ADVANCING <br />
+                        <span className="text-teal-600/30">WISDOM</span>
                     </h1>
-                    <p className="text-xl text-gray-400 leading-relaxed max-w-lg font-bold italic pr-10">
+                    <p className="text-xl text-gray-400 leading-relaxed max-w-lg font-black italic pr-10 opacity-70">
                         Welcome to Bayanul Uloom Dars, where tradition meets modernity in Islamic education. Our aim is to nurture pious, knowledgeable, and socially responsible individuals guided by the principles of Islam.
                     </p>
                 </div>
                 <div className="relative w-full md:w-2/5 aspect-square">
-                    <div className="absolute inset-0 bg-teal-500/5 blur-[120px] rounded-full"></div>
-                    <div className="relative h-full w-full neo-card rounded-[4rem] flex items-center justify-center overflow-hidden group">
-                        <div className="absolute inset-0 bg-gradient-to-br from-teal-500/5 to-transparent"></div>
-                        <svg className="w-32 h-32 text-teal-600 transition-transform duration-1000 group-hover:scale-110 opacity-60" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <div className="absolute inset-0 bg-teal-500/5 blur-[120px] rounded-full" />
+                    <div className="relative h-full w-full glass-panel rounded-[4rem] border-white/60 shadow-[0_48px_160px_rgba(0,0,0,0.06)] flex items-center justify-center overflow-hidden group">
+                        <div className="absolute inset-0 bg-gradient-to-br from-teal-500/5 to-transparent" />
+                        <svg className="w-32 h-32 text-teal-600 transition-transform duration-1000 group-hover:scale-110 opacity-40" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.989-2.386l-.548-.547z" />
                         </svg>
                     </div>
@@ -45,7 +45,7 @@ const About: React.FC<AboutProps> = ({ booksCount, studentsCount }) => {
                     <h2 className="text-6xl md:text-8xl font-black text-gray-900 leading-tight tracking-tight uppercase opacity-90">
                         ലക്ഷ്യങ്ങൾ
                     </h2>
-                    <div className="space-y-6 text-gray-500 text-xl leading-relaxed font-black">
+                    <div className="space-y-6 text-gray-500 text-xl leading-relaxed font-black opacity-80">
                         <ul className="space-y-6 list-none">
                             <li className="flex gap-6 items-start">
                                 <span className="text-teal-600 text-2xl">•</span>
@@ -63,9 +63,9 @@ const About: React.FC<AboutProps> = ({ booksCount, studentsCount }) => {
                     </div>
                 </div>
                 <div className="relative w-full md:w-2/5 aspect-square">
-                    <div className="absolute inset-0 bg-gray-500/5 blur-[120px] rounded-full"></div>
-                    <div className="relative h-full w-full neo-card rounded-[4rem] flex items-center justify-center overflow-hidden group">
-                        <svg className="w-32 h-32 text-gray-300 transition-transform duration-1000 group-hover:scale-110 opacity-40" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <div className="absolute inset-0 bg-gray-500/5 blur-[120px] rounded-full" />
+                    <div className="relative h-full w-full glass-panel rounded-[4rem] border-white/60 shadow-[0_48px_160px_rgba(0,0,0,0.06)] flex items-center justify-center overflow-hidden group">
+                        <svg className="w-32 h-32 text-gray-300 transition-transform duration-1000 group-hover:scale-110 opacity-30" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
                         </svg>
                     </div>
@@ -119,9 +119,9 @@ const About: React.FC<AboutProps> = ({ booksCount, studentsCount }) => {
 };
 
 const StatItem = ({ value, label }: { value: string, label: string }) => (
-    <div className="space-y-2 p-8 neo-card rounded-[2rem] text-center">
+    <div className="space-y-4 p-10 glass-panel rounded-[2.5rem] text-center border-white shadow-sm hover:glass-card-hover transition-all duration-500">
         <p className="text-5xl font-black text-gray-900 tracking-tighter uppercase leading-none">{value}</p>
-        <p className="text-[10px] text-gray-400 font-bold uppercase tracking-widest leading-none">{label}</p>
+        <p className="text-[10px] text-gray-400 font-black uppercase tracking-[0.4em] leading-none opacity-60">{label}</p>
     </div>
 );
 
@@ -130,7 +130,7 @@ const FooterSocialLink = ({ href, icon }: { href: string; icon: React.ReactNode 
         href={href}
         target="_blank"
         rel="noopener noreferrer"
-        className="w-16 h-16 rounded-2xl neo-button flex items-center justify-center text-gray-400 hover:text-teal-600 transition-all duration-500"
+        className="w-16 h-16 rounded-2xl glass-button flex items-center justify-center text-gray-400 hover:text-teal-600 transition-all duration-500 border-white shadow-sm"
     >
         <svg className="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             {icon}
