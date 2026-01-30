@@ -281,33 +281,29 @@ const App: React.FC = () => {
   }
 
   return (
-    <div className="flex h-screen text-gray-800 overflow-hidden font-sans">
+    <div className="flex flex-col lg:flex-row min-h-screen bg-[#f8f9fc] animate-in fade-in duration-500">
       <Sidebar
         role={currentUser.role}
         activeTab={activeTab}
-        setActiveTab={(tab) => {
-          setActiveTab(tab);
-          setIsMobileMenuOpen(false);
-        }}
+        setActiveTab={setActiveTab}
         onLogout={handleSwitchPortal}
         user={currentUser}
         isMobileOpen={isMobileMenuOpen}
         onCloseMobile={() => setIsMobileMenuOpen(false)}
       />
 
-      <main className="flex-1 overflow-y-auto relative flex flex-col">
-
+      <main className="flex-1 flex flex-col min-w-0">
         {/* Mobile Header */}
-        <div className="md:hidden glass-panel border-b border-white/10 p-4 flex items-center justify-between shrink-0 sticky top-0 z-40 shadow-lg">
-          <button onClick={() => setIsMobileMenuOpen(true)} className="p-2 text-zinc-400 hover:text-white transition-colors">
+        <div className="lg:hidden glass-panel p-4 flex items-center justify-between shrink-0 sticky top-0 z-40 bg-white/80 backdrop-blur-xl border-b border-gray-100 shadow-lg">
+          <button onClick={() => setIsMobileMenuOpen(true)} className="p-2 text-gray-500 hover:text-gray-900 transition-all">
             <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16m-7 6h7" /></svg>
           </button>
-          <div className="flex items-center gap-2">
-            <Logo className="w-6 h-6" />
-            <span className="font-bold text-white text-sm">ALBAYAN</span>
+          <div className="flex items-center gap-3">
+            <Logo className="w-8 h-8 rounded-lg shadow-sm" />
+            <span className="font-black text-gray-900 text-sm tracking-tighter uppercase">ALBAYAN</span>
           </div>
-          <button onClick={handleSwitchPortal} className="p-2 text-zinc-400">
-            <div className="w-8 h-8 rounded-full glass-panel flex items-center justify-center border border-white/10">
+          <button onClick={handleSwitchPortal} className="p-1 glass-button rounded-xl transition-all shadow-sm">
+            <div className="w-8 h-8 flex items-center justify-center">
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7" /></svg>
             </div>
           </button>
@@ -316,36 +312,36 @@ const App: React.FC = () => {
         <div className="flex-1 p-4 md:p-10 max-w-7xl mx-auto w-full">
 
           {/* Top Bar (Desktop) */}
-          <div className="hidden md:flex justify-end mb-8 items-center gap-4">
+          <div className="hidden lg:flex justify-end mb-8 items-center gap-6">
 
             {statusMsg && (
-              <div className={`flex items-center gap-3 px-4 py-2 rounded-full text-xs font-medium animate-in fade-in slide-in-from-top-2 glass-panel border ${statusMsg.type === 'success' ? 'border-emerald-500/30 text-emerald-400' : 'border-red-500/30 text-red-400'}`}>
-                <span className={`w-1.5 h-1.5 rounded-full ${statusMsg.type === 'success' ? 'bg-emerald-400 shadow-lg shadow-emerald-500/50' : 'bg-red-400 shadow-lg shadow-red-500/50'}`}></span>
+              <div className={`flex items-center gap-3 px-6 py-2.5 rounded-full text-[11px] font-black uppercase tracking-widest animate-in fade-in slide-in-from-top-2 glass-panel border shadow-2xl ${statusMsg.type === 'success' ? 'accent-emerald border-emerald-200' : 'accent-rose border-rose-200'}`}>
+                <span className={`w-2 h-2 rounded-full ${statusMsg.type === 'success' ? 'bg-emerald-500 shadow-[0_0_10px_rgba(16,185,129,0.5)]' : 'bg-rose-500 shadow-[0_0_10px_rgba(244,63,94,0.5)]'}`}></span>
                 {statusMsg.text}
               </div>
             )}
 
-            <div className="h-4 w-[1px] bg-zinc-800 mx-2"></div>
+            <div className="h-6 w-[1.5px] bg-gray-200 mx-2"></div>
 
             <div className="flex flex-col items-end">
-              <span className={`text-[9px] font-bold uppercase tracking-wider ${isLocalMode ? 'text-amber-500' : 'text-emerald-500'}`}>
-                {isLocalMode ? 'Offline Mode' : 'System Online'}
+              <span className={`text-[10px] font-black uppercase tracking-[0.2em] ${isLocalMode ? 'text-amber-600' : 'text-emerald-600'}`}>
+                {isLocalMode ? 'Offline Mode' : 'Cloud Synchronized'}
               </span>
-              {isSyncing && <span className="text-[9px] text-zinc-500">Syncing...</span>}
+              {isSyncing && <span className="text-[9px] text-gray-400 font-bold uppercase tracking-widest mt-0.5 animate-pulse">Syncing...</span>}
             </div>
 
-            <button onClick={handleFullLogout} className="text-xs font-medium text-zinc-500 hover:text-white transition-colors" title="Switch User ID">
-              Switch ID
+            <button onClick={handleFullLogout} className="text-[10px] font-black uppercase tracking-widest text-gray-400 hover:text-gray-900 transition-all px-4 py-2 glass-button rounded-xl" title="Switch User ID">
+              Switch Identity
             </button>
           </div>
 
           <div className="w-full">
-            <header className="mb-10">
-              <h1 className="text-3xl font-bold text-white tracking-tight capitalize">
+            <header className="mb-12">
+              <h1 className="text-4xl font-black text-gray-900 tracking-tight uppercase">
                 {activeTab.replace('-', ' ')}
               </h1>
-              <p className="text-zinc-500 text-sm mt-1">
-                Manage your library activities and resources.
+              <p className="text-gray-500 text-sm font-medium mt-1 uppercase tracking-wider">
+                Manage your library hub and resources.
               </p>
             </header>
 

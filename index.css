@@ -4,9 +4,9 @@
 
 @layer base {
   body {
-    @apply text-gray-800 font-sans antialiased selection:bg-blue-200/50 selection:text-blue-900 overflow-x-hidden min-h-screen;
-    font-family: 'Inter', 'Noto Sans Malayalam', ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-    background: #e8e4f3;
+    @apply text-gray-800 font-sans antialiased selection:bg-teal-100 selection:text-teal-900 overflow-x-hidden min-h-screen;
+    font-family: 'Inter', 'Outfit', 'Noto Sans Malayalam', ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    background: #f0f2f5;
     background-attachment: fixed;
   }
 
@@ -44,36 +44,95 @@
     animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
   }
 
+  /* Neomorphic Design System */
+  .neo-flat {
+    background: #f0f2f5;
+    box-shadow: 20px 20px 60px #dcdfe2, -20px -20px 60px #ffffff;
+    @apply border-0;
+  }
+
+  .neo-card {
+    background: #f0f2f5;
+    box-shadow: 8px 8px 16px rgba(0, 0, 0, 0.05), -8px -8px 16px rgba(255, 255, 255, 0.8);
+    @apply transition-all duration-300;
+  }
+
+  .neo-card-hover:hover {
+    box-shadow: 12px 12px 20px rgba(0, 0, 0, 0.08), -12px -12px 20px rgba(255, 255, 255, 1);
+    transform: translateY(-2px);
+  }
+
+  .neo-pressed {
+    background: #f0f2f5;
+    box-shadow: inset 8px 8px 16px #dcdfe2, inset -8px -8px 16px #ffffff;
+  }
+
+  .neo-inset {
+    box-shadow: inset 2px 2px 5px rgba(0, 0, 0, 0.05), inset -2px -2px 5px rgba(255, 255, 255, 0.8);
+  }
+
+  .neo-button {
+    @apply bg-[#f0f2f5] shadow-[4px_4px_8px_rgba(0, 0, 0, 0.05), -4px_-4px_8px_rgba(255, 255, 255, 0.8)] hover:shadow-[2px_2px_4px_rgba(0, 0, 0, 0.05), -2px_-2px_4px_rgba(255, 255, 255, 0.8)] active:shadow-[inset_4px_4px_8px_rgba(0, 0, 0, 0.05), inset_-4px_-4px_8px_rgba(255, 255, 255, 0.8)] transition-all duration-200 rounded-xl;
+  }
+
+  .neo-input {
+    @apply bg-[#f0f2f5] shadow-[inset_2px_2px_5px_rgba(0, 0, 0, 0.05), inset_-2px_-2px_5px_rgba(255, 255, 255, 0.8)] border-0 focus:ring-2 focus:ring-teal-500/20 outline-none transition-all;
+  }
+
+  /* Legacy Compat/Glass Panels (keeping names but updating look) */
   .glass-panel {
-    @apply bg-white border-0 shadow-[0_15px_50px_-12px_rgba(0, 0, 0, 0.25)];
+    @apply neo-flat rounded-[2.5rem];
   }
 
   .glass-card {
-    @apply bg-white border-0 shadow-[0_12px_40px_-10px_rgba(0, 0, 0, 0.18)] hover:shadow-[0_20px_60px_-15px_rgba(0, 0, 0, 0.25)] hover:-translate-y-2 transition-all duration-300;
+    @apply neo-card rounded-2xl;
   }
 
   .glass-input {
-    @apply bg-white border border-gray-200 text-gray-900 placeholder-gray-500 focus:border-blue-500 focus:ring-2 focus:ring-blue-100 shadow-sm;
+    @apply neo-input;
   }
 
   .glass-button {
-    @apply bg-white border border-gray-200 text-gray-800 hover:bg-gray-50 hover:shadow-md transition-all active:scale-95 shadow-sm;
+    @apply neo-button;
+  }
+
+  /* Accent Colors from Design */
+  .accent-teal {
+    background-color: #9bc2b9;
+    color: white;
+  }
+
+  .text-teal-accent {
+    color: #9bc2b9;
   }
 
   .zebra-row:nth-child(even) {
-    @apply bg-gray-50/50;
+    background-color: rgba(255, 255, 255, 0.3);
   }
 
-  .zebra-row:nth-child(odd) {
-    @apply bg-white;
-  }
-
-  .glow-emerald {
-    box-shadow: 0 0 20px -5px rgba(16, 185, 129, 0.4);
+  .glow-teal {
+    box-shadow: 0 0 20px -5px rgba(155, 194, 185, 0.4);
   }
 
   .text-glow {
     text-shadow: 0 0 15px rgba(255, 255, 255, 0.4);
+  }
+
+  /* Colorful accents for variety */
+  .accent-blue {
+    @apply text-blue-600 bg-blue-50/50;
+  }
+
+  .accent-emerald {
+    @apply text-emerald-600 bg-emerald-50/50;
+  }
+
+  .accent-amber {
+    @apply text-amber-600 bg-amber-50/50;
+  }
+
+  .accent-rose {
+    @apply text-rose-600 bg-rose-50/50;
   }
 }
 

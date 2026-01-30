@@ -87,91 +87,91 @@ const BookForm: React.FC<BookFormProps> = ({ onClose, onSubmit, initialData }) =
   };
 
   return (
-    <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-[9999] p-4">
-      <div className="bg-zinc-950 border border-zinc-900 w-full max-w-md rounded-2xl shadow-2xl overflow-hidden animate-in fade-in slide-in-from-bottom-2 duration-300 flex flex-col max-h-[90vh]">
-        <div className="px-6 py-4 border-b border-zinc-900 bg-zinc-900/20 flex justify-between items-center shrink-0">
-          <h3 className="font-bold text-sm text-zinc-200 uppercase tracking-wide">{initialData ? 'Edit Asset' : 'Register New Asset'}</h3>
-          <button onClick={onClose} className="p-1.5 hover:bg-zinc-900 rounded-lg transition-all text-zinc-500 hover:text-white">
-            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M6 18L18 6M6 6l12 12" /></svg>
+    <div className="fixed inset-0 bg-[#f0f2f5]/40 backdrop-blur-xl flex items-center justify-center z-[9999] p-4">
+      <div className="neo-card w-full max-w-md rounded-[2.5rem] overflow-hidden animate-in zoom-in-95 duration-300 flex flex-col max-h-[90vh]">
+        <div className="px-8 py-6 border-b border-white/40 bg-white/10 flex justify-between items-center shrink-0">
+          <h3 className="font-black text-[10px] text-gray-500 uppercase tracking-[0.2em]">{initialData ? 'Edit Asset Specs' : 'Register New Resource'}</h3>
+          <button onClick={onClose} className="w-8 h-8 rounded-xl neo-button flex items-center justify-center text-gray-400 hover:text-rose-500 transition-all">
+            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M6 18L18 6M6 6l12 12" /></svg>
           </button>
         </div>
 
         {statusMsg && (
-          <div className={`mx-6 mt-4 p-3 rounded-xl border flex items-center gap-2 animate-in slide-in-from-top-2 duration-300 ${statusMsg.type === 'success' ? 'bg-emerald-500/10 border-emerald-500/20 text-emerald-400' : 'bg-red-500/10 border-red-500/20 text-red-400'
+          <div className={`mx-8 mt-6 p-4 rounded-2xl neo-inset flex items-center gap-3 animate-in slide-in-from-top-2 duration-300 ${statusMsg.type === 'success' ? 'text-teal-600' : 'text-rose-500'
             }`}>
-            <div className={`w-1.5 h-1.5 rounded-full ${statusMsg.type === 'success' ? 'bg-emerald-500' : 'bg-red-500'} animate-pulse`}></div>
-            <span className="text-[10px] font-bold uppercase tracking-tight">{statusMsg.text}</span>
+            <div className={`w-2 h-2 rounded-full ${statusMsg.type === 'success' ? 'bg-teal-500' : 'bg-rose-500'} animate-pulse`}></div>
+            <span className="text-[10px] font-black uppercase tracking-widest">{statusMsg.text}</span>
           </div>
         )}
 
-        <div className="p-6 overflow-y-auto no-scrollbar">
+        <div className="p-8 overflow-y-auto no-scrollbar">
 
-          <form onSubmit={handleSubmit} className="space-y-5">
+          <form onSubmit={handleSubmit} className="space-y-6">
             <div>
-              <label className="block text-[10px] font-bold text-zinc-500 uppercase tracking-wider mb-2">Resource ISBN/UPC</label>
-              <div className="relative flex gap-2">
+              <label className="block text-[10px] font-black text-gray-400 uppercase tracking-[0.2em] mb-2 px-1">Resource ISBN/UPC</label>
+              <div className="relative flex gap-3">
                 <input
                   ref={isbnInputRef}
-                  className="flex-1 bg-zinc-900/50 border border-zinc-800 rounded-xl px-4 py-2.5 text-sm focus:border-emerald-500/50 outline-none text-white transition-all font-mono placeholder:text-zinc-700"
+                  className="neo-input flex-1 rounded-2xl px-6 py-3.5 text-sm outline-none transition-all font-bold placeholder:text-gray-400/50"
                   value={formData.isbn}
                   onKeyDown={handleIsbnKeyDown}
                   onChange={e => setFormData({ ...formData, isbn: e.target.value })}
-                  placeholder="Enter or scan identifier..."
+                  placeholder="Scan or enter ID..."
                 />
                 <button
                   type="button"
                   onClick={() => fetchBookDetails(formData.isbn || '')}
-                  className="px-4 py-2 bg-zinc-900 hover:bg-zinc-800 text-[10px] font-bold text-zinc-400 hover:text-white rounded-xl border border-zinc-800 transition-all uppercase tracking-wider"
+                  className="neo-button px-6 py-3 text-[10px] uppercase font-black tracking-widest text-teal-600"
                 >
                   Fetch
                 </button>
               </div>
             </div>
 
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-2 gap-5">
               <div className="col-span-2">
-                <label className="block text-[10px] font-bold text-zinc-500 uppercase tracking-wider mb-2">Title</label>
+                <label className="block text-[10px] font-black text-gray-400 uppercase tracking-[0.2em] mb-2 px-1">Resource Title</label>
                 <input
                   required
-                  className="w-full bg-zinc-900/50 border border-zinc-800 rounded-xl px-4 py-2.5 text-sm focus:border-emerald-500/50 outline-none text-white transition-all placeholder:text-zinc-700"
+                  className="neo-input w-full rounded-2xl px-6 py-3.5 text-sm font-bold"
                   value={formData.title}
                   onChange={e => setFormData({ ...formData, title: e.target.value })}
                 />
               </div>
               <div className="col-span-2">
-                <label className="block text-[10px] font-bold text-zinc-500 uppercase tracking-wider mb-2">Author</label>
+                <label className="block text-[10px] font-black text-gray-400 uppercase tracking-[0.2em] mb-2 px-1">Main Author/Writer</label>
                 <input
                   required
-                  className="w-full bg-zinc-900/50 border border-zinc-800 rounded-xl px-4 py-2.5 text-sm focus:border-emerald-500/50 outline-none text-white transition-all placeholder:text-zinc-700"
+                  className="neo-input w-full rounded-2xl px-6 py-3.5 text-sm font-bold"
                   value={formData.author}
                   onChange={e => setFormData({ ...formData, author: e.target.value })}
                 />
               </div>
               <div>
-                <label className="block text-[10px] font-bold text-zinc-500 uppercase tracking-wider mb-2">Asset ID</label>
+                <label className="block text-[10px] font-black text-gray-400 uppercase tracking-[0.2em] mb-2 px-1">Internal UID</label>
                 <input
                   required
-                  className="w-full bg-zinc-900/50 border border-zinc-800 rounded-xl px-4 py-2.5 text-sm focus:border-emerald-500/50 outline-none font-mono text-white transition-all placeholder:text-zinc-700"
+                  className="neo-input w-full rounded-2xl px-6 py-3.5 font-bold text-sm"
                   value={formData.id}
                   onChange={e => setFormData({ ...formData, id: e.target.value })}
                 />
               </div>
               <div>
-                <label className="block text-[10px] font-bold text-zinc-500 uppercase tracking-wider mb-2">Category</label>
+                <label className="block text-[10px] font-black text-gray-400 uppercase tracking-[0.2em] mb-2 px-1">Classification</label>
                 <input
                   required
                   list="categories"
-                  className="w-full bg-zinc-900/50 border border-zinc-800 rounded-xl px-4 py-2.5 text-sm focus:border-emerald-500/50 outline-none text-white transition-all placeholder:text-zinc-700"
+                  className="neo-input w-full rounded-2xl px-6 py-3.5 text-sm font-bold"
                   value={formData.category}
                   onChange={e => setFormData({ ...formData, category: e.target.value })}
                 />
               </div>
               <div>
-                <label className="block text-[10px] font-bold text-zinc-500 uppercase tracking-wider mb-2">Inventory Count</label>
+                <label className="block text-[10px] font-black text-gray-400 uppercase tracking-[0.2em] mb-2 px-1">In Stock</label>
                 <input
                   type="number"
                   min="1"
-                  className="w-full bg-zinc-900/50 border border-zinc-800 rounded-xl px-4 py-2.5 text-sm focus:border-emerald-500/50 outline-none text-white transition-all placeholder:text-zinc-700"
+                  className="neo-input w-full rounded-2xl px-6 py-3.5 text-sm font-bold"
                   value={formData.totalCopies}
                   onChange={e => {
                     const newVal = parseInt(e.target.value) || 0;
@@ -187,11 +187,11 @@ const BookForm: React.FC<BookFormProps> = ({ onClose, onSubmit, initialData }) =
                 />
               </div>
               <div>
-                <label className="block text-[10px] font-bold text-zinc-500 uppercase tracking-wider mb-2">Asset Value ($)</label>
+                <label className="block text-[10px] font-black text-gray-400 uppercase tracking-[0.2em] mb-2 px-1">Asset Value (₹)</label>
                 <input
                   type="number"
                   step="0.01"
-                  className="w-full bg-zinc-900/50 border border-zinc-800 rounded-xl px-4 py-2.5 text-sm focus:border-emerald-500/50 outline-none text-white transition-all placeholder:text-zinc-700"
+                  className="neo-input w-full rounded-2xl px-6 py-3.5 text-sm font-bold"
                   value={formData.price}
                   onChange={e => setFormData({ ...formData, price: parseFloat(e.target.value) || 0 })}
                 />
@@ -199,20 +199,20 @@ const BookForm: React.FC<BookFormProps> = ({ onClose, onSubmit, initialData }) =
             </div>
 
             <div>
-              <label className="block text-[10px] font-bold text-zinc-500 uppercase tracking-wider mb-2">Display Profile</label>
-              <div className="flex gap-4 items-center">
-                <div className="w-12 h-16 bg-zinc-900/50 border border-zinc-800 rounded-lg overflow-hidden shrink-0 shadow-inner">
+              <label className="block text-[10px] font-black text-gray-400 uppercase tracking-[0.2em] mb-3 px-1">Visual Profile</label>
+              <div className="flex gap-6 items-center">
+                <div className="w-16 h-20 neo-inset rounded-2xl overflow-hidden shrink-0">
                   <img src={formData.coverUrl} className="w-full h-full object-cover" onError={(e) => (e.currentTarget.src = 'https://picsum.photos/seed/book/400/600')} alt="Cover Preview" />
                 </div>
-                <div className="flex-1 space-y-2">
+                <div className="flex-1 space-y-3">
                   <input
                     type="text"
-                    placeholder="Cover artwork URL..."
-                    className="w-full bg-zinc-900/50 border border-zinc-800 rounded-xl px-4 py-2 text-xs focus:border-emerald-500/50 outline-none text-white transition-all placeholder:text-zinc-700"
+                    placeholder="Source artwork URL..."
+                    className="neo-input w-full rounded-xl px-4 py-2.5 text-[10px] font-bold"
                     value={formData.coverUrl}
                     onChange={e => setFormData({ ...formData, coverUrl: e.target.value })}
                   />
-                  <div className="flex gap-2">
+                  <div className="flex gap-3">
                     <input
                       type="file"
                       accept="image/*"
@@ -236,20 +236,20 @@ const BookForm: React.FC<BookFormProps> = ({ onClose, onSubmit, initialData }) =
                     />
                     <label
                       htmlFor="coverUpload"
-                      className="px-3 py-1.5 bg-zinc-900 hover:bg-zinc-800 text-[10px] font-bold text-zinc-500 hover:text-white rounded-lg cursor-pointer border border-zinc-800 transition-all inline-flex items-center gap-1.5 uppercase tracking-wider"
+                      className="neo-button px-4 py-2.5 text-[9px] flex items-center justify-center gap-2 uppercase font-black text-gray-500 hover:text-teal-600 cursor-pointer w-full transition-all"
                     >
-                      <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" /></svg>
-                      {isFetching ? 'Uploading...' : 'Local File'}
+                      <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" /></svg>
+                      {isFetching ? 'Syncing...' : 'Local File'}
                     </label>
                   </div>
                 </div>
               </div>
             </div>
 
-            <div className="pt-4 flex justify-end gap-3 border-t border-zinc-900/50">
-              <button type="button" onClick={onClose} className="px-4 py-2 text-xs font-bold text-zinc-500 hover:text-white transition-colors uppercase tracking-wider">Discard</button>
-              <button type="submit" className="bg-emerald-600 hover:bg-emerald-500 text-white px-6 py-2 rounded-xl text-xs font-bold uppercase tracking-wider transition-all shadow-lg shadow-emerald-900/20 active:scale-95">
-                {initialData ? 'Update Asset' : 'Register Asset'}
+            <div className="pt-8 flex justify-end gap-4 border-t border-white/40">
+              <button type="button" onClick={onClose} className="px-6 py-4 text-[10px] font-black uppercase text-gray-400 hover:text-gray-900 transition-colors tracking-widest">Cancel</button>
+              <button type="submit" className="accent-teal shadow-[0_10px_20px_rgba(155,194,185,0.3)] hover:scale-[1.02] px-10 py-4 rounded-2xl text-[10px] font-black uppercase tracking-widest transition-all">
+                {initialData ? 'Patch Specs' : 'Commit Resource'}
               </button>
             </div>
           </form>

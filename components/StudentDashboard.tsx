@@ -3,13 +3,17 @@ import { Book, User, BorrowRequest, HistoryRecord, Fine } from '../types';
 import { downloadCatalogPDF } from '../utils/pdfGenerator';
 
 const StatCompact = ({ title, value, color }: any) => {
-    const colors: Record<string, string> = { emerald: 'text-emerald-400', amber: 'text-amber-400', red: 'text-red-400', blue: 'text-blue-400' };
+    const colors: Record<string, string> = { emerald: 'text-teal-accent', amber: 'text-amber-500', red: 'text-rose-500', blue: 'text-blue-500' };
     return (
-        <div className="glass-card p-6 rounded-2xl transition-all hover:shadow-xl">
-            <h3 className="text-[10px] font-bold text-zinc-400 uppercase tracking-widest mb-2">{title}</h3>
-            <div className="flex items-center gap-2">
-                <p className="text-2xl font-bold text-white">{value}</p>
-                <div className={`w-1.5 h-1.5 rounded-full ${colors[color]} bg-current opacity-80 shadow-lg`}></div>
+        <div className="neo-card p-8 rounded-[2rem] transition-all group hover:scale-[1.02]">
+            <h3 className="text-[10px] font-bold text-gray-500 uppercase tracking-[0.2em] mb-3">{title}</h3>
+            <div className="flex items-center justify-between">
+                <p className="text-4xl font-black text-gray-800 tracking-tight">{value}</p>
+                <div className={`w-3 h-3 rounded-full ${colors[color]} shadow-current opacity-80 group-hover:animate-pulse`}>
+                    <svg viewBox="0 0 24 24" fill="currentColor" className="w-full h-full">
+                        <circle cx="12" cy="12" r="8" />
+                    </svg>
+                </div>
             </div>
         </div>
     );
@@ -131,16 +135,18 @@ const StudentDashboard: React.FC<StudentDashboardProps> = ({
                                     {myActiveBorrows.map(h => {
                                         const book = books.find(b => b.id === h.bookId);
                                         return (
-                                            <div key={h.id} className="glass-card p-4 rounded-2xl flex gap-4 hover:shadow-xl transition-all cursor-pointer group" onClick={() => book && setSelectedBook(book)}>
-                                                <div className="w-16 h-24 glass-panel rounded-lg overflow-hidden shrink-0 border border-white/10">
-                                                    <img src={book?.coverUrl} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" alt={h.bookTitle} />
+                                            <div key={h.id} className="neo-card p-6 rounded-[2rem] flex gap-5 hover:neo-card-hover transition-all cursor-pointer group" onClick={() => book && setSelectedBook(book)}>
+                                                <div className="w-20 h-28 neo-inset rounded-xl overflow-hidden shrink-0 border border-white/40">
+                                                    <img src={book?.coverUrl} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" alt={h.bookTitle} />
                                                 </div>
-                                                <div className="flex flex-col py-1">
-                                                    <h4 className="font-bold text-white text-sm leading-tight line-clamp-2">{h.bookTitle}</h4>
-                                                    <p className="text-[10px] text-zinc-400 mt-1 uppercase tracking-wider">Borrowed: {new Date(h.borrowDate).toLocaleDateString()}</p>
-                                                    <p className="text-[9px] text-zinc-500 mt-0.5 uppercase tracking-widest font-bold">Issued by: {h.issuedBy || 'Admin'}</p>
-                                                    <div className="mt-auto">
-                                                        <span className="inline-block px-2 py-0.5 bg-emerald-500/10 text-emerald-400 text-[9px] font-bold uppercase tracking-wider rounded border border-emerald-500/20">Active</span>
+                                                <div className="flex flex-col py-1 flex-1">
+                                                    <h4 className="font-bold text-gray-800 text-sm leading-snug line-clamp-2">{h.bookTitle}</h4>
+                                                    <p className="text-[10px] text-gray-500 mt-2 uppercase tracking-widest font-bold">Borrowed: {new Date(h.borrowDate).toLocaleDateString()}</p>
+                                                    <div className="mt-auto flex items-center justify-between">
+                                                        <span className="text-[9px] text-teal-600 font-black uppercase tracking-widest">In Your Care</span>
+                                                        <div className="w-8 h-8 rounded-full neo-flat flex items-center justify-center text-gray-400 group-hover:text-teal-600 transition-colors">
+                                                            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253" /></svg>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
@@ -202,9 +208,9 @@ const StudentDashboard: React.FC<StudentDashboardProps> = ({
                                     <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" /></svg>
                                 </div>
                             </div>
-                            <button onClick={handleDownloadCatalog} className="glass-button hover:bg-white/15 font-medium text-xs py-2.5 px-6 rounded-xl flex items-center gap-2 transition-all whitespace-nowrap">
-                                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" /></svg>
-                                Download PDF Catalog
+                            <button onClick={handleDownloadCatalog} className="neo-button py-3 px-8 text-[10px] font-bold uppercase tracking-[0.2em] flex items-center gap-3 transition-all whitespace-nowrap text-gray-600 hover:text-teal-600">
+                                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" /></svg>
+                                Export Catalog
                             </button>
                         </div>
                     </div>
@@ -223,47 +229,43 @@ const StudentDashboard: React.FC<StudentDashboardProps> = ({
                             const totalInQueue = bookQueue.length;
 
                             return (
-                                <div key={book.id} className="glass-card rounded-2xl overflow-hidden flex flex-col group hover:shadow-2xl transition-all active:scale-[0.99] cursor-pointer" onClick={() => setSelectedBook(book)}>
-                                    <div className="aspect-[3/4] relative overflow-hidden glass-panel border-b border-white/10">
+                                <div key={book.id} className="neo-card rounded-[2rem] overflow-hidden flex flex-col group hover:neo-card-hover transition-all cursor-pointer" onClick={() => setSelectedBook(book)}>
+                                    <div className="aspect-[3/4] relative overflow-hidden bg-gray-50/50 border-b border-white/20">
                                         <img src={book.coverUrl} className="w-full h-full object-cover group-hover:scale-105 transition-all duration-700" alt={book.title} />
-                                        <div className="absolute inset-0 bg-black/10 group-hover:bg-transparent transition-colors" />
-                                        <div className="absolute top-3 left-3">
-                                            <span className="text-[9px] font-bold text-white/90 bg-black/60 px-2 py-1 rounded backdrop-blur-md">
+                                        <div className="absolute top-4 left-4">
+                                            <span className="text-[8px] font-bold text-teal-600 bg-white/80 neo-inset px-2 py-1 rounded-full backdrop-blur-md uppercase tracking-widest">
                                                 {book.category}
                                             </span>
                                         </div>
-                                        <div className="absolute bottom-4 left-4 right-4">
-                                            <h4 className="font-bold text-white text-base leading-tight drop-shadow-md">{highlightText(book.title, search)}</h4>
-                                            <p className="text-zinc-300 text-[10px] mt-1 font-medium drop-shadow-sm truncate">by {highlightText(book.author, search)}</p>
-                                        </div>
                                     </div>
-                                    <div className="p-4 flex flex-col flex-1">
-                                        <div className="mb-4">
+                                    <div className="p-6 flex flex-col flex-1">
+                                        <h4 className="font-bold text-gray-800 text-sm leading-snug line-clamp-2">{highlightText(book.title, search)}</h4>
+                                        <p className="text-gray-400 text-[10px] mt-1.5 font-bold uppercase tracking-widest truncate">by {highlightText(book.author, search)}</p>
+
+                                        <div className="mt-6">
                                             <div className="flex items-center justify-between mb-2">
-                                                <p className="text-[9px] text-zinc-500 font-bold uppercase tracking-wider">Availability</p>
-                                                <p className="text-[10px] text-zinc-300 font-bold">{book.availableCopies} / {book.totalCopies}</p>
+                                                <p className="text-[8px] text-gray-400 font-black uppercase tracking-widest">Stock Level</p>
+                                                <p className="text-[10px] text-teal-600 font-black">{book.availableCopies}/{book.totalCopies}</p>
                                             </div>
-                                            <div className="w-full h-1 bg-black/30 rounded-full overflow-hidden">
+                                            <div className="w-full h-1.5 neo-inset rounded-full bg-gray-200/50 overflow-hidden">
                                                 <div
-                                                    className={`h-full transition-all duration-1000 ${availabilityPercent === 0 ? 'bg-red-500' : availabilityPercent <= 25 ? 'bg-amber-500' : 'bg-emerald-500'}`}
+                                                    className={`h-full transition-all duration-1000 ${availabilityPercent === 0 ? 'bg-rose-400' : availabilityPercent <= 25 ? 'bg-amber-400' : 'bg-teal-400'}`}
                                                     style={{ width: `${availabilityPercent}%` }}
                                                 />
                                             </div>
                                         </div>
-                                        <div className="mt-auto">
+
+                                        <div className="mt-8">
                                             {isBorrowing ? (
-                                                <div className="w-full py-2.5 glass-panel text-zinc-300 text-[10px] font-bold uppercase tracking-wider rounded-xl flex items-center justify-center gap-2 border border-white/10">
-                                                    <svg className="w-3 h-3 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 13l4 4L19 7" /></svg>
-                                                    In Use
+                                                <div className="w-full py-3 neo-pressed text-teal-600 text-[9px] font-black uppercase tracking-[0.2em] rounded-xl flex items-center justify-center gap-2">
+                                                    <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 13l4 4L19 7" /></svg>
+                                                    In Hand
                                                 </div>
                                             ) : hasRequested ? (
-                                                <div className="w-full py-2.5 bg-amber-500/5 text-amber-400 text-[10px] font-bold uppercase tracking-wider rounded-xl flex flex-col items-center justify-center gap-1 border border-amber-500/20">
-                                                    <div className="flex items-center gap-2">
-                                                        <span className="w-1.5 h-1.5 bg-amber-400 rounded-full animate-pulse"></span>
-                                                        <span>{isTaken ? 'In Queue' : 'Requested'}</span>
-                                                    </div>
+                                                <div className="w-full py-3 neo-pressed text-amber-500 text-[9px] font-black uppercase tracking-[0.2em] rounded-xl flex flex-col items-center justify-center">
+                                                    <span>{isTaken ? 'In Queue' : 'Requested'}</span>
                                                     {isTaken && myQueuePosition > 0 && (
-                                                        <span className="text-[8px] text-amber-500">Position #{myQueuePosition}</span>
+                                                        <span className="text-[7px] mt-0.5 opacity-70">Position #{myQueuePosition}</span>
                                                     )}
                                                 </div>
                                             ) : (
@@ -272,12 +274,12 @@ const StudentDashboard: React.FC<StudentDashboardProps> = ({
                                                         e.stopPropagation();
                                                         isTaken ? handleNotify(book.title) : onBorrow(book.id);
                                                     }}
-                                                    className={`w-full py-2.5 rounded-xl text-[10px] font-bold uppercase tracking-wider transition-all active:scale-[0.98] flex items-center justify-center gap-2 ${isTaken
-                                                        ? 'glass-panel text-zinc-400 hover:text-zinc-200 border border-white/10'
-                                                        : 'bg-emerald-600 hover:bg-emerald-500 text-white shadow-lg shadow-emerald-900/10'
+                                                    className={`w-full py-3 rounded-xl text-[9px] font-black uppercase tracking-[0.2em] transition-all active:scale-[0.98] flex items-center justify-center gap-2 ${isTaken
+                                                        ? 'neo-button text-gray-400 hover:text-gray-600'
+                                                        : 'accent-teal shadow-[0_10px_20px_rgba(155,194,185,0.3)] hover:scale-[1.02]'
                                                         }`}
                                                 >
-                                                    {isTaken ? 'Join Queue' : 'Borrow'}
+                                                    {isTaken ? 'Want This' : 'Borrow Now'}
                                                 </button>
                                             )}
                                         </div>
@@ -314,19 +316,19 @@ const StudentDashboard: React.FC<StudentDashboardProps> = ({
                                     const queuePosition = bookQueue.findIndex(r => r.id === req.id) + 1;
 
                                     return (
-                                        <tr key={req.id} className="hover:bg-zinc-900/20 transition-all">
-                                            <td className="px-6 py-4 text-zinc-600 font-mono text-[10px]">{new Date(req.timestamp).toLocaleDateString()}</td>
-                                            <td className="px-6 py-4 font-medium text-white/90">{req.bookTitle}</td>
+                                        <tr key={req.id} className="hover:bg-gray-50 transition-all zebra-row">
+                                            <td className="px-6 py-4 text-gray-500 font-mono text-[10px]">{new Date(req.timestamp).toLocaleDateString()}</td>
+                                            <td className="px-6 py-4 font-medium text-gray-900">{req.bookTitle}</td>
                                             <td className="px-6 py-4">
-                                                <span className={`px-2 py-0.5 rounded text-[9px] font-bold uppercase tracking-wider border ${req.status === 'PENDING' ? 'bg-amber-500/10 text-amber-500 border-amber-500/20' :
-                                                    req.status === 'APPROVED' ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20' :
-                                                        'bg-red-500/10 text-red-500 border-red-500/20'
+                                                <span className={`px-2 py-0.5 rounded text-[9px] font-bold uppercase tracking-wider border ${req.status === 'PENDING' ? 'accent-amber border-amber-100' :
+                                                    req.status === 'APPROVED' ? 'accent-emerald border-emerald-100' :
+                                                        'accent-rose border-rose-100'
                                                     }`}>{isInQueue ? 'IN QUEUE' : req.status}</span>
                                             </td>
                                             <td className="px-6 py-4 text-center">
                                                 {isInQueue && queuePosition > 0 ? (
-                                                    <span className="text-xs text-amber-500 font-bold">#{queuePosition} of {bookQueue.length}</span>
-                                                ) : <span className="text-zinc-700">---</span>}
+                                                    <span className="text-xs text-amber-600 font-bold">#{queuePosition} of {bookQueue.length}</span>
+                                                ) : <span className="text-gray-300">---</span>}
                                             </td>
                                         </tr>
                                     );
@@ -356,14 +358,14 @@ const StudentDashboard: React.FC<StudentDashboardProps> = ({
                             </thead>
                             <tbody className="divide-y divide-white/5">
                                 {myHistory.map(record => (
-                                    <tr key={record.id} className="hover:bg-zinc-900/20 transition-all">
-                                        <td className="px-6 py-4 text-zinc-600 font-mono text-[10px]">{new Date(record.borrowDate).toLocaleDateString()}</td>
-                                        <td className="px-6 py-4 font-medium text-white/90">{record.bookTitle}</td>
-                                        <td className="px-6 py-4 text-zinc-500 text-xs">{record.issuedBy || '---'}</td>
-                                        <td className="px-6 py-4 text-zinc-600 font-mono text-[10px]">{record.returnDate ? new Date(record.returnDate).toLocaleDateString() : '---'}</td>
+                                    <tr key={record.id} className="hover:bg-gray-50 transition-all zebra-row">
+                                        <td className="px-6 py-4 text-gray-500 font-mono text-[10px]">{new Date(record.borrowDate).toLocaleDateString()}</td>
+                                        <td className="px-6 py-4 font-medium text-gray-900">{record.bookTitle}</td>
+                                        <td className="px-6 py-4 text-gray-500 text-xs">{record.issuedBy || '---'}</td>
+                                        <td className="px-6 py-4 text-gray-400 font-mono text-[10px]">{record.returnDate ? new Date(record.returnDate).toLocaleDateString() : '---'}</td>
                                         <td className="px-6 py-4">
-                                            <span className={`px-2 py-0.5 rounded text-[9px] font-bold uppercase tracking-wider border ${record.returnDate ? 'bg-zinc-800/50 text-zinc-500 border-zinc-800' : 'bg-blue-500/10 text-blue-500 border-blue-500/20'}`}>
-                                                {record.returnDate ? 'Returned' : 'In Use'}
+                                            <span className={`px-2 py-0.5 rounded text-[9px] font-bold uppercase tracking-wider border ${record.returnDate ? 'bg-gray-50 text-gray-400 border-gray-100' : 'accent-blue border-blue-100'}`}>
+                                                {record.returnDate ? 'Returned' : 'In Hand'}
                                             </span>
                                         </td>
                                     </tr>
@@ -392,12 +394,12 @@ const StudentDashboard: React.FC<StudentDashboardProps> = ({
                             </thead>
                             <tbody className="divide-y divide-white/5">
                                 {myFines.map(fine => (
-                                    <tr key={fine.id} className="hover:bg-zinc-900/20 transition-all">
-                                        <td className="px-6 py-4 text-zinc-600 font-mono text-[10px]">{new Date(fine.timestamp).toLocaleDateString()}</td>
-                                        <td className="px-6 py-4 text-zinc-300 text-xs">{fine.reason}</td>
-                                        <td className="px-6 py-4 text-right font-mono text-emerald-500 font-bold">₹{fine.amount}</td>
+                                    <tr key={fine.id} className="hover:bg-gray-50 transition-all zebra-row">
+                                        <td className="px-6 py-4 text-gray-500 font-mono text-[10px]">{new Date(fine.timestamp).toLocaleDateString()}</td>
+                                        <td className="px-6 py-4 text-gray-600 text-xs">{fine.reason}</td>
+                                        <td className="px-6 py-4 text-right font-mono text-emerald-600 font-bold">₹{fine.amount}</td>
                                         <td className="px-6 py-4 text-center">
-                                            <span className={`px-2 py-0.5 rounded text-[9px] font-bold uppercase tracking-wider border ${fine.status === 'PAID' ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20' : 'bg-red-500/10 text-red-500 border-red-500/20'}`}>{fine.status}</span>
+                                            <span className={`px-2 py-0.5 rounded text-[9px] font-bold uppercase tracking-wider border ${fine.status === 'PAID' ? 'accent-emerald border-emerald-100' : 'accent-rose border-rose-100'}`}>{fine.status}</span>
                                         </td>
                                     </tr>
                                 ))}
@@ -411,21 +413,21 @@ const StudentDashboard: React.FC<StudentDashboardProps> = ({
             {/* selectedBook Details Modal */}
             {selectedBook && (
                 <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
-                    <div className="absolute inset-0 bg-black/80 backdrop-blur-2xl" onClick={() => setSelectedBook(null)}></div>
-                    <div className="relative w-full max-w-4xl glass-panel border border-white/20 rounded-[2.5rem] overflow-hidden flex flex-col md:flex-row max-h-[90vh] shadow-2xl">
-                        <div className="w-full md:w-2/5 aspect-[3/4] md:aspect-auto glass-panel"><img src={selectedBook.coverUrl} className="w-full h-full object-cover" /></div>
+                    <div className="absolute inset-0 bg-gray-900/20 backdrop-blur-2xl" onClick={() => setSelectedBook(null)}></div>
+                    <div className="relative w-full max-w-4xl glass-panel rounded-[2.5rem] overflow-hidden flex flex-col md:flex-row max-h-[90vh] shadow-[0_40px_100px_-20px_rgba(0,0,0,0.3)]">
+                        <div className="w-full md:w-2/5 aspect-[3/4] md:aspect-auto bg-gray-50"><img src={selectedBook.coverUrl} className="w-full h-full object-cover" /></div>
                         <div className="flex-1 p-8 md:p-12 overflow-y-auto no-scrollbar relative">
-                            <button onClick={() => setSelectedBook(null)} className="absolute top-8 right-8 text-zinc-400 hover:text-white transition-colors"><svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /></svg></button>
-                            <span className="text-[10px] font-black text-emerald-400 tracking-widest uppercase bg-emerald-500/10 px-3 py-1 rounded-full border border-emerald-500/20">{selectedBook.category}</span>
-                            <h2 className="text-3xl font-black text-white mt-4 uppercase">{selectedBook.title}</h2>
-                            <p className="text-zinc-400 text-lg mb-8 italic">by {selectedBook.author}</p>
-                            <div className="grid grid-cols-2 gap-8 mb-10 pb-8 border-b border-white/10 text-sm">
-                                <div><p className="text-[10px] font-black text-zinc-500 uppercase mb-2">Specs</p><p className="text-zinc-200">ISBN: {selectedBook.isbn}</p><p className="text-zinc-200">ID: #{selectedBook.id}</p></div>
-                                <div><p className="text-[10px] font-black text-zinc-500 uppercase mb-2">Stock</p><p className="text-zinc-200">{selectedBook.availableCopies} available of {selectedBook.totalCopies}</p></div>
+                            <button onClick={() => setSelectedBook(null)} className="absolute top-8 right-8 text-gray-400 hover:text-gray-900 transition-colors"><svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /></svg></button>
+                            <span className="text-[10px] font-black accent-emerald px-3 py-1 rounded-full border border-emerald-100 tracking-widest uppercase">{selectedBook.category}</span>
+                            <h2 className="text-3xl font-black text-gray-900 mt-4 uppercase">{selectedBook.title}</h2>
+                            <p className="text-gray-500 text-lg mb-8 italic">by {selectedBook.author}</p>
+                            <div className="grid grid-cols-2 gap-8 mb-10 pb-8 border-b border-gray-100 text-sm">
+                                <div><p className="text-[10px] font-black text-gray-400 uppercase mb-2">Specs</p><p className="text-gray-700">ISBN: {selectedBook.isbn}</p><p className="text-gray-700">ID: #{selectedBook.id}</p></div>
+                                <div><p className="text-[10px] font-black text-gray-400 uppercase mb-2">Stock</p><p className="text-gray-700">{selectedBook.availableCopies} available of {selectedBook.totalCopies}</p></div>
                             </div>
                             <button
                                 onClick={() => { selectedBook.availableCopies === 0 ? handleNotify(selectedBook.title) : onBorrow(selectedBook.id); setSelectedBook(null); }}
-                                className={`w-full py-4 rounded-2xl font-black uppercase text-xs tracking-widest transition-all shadow-xl ${selectedBook.availableCopies === 0 ? 'glass-panel text-zinc-400 border border-white/10' : 'bg-emerald-600 hover:bg-emerald-500 text-white shadow-emerald-900/20'}`}
+                                className={`w-full py-4 rounded-2xl font-black uppercase text-xs tracking-widest transition-all shadow-xl ${selectedBook.availableCopies === 0 ? 'glass-button text-gray-400' : 'bg-emerald-600 hover:bg-emerald-500 text-white shadow-emerald-200'}`}
                             >
                                 {selectedBook.availableCopies === 0 ? 'Join Waitlist' : 'Borrow Concept Asset'}
                             </button>

@@ -97,10 +97,10 @@ const Login: React.FC<LoginProps> = ({ onLogin, onIdentify, initialIdentity, onC
 
   const MinimalInput = ({ label, ...props }: any) => (
     <div className="group">
-      <label className="block text-[11px] font-medium uppercase tracking-wider text-zinc-400 mb-2 group-focus-within:text-pink-400 transition-colors">{label}</label>
+      <label className="block text-[10px] font-black uppercase tracking-[0.2em] text-gray-500 mb-2 group-focus-within:text-teal-600 transition-colors px-1">{label}</label>
       <input
         {...props}
-        className="w-full glass-input rounded-lg text-sm py-3 px-4 outline-none focus:border-pink-400/30 transition-all placeholder:text-zinc-500"
+        className="neo-input w-full rounded-2xl text-sm py-4 px-6 outline-none transition-all placeholder:text-gray-400/50"
       />
     </div>
   );
@@ -109,9 +109,9 @@ const Login: React.FC<LoginProps> = ({ onLogin, onIdentify, initialIdentity, onC
     <button
       {...props}
       disabled={isLoading}
-      className="w-full bg-gradient-to-r from-emerald-600/80 to-teal-600/80 hover:from-emerald-500 hover:to-teal-500 text-white font-semibold text-sm py-3.5 rounded-lg transition-all active:scale-[0.97] disabled:opacity-50 disabled:cursor-not-allowed shadow-lg hover:shadow-xl backdrop-blur-sm border border-white/10"
+      className={`w-full py-5 rounded-2xl text-[11px] font-black uppercase tracking-[0.3em] transition-all active:scale-[0.97] disabled:opacity-50 disabled:cursor-not-allowed ${props.className || 'accent-teal shadow-[0_15px_30px_-5px_rgba(155,194,185,0.4)] hover:shadow-[0_25px_50px_-10px_rgba(155,194,185,0.5)]'}`}
     >
-      {isLoading ? "Processing..." : children}
+      {isLoading ? "Syncing Logic..." : children}
     </button>
   );
 
@@ -119,29 +119,30 @@ const Login: React.FC<LoginProps> = ({ onLogin, onIdentify, initialIdentity, onC
 
   if (step === 'IDENTIFY') {
     return (
-      <div className="min-h-screen grid items-center justify-center p-6">
+      <div className="min-h-screen grid items-center justify-center p-6 bg-[#f0f2f5]">
         <div className="w-full max-w-sm animate-in fade-in zoom-in duration-500">
           <div className="text-center mb-10">
-            <div className="inline-flex p-4 glass-panel rounded-2xl mb-6 shadow-2xl">
-              <Logo className="w-12 h-12" />
+            <div className="inline-flex p-6 neo-card rounded-3xl mb-8">
+              <Logo className="w-16 h-16" />
             </div>
-            <h1 className="text-3xl font-bold text-white tracking-tight mb-2 text-glow">Welcome Back</h1>
-            <p className="text-zinc-400 text-sm">Sign in to access the library portal.</p>
+            <h1 className="text-4xl font-black text-gray-900 tracking-tighter mb-3 uppercase">Sync Identity</h1>
+            <p className="text-gray-400 text-[10px] font-bold uppercase tracking-[0.4em]">Initialize Library Portal</p>
           </div>
 
-          <form onSubmit={handleManualIdentify} className="glass-panel rounded-2xl p-8 space-y-6 shadow-2xl">
+          <form onSubmit={handleManualIdentify} className="neo-card relative rounded-[2.5rem] p-10 space-y-10 overflow-hidden">
+            <div className="absolute top-0 left-0 w-full h-1.5 bg-teal-accent"></div>
             <MinimalInput
-              label="User ID"
-              placeholder="Enter your ID"
+              label="Sync Identity Key"
+              placeholder="Enter User ID or Name"
               value={manualEmail}
               onChange={(e: any) => setManualEmail(e.target.value)}
               autoFocus
             />
 
-            {error && <p className="text-red-400 text-xs text-center font-medium">{error}</p>}
+            {error && <p className="text-rose-500 text-[10px] text-center font-black uppercase tracking-[0.2em]">{error}</p>}
 
             <PrimaryButton type="submit" isLoading={isSyncing}>
-              Continue
+              Join Catalog
             </PrimaryButton>
           </form>
         </div>
@@ -151,30 +152,31 @@ const Login: React.FC<LoginProps> = ({ onLogin, onIdentify, initialIdentity, onC
 
   if (step === 'ADMIN_AUTH') {
     return (
-      <div className="min-h-screen grid items-center justify-center p-6">
+      <div className="min-h-screen grid items-center justify-center p-6 bg-[#f0f2f5]">
         <div className="w-full max-w-sm animate-in fade-in zoom-in duration-300">
-          <button onClick={() => setStep('PORTAL')} className="mb-6 text-zinc-400 hover:text-white text-xs flex items-center gap-2 transition-colors">
-            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M10 19l-7-7m0 0l7-7m-7 7h18" /></svg>
-            Back
+          <button onClick={() => setStep('PORTAL')} className="mb-6 text-gray-400 hover:text-gray-900 text-[10px] font-black uppercase tracking-widest flex items-center gap-2 transition-all">
+            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M10 19l-7-7m0 0l7-7m-7 7h18" /></svg>
+            Return to Hub
           </button>
 
-          <div className="glass-panel rounded-2xl p-8 shadow-2xl">
-            <div className="mb-8">
-              <h2 className="text-2xl font-bold text-white text-glow">Admin Access</h2>
-              <p className="text-zinc-400 text-sm mt-2">Verify your credentials to proceed.</p>
+          <div className="neo-card relative rounded-[2.5rem] p-10 overflow-hidden">
+            <div className="absolute top-0 left-0 w-full h-1.5 bg-gray-800"></div>
+            <div className="mb-10 text-center pt-2">
+              <h2 className="text-3xl font-black text-gray-900 uppercase tracking-tighter">Admin Logic</h2>
+              <p className="text-gray-400 text-[10px] font-bold uppercase tracking-[0.3em] mt-3">Verify Secure Credentials</p>
             </div>
 
-            <form onSubmit={handleAdminVerify} className="space-y-6">
+            <form onSubmit={handleAdminVerify} className="space-y-10">
               <MinimalInput
-                label="Secure Password"
+                label="Master Access Code"
                 type="password"
                 placeholder="••••••••"
                 value={adminPassInput}
                 onChange={(e: any) => setAdminPassInput(e.target.value)}
                 autoFocus
               />
-              {error && <p className="text-red-400 text-xs font-medium">{error}</p>}
-              <PrimaryButton type="submit">Unlock Portal</PrimaryButton>
+              {error && <p className="text-rose-500 text-[10px] font-black uppercase tracking-[0.2em] text-center">{error}</p>}
+              <PrimaryButton type="submit" className="bg-gray-900 text-white shadow-[0_15px_30px_-5px_rgba(0,0,0,0.2)] hover:bg-black">Unlock Systems</PrimaryButton>
             </form>
           </div>
         </div>
@@ -184,59 +186,67 @@ const Login: React.FC<LoginProps> = ({ onLogin, onIdentify, initialIdentity, onC
 
   if (step === 'PORTAL' && initialIdentity) {
     return (
-      <div className="min-h-screen flex flex-col items-center justify-center p-6 animate-in fade-in duration-700">
+      <div className="min-h-screen flex flex-col items-center justify-center p-6 animate-in fade-in duration-700 bg-[#f0f2f5]">
 
-        <header className="absolute top-0 left-0 right-0 p-6 flex justify-between items-center z-10 backdrop-blur-md">
-          <div className="flex items-center gap-3 opacity-90 hover:opacity-100 transition-opacity">
-            <Logo className="w-8 h-8" />
-            <span className="font-bold text-white tracking-tight">ALBAYAN LMS</span>
+        <header className="absolute top-0 left-0 right-0 p-10 flex justify-between items-center z-10 w-full max-w-[1440px] mx-auto">
+          <div className="flex items-center gap-4 group cursor-pointer transition-all">
+            <div className="neo-card p-2 rounded-xl group-hover:scale-105 transition-all">
+              <Logo className="w-8 h-8" />
+            </div>
+            <div>
+              <span className="block font-black text-gray-900 tracking-tighter text-xl leading-none">ALBAYAN</span>
+              <span className="block text-teal-600 font-bold tracking-[0.3em] text-[10px] mt-1 shrink-0 uppercase">Soft UI Portal</span>
+            </div>
           </div>
 
           <button
             onClick={() => handleRoleCardClick('ADMIN')}
-            className="text-xs font-medium text-zinc-400 hover:text-white transition-colors px-4 py-2 glass-button rounded-lg"
+            className="neo-button text-[9px] font-black uppercase tracking-widest text-gray-500 hover:text-teal-600 transition-all px-8 py-4"
           >
-            Admin Access
+            Terminal Access
           </button>
         </header>
 
-        <main className="w-full max-w-lg text-center z-0">
-          <h2 className="text-4xl md:text-5xl font-bold text-white tracking-tighter mb-4 text-glow">ALBAYAN LMS</h2>
-          <p className="text-zinc-400 mb-12 max-w-xs mx-auto text-sm leading-relaxed">
-            Your gateway to knowledge. Manage books, track history, and explore resources.
-          </p>
+        <main className="w-full max-w-xl text-center z-0">
+          <div className="mb-20">
+            <h2 className="text-7xl md:text-8xl font-black text-gray-900 tracking-tighter mb-4 uppercase opacity-90">CATALOG</h2>
+            <div className="flex items-center justify-center gap-6">
+              <div className="h-[2px] w-12 bg-teal-accent/30 rounded-full"></div>
+              <p className="text-gray-400 text-[10px] font-black uppercase tracking-[0.6em] whitespace-nowrap">Unified Library Hub</p>
+              <div className="h-[2px] w-12 bg-teal-accent/30 rounded-full"></div>
+            </div>
+          </div>
 
           <button
             onClick={() => handleRoleCardClick('STUDENT')}
-            className="group relative w-full glass-card rounded-3xl p-10 transition-all active:scale-[0.99]"
+            className="group relative w-full neo-card rounded-[3.5rem] p-20 transition-all active:scale-[0.98] border-0 hover:neo-card-hover"
           >
             <div className="flex flex-col items-center">
-              <div className="w-16 h-16 glass-panel rounded-2xl flex items-center justify-center mb-6 shadow-xl group-hover:scale-110 transition-transform duration-500">
-                <Logo className="w-10 h-10" />
+              <div className="w-28 h-28 neo-inset rounded-[3rem] flex items-center justify-center mb-12 group-hover:scale-105 transition-transform duration-700">
+                <Logo className="w-16 h-16 opacity-80" />
               </div>
-              <span className="text-lg font-semibold text-white mb-2">Enter Library Portal</span>
-              <span className="text-xs text-zinc-400 uppercase tracking-widest group-hover:text-emerald-400 transition-colors">Students, Usthads & Staff</span>
+              <span className="text-3xl font-black text-gray-900 mb-2 uppercase tracking-tight">Main Entrance</span>
+              <span className="text-[10px] font-black text-gray-400 uppercase tracking-[0.3em] group-hover:text-teal-600 transition-colors">Digital Repository Interface</span>
             </div>
           </button>
 
-          <div className="mt-12">
-            <button onClick={onClearIdentity} className="text-xs text-zinc-500 hover:text-zinc-300 transition-colors">
-              Not {initialIdentity.name}? <span className="underline">Switch Account</span>
+          <div className="mt-20">
+            <button onClick={onClearIdentity} className="text-[10px] font-black uppercase tracking-[0.2em] text-gray-400 hover:text-teal-600 transition-all">
+              Not {initialIdentity.name}? <span className="text-teal-600 border-b-2 border-teal-600/20 pb-0.5 ml-2">Switch Account</span>
             </button>
           </div>
         </main>
 
-        {/* About Section Teaser */}
-        <div className="fixed bottom-6 z-10">
-          <button onClick={() => document.getElementById('about-modal')?.classList.toggle('hidden')} className="text-[10px] font-bold text-zinc-600 hover:text-zinc-400 uppercase tracking-widest px-4 py-2 glass-button rounded-lg">
-            About The Library
+        <div className="fixed bottom-10 z-10 w-full flex justify-center px-6">
+          <button onClick={() => document.getElementById('about-modal')?.classList.toggle('hidden')} className="neo-button text-[10px] font-black text-gray-500 hover:text-teal-600 uppercase tracking-[0.3em] px-12 py-5 transition-all flex items-center gap-4">
+            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+            Library Manifesto
           </button>
         </div>
 
-        {/* Hidden About Modal/Section for cleaner look - could use state but staying simple */}
-        <div id="about-modal" className="hidden fixed inset-0 bg-black/90 backdrop-blur-xl z-50 overflow-y-auto">
-          <div className="p-8 max-w-4xl mx-auto">
-            <button onClick={() => document.getElementById('about-modal')?.classList.toggle('hidden')} className="fixed top-8 right-8 text-white glass-button px-6 py-3 rounded-lg">Close</button>
+        <div id="about-modal" className="hidden fixed inset-0 bg-[#f0f2f5]/90 backdrop-blur-xl z-[100] overflow-y-auto p-6 md:p-12">
+          <div className="max-w-4xl mx-auto neo-card rounded-[3rem] p-8 md:p-16 relative">
+            <button onClick={() => document.getElementById('about-modal')?.classList.toggle('hidden')} className="absolute top-8 right-8 w-12 h-12 flex items-center justify-center neo-button text-gray-500 hover:text-teal-600 transition-all font-black text-lg">✕</button>
             <About studentsCount={availableUsers.filter(u => u.role === 'STUDENT').length} />
           </div>
         </div>
@@ -247,55 +257,62 @@ const Login: React.FC<LoginProps> = ({ onLogin, onIdentify, initialIdentity, onC
 
   if (step === 'USER_PICK' && selectedRole) {
     return (
-      <div className="min-h-screen flex flex-col animate-in slide-in-from-bottom-4 duration-500">
-        <div className="max-w-2xl w-full mx-auto p-6 md:p-12 flex-1 flex flex-col">
-          <div className="flex items-center justify-between mb-8">
-            <button onClick={() => setStep('PORTAL')} className="text-zinc-400 hover:text-white text-xs flex items-center gap-2 transition-colors">
-              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M10 19l-7-7m0 0l7-7m-7 7h18" /></svg>
-              Back
+      <div className="min-h-screen flex flex-col animate-in slide-in-from-bottom-6 duration-700 bg-[#f0f2f5]">
+        <div className="max-w-4xl w-full mx-auto p-8 md:p-20 flex-1 flex flex-col">
+          <div className="flex items-center justify-between mb-16">
+            <button onClick={() => setStep('PORTAL')} className="neo-button p-4 text-gray-400 hover:text-teal-600 transition-all group">
+              <svg className="w-6 h-6 group-hover:-translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M10 19l-7-7m0 0l7-7m-7 7h18" /></svg>
             </button>
-            <span className="text-xs font-bold text-zinc-500 uppercase tracking-widest">{selectedRole === 'ADMIN' ? 'ADMIN' : 'LIBRARY'} DIRECTORY</span>
+            <span className="text-[10px] font-black text-teal-600 uppercase tracking-[0.4em] neo-inset px-6 py-2 rounded-full border border-teal-500/10">
+              {selectedRole === 'ADMIN' ? 'Secure Node' : 'Library Node'} Directory
+            </span>
           </div>
 
-          <h2 className="text-3xl font-bold text-white mb-6 text-glow">Select Your Profile</h2>
+          <h2 className="text-5xl font-black text-gray-900 mb-12 uppercase tracking-tight pr-10 leading-none">Who's Accessing Today?</h2>
 
-          <div className="mb-6 relative">
-            <svg className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-zinc-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>
+          <div className="mb-12 relative group">
+            <svg className="absolute left-6 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400 group-focus-within:text-teal-500 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>
             <input
               autoFocus
-              placeholder="Search by name or ID..."
-              className="w-full glass-input rounded-xl py-3 pl-10 pr-4 text-sm outline-none focus:border-emerald-400/30 transition-colors placeholder:text-zinc-500"
+              placeholder="Query by name or credential ID..."
+              className="w-full neo-input rounded-[2rem] py-6 pl-16 pr-8 text-base outline-none transition-all font-bold placeholder:text-gray-400/50"
               value={userSearch}
               onChange={(e) => setUserSearch(e.target.value)}
             />
           </div>
 
-          <div className="flex-1 overflow-y-auto rounded-2xl glass-panel shadow-2xl">
+          <div className="flex-1 overflow-y-auto neo-card rounded-[3rem] overflow-hidden no-scrollbar border-0">
             {filteredUsers.length > 0 ? (
-              <div className="divide-y divide-white/5">
+              <div className="divide-y divide-white/20">
                 {filteredUsers.map(user => (
                   <button
                     key={user.id}
                     onClick={() => onLogin(user)}
-                    className="w-full flex items-center gap-4 p-4 hover:bg-white/5 transition-all text-left group"
+                    className="w-full flex items-center gap-8 p-8 hover:bg-white/40 transition-all text-left group active:scale-[0.99]"
                   >
-                    <div className="w-10 h-10 rounded-full glass-panel flex items-center justify-center text-zinc-400 group-hover:text-emerald-400 transition-colors text-xs font-bold shadow-lg">
-                      {user.name.charAt(0)}
+                    <div className="w-16 h-16 rounded-[1.5rem] neo-inset flex items-center justify-center text-gray-400 group-hover:text-teal-600 transition-all text-xl font-black shrink-0 overflow-hidden">
+                      {user.avatarUrl ? <img src={user.avatarUrl} className="w-full h-full object-cover" /> : user.name.charAt(0)}
                     </div>
-                    <div>
-                      <div className="flex items-center gap-2">
-                        <p className="text-sm font-medium text-white group-hover:text-emerald-400 transition-colors">{user.name}</p>
-                        <span className={`px-1.5 py-0.5 rounded-[4px] text-[8px] font-black uppercase tracking-tighter border ${user.role === 'ADMIN' ? 'bg-purple-500/10 text-purple-400 border-purple-500/20' : user.role === 'USTHAD' ? 'bg-amber-500/10 text-amber-400 border-amber-500/20' : 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20'}`}>
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-center gap-4">
+                        <p className="text-xl font-black text-gray-900 group-hover:text-teal-600 transition-colors uppercase tracking-tight leading-none">{user.name}</p>
+                        <span className={`px-3 py-1 rounded-full text-[8px] font-black uppercase tracking-widest neo-inset ${user.role === 'ADMIN' ? 'text-purple-600' : user.role === 'USTHAD' ? 'text-amber-600' : 'text-teal-600'}`}>
                           {user.role}
                         </span>
                       </div>
-                      <p className="text-[10px] text-zinc-500 uppercase tracking-wider">{user.id === storedAdminPass ? 'SYSTEM ACCESS' : user.id}</p>
+                      <p className="text-[10px] text-gray-400 font-bold uppercase tracking-[0.2em] mt-2 leading-none">{user.id === storedAdminPass ? 'MASTER SYSTEM NODE' : `UID: ${user.id}`} • {user.class || 'General'}</p>
+                    </div>
+                    <div className="opacity-0 group-hover:opacity-100 transition-all translate-x-4 group-hover:translate-x-0">
+                      <svg className="w-8 h-8 text-teal-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M13 7l5 5m0 0l-5 5m5-5H6" /></svg>
                     </div>
                   </button>
                 ))}
               </div>
             ) : (
-              <div className="p-12 text-center text-zinc-500 text-sm">No profiles found.</div>
+              <div className="p-24 text-center">
+                <div className="mb-6 text-gray-200 flex justify-center"><svg className="w-16 h-16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M9.172 9.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg></div>
+                <p className="text-gray-400 text-xs font-black uppercase tracking-[0.4em]">No matching logic profiles found</p>
+              </div>
             )}
           </div>
         </div>
