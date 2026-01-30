@@ -1,45 +1,103 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+:root {
+  --bg-main: #f8fafc;
+  --bg-dot: #e2e8f0;
+  --glass-card-hover-bg: rgba(255, 255, 255, 0.95);
+  --text-main: #111827;
+  --text-muted: #64748b;
+  --shadow-color: rgba(0, 0, 0, 0.08);
+  --shadow-card: rgba(0, 0, 0, 0.06);
+  --accent-light: rgba(20, 184, 166, 0.1);
+}
+
+.dark {
+  --bg-main: #020617;
+  --bg-dot: #1e293b;
+  --glass-bg: rgba(15, 23, 42, 0.6);
+  --glass-card-bg: rgba(30, 41, 59, 0.7);
+  --glass-card-hover-bg: rgba(51, 65, 85, 0.9);
+  --glass-border: rgba(255, 255, 255, 0.08);
+  --text-main: #f8fafc;
+  --text-muted: #94a3b8;
+  --shadow-color: rgba(0, 0, 0, 0.4);
+  --shadow-card: rgba(0, 0, 0, 0.3);
+  --accent-light: rgba(20, 184, 166, 0.2);
+}
 
 @layer base {
+  .dark {
+    color-scheme: dark;
+    --text-main: #f8fafc;
+    --text-muted: #94a3b8;
+  }
+
   body {
-    @apply text-gray-800 font-sans antialiased selection:bg-teal-100 selection:text-teal-900 overflow-x-hidden min-h-screen;
-    font-family: 'Inter', 'Outfit', 'Noto Sans Malayalam', ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-    background-color: #f8fafc;
-    background-image:
-      radial-gradient(#e2e8f0 0.5px, transparent 0.5px),
-      radial-gradient(#e2e8f0 0.5px, #f8fafc 0.5px);
-    background-size: 24px 24px;
-    background-position: 0 0, 12px 12px;
-    background-attachment: fixed;
+    @apply font-sans antialiased selection:bg-teal-100 selection:text-teal-900 overflow-x-hidden min-h-screen transition-colors duration-500;
+    color: var(--text-main);
+    background-color: var(--bg-main);
   }
 
-  @keyframes gradientShift {
-
-    0%,
-    100% {
-      background-position: 0% 50%;
-    }
-
-    50% {
-      background-position: 100% 50%;
-    }
+  /* Smart Dark Mode Overrides */
+  .dark .text-gray-900 {
+    color: var(--text-main) !important;
   }
 
-  /* Premium Scrollbar */
-  ::-webkit-scrollbar {
-    width: 6px;
-    height: 6px;
+  .dark .text-gray-800,
+  .dark .text-gray-700 {
+    color: #e2e8f0 !important;
   }
 
-  ::-webkit-scrollbar-track {
-    @apply bg-transparent;
+  .dark .text-gray-500,
+  .dark .text-gray-400 {
+    color: var(--text-muted) !important;
   }
 
-  ::-webkit-scrollbar-thumb {
-    @apply bg-gray-400/40 rounded-full hover:bg-gray-500/50 transition-colors;
+  .dark .bg-white,
+  .dark .bg-gray-50 {
+    background-color: var(--glass-card-bg) !important;
   }
+
+  .dark .border-gray-100,
+  .dark .border-gray-50 {
+    border-color: var(--glass-border) !important;
+  }
+
+  .dark .divide-gray-100>*+* {
+    border-color: var(--glass-border) !important;
+  }
+
+  background-image: radial-gradient(var(--bg-dot) 0.5px, transparent 0.5px),
+  radial-gradient(var(--bg-dot) 0.5px, var(--bg-main) 0.5px);
+  background-size: 24px 24px;
+  background-position: 0 0,
+  12px 12px;
+  background-attachment: fixed;
+}
+
+@keyframes gradientShift {
+
+  0%,
+  100% {
+    background-position: 0% 50%;
+  }
+
+  50% {
+    background-position: 100% 50%;
+  }
+}
+
+/* Premium Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  @apply bg-transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  @apply bg-gray-400/40 rounded-full hover:bg-gray-500/50 transition-colors;
+}
 }
 
 @layer utilities {
@@ -51,13 +109,25 @@
 
   /* Ultra-Minimal Glassmorphism Design System */
   .glass-panel {
-    @apply bg-white/60 backdrop-blur-3xl border border-white/60 shadow-[0_32px_128px_rgba(0, 0, 0, 0.08)] rounded-[2.5rem] relative;
-    background-image: linear-gradient(135deg, rgba(255, 255, 255, 0.4) 0%, transparent 100%);
+    background-color: var(--glass-bg);
+    @apply backdrop-blur-3xl border rounded-[2.5rem] relative;
+    border-color: var(--glass-border);
+    box-shadow: 0 32px 128px var(--shadow-color);
+    background-image: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, transparent 100%);
   }
 
   .glass-card {
-    @apply bg-white/80 backdrop-blur-2xl border border-white/60 shadow-[0_8px_32px_rgba(0, 0, 0, 0.06)] transition-all duration-300 relative overflow-hidden;
-    background-image: linear-gradient(135deg, rgba(255, 255, 255, 0.2) 0%, transparent 100%);
+    background-color: var(--glass-card-bg);
+    @apply backdrop-blur-2xl border transition-all duration-300 relative overflow-hidden;
+    border-color: var(--glass-border);
+    box-shadow: 0 8px 32px var(--shadow-card);
+    background-image: linear-gradient(135deg, rgba(255, 255, 255, 0.05) 0%, transparent 100%);
+  }
+
+  .glass-card-hover:hover {
+    box-shadow: 0 24px 64px var(--shadow-color);
+    @apply -translate-y-1.5;
+    background-color: var(--glass-card-hover-bg);
   }
 
   .glass-card-hover:hover {
@@ -65,15 +135,22 @@
   }
 
   .glass-inset {
-    @apply bg-gray-50/40 backdrop-blur-md border border-white/40 shadow-[inset_0_4px_8px_rgba(0, 0, 0, 0.04)];
+    @apply backdrop-blur-md border shadow-[inset_0_4px_8px_rgba(0, 0, 0, 0.04)];
+    background-color: var(--bg-dot);
+    border-color: var(--glass-border);
   }
 
   .glass-button {
-    @apply bg-white/60 backdrop-blur-lg border border-white shadow-[0_4px_12px_rgba(0, 0, 0, 0.05)] hover:bg-white/80 active:scale-95 transition-all duration-200 rounded-xl;
+    background-color: var(--glass-bg);
+    @apply backdrop-blur-lg border shadow-[0_4px_12px_rgba(0, 0, 0, 0.05)] hover:bg-white/10 active:scale-95 transition-all duration-200 rounded-xl;
+    border-color: var(--glass-border);
   }
 
   .glass-input {
-    @apply bg-white/60 backdrop-blur-md border border-gray-100 shadow-sm focus:bg-white/80 focus:border-teal-500/40 focus:ring-8 focus:ring-teal-500/5 outline-none transition-all;
+    background-color: var(--glass-bg);
+    @apply backdrop-blur-md border shadow-sm focus:border-teal-500/40 focus:ring-8 focus:ring-teal-500/5 outline-none transition-all;
+    border-color: var(--glass-border);
+    color: var(--text-main);
   }
 
   /* Compatibility mapping (for simpler refactoring) */

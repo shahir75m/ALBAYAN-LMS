@@ -25,6 +25,10 @@ const App: React.FC = () => {
   const [fines, setFines] = useState<Fine[]>([]);
   const [activeTab, setActiveTab] = useState('dashboard');
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [theme, setTheme] = useState<'light' | 'dark'>(() => {
+    const saved = localStorage.getItem('albayan_theme');
+    return (saved as 'light' | 'dark') || 'light';
+  });
 
   // Global Status Message
   const [statusMsg, setStatusMsgState] = useState<{ text: string, type: 'success' | 'error' } | null>(null);
@@ -60,6 +64,14 @@ const App: React.FC = () => {
 
   useEffect(() => {
     const init = async () => {
+      // Apply theme
+      if (theme === 'dark') {
+        document.documentElement.classList.add('dark');
+      } else {
+        document.documentElement.classList.remove('dark');
+      }
+      localStorage.setItem('albayan_theme', theme);
+
       const savedIdentity = localStorage.getItem('albayan_cloud_identity');
       if (savedIdentity) {
         setCloudIdentity(JSON.parse(savedIdentity));
@@ -290,6 +302,8 @@ const App: React.FC = () => {
         user={currentUser}
         isMobileOpen={isMobileMenuOpen}
         onCloseMobile={() => setIsMobileMenuOpen(false)}
+        theme={theme}
+        onToggleTheme={() => setTheme(prev => prev === 'light' ? 'dark' : 'light')}
       />
 
       <main className="flex-1 flex flex-col min-w-0">

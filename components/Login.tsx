@@ -119,18 +119,18 @@ const Login: React.FC<LoginProps> = ({ onLogin, onIdentify, initialIdentity, onC
 
   if (step === 'IDENTIFY') {
     return (
-      <div className="min-h-screen grid items-center justify-center p-6 bg-gray-50/50 relative overflow-hidden">
+      <div className="min-h-screen grid items-center justify-center p-6 bg-transparent relative overflow-hidden transition-colors duration-500">
         {/* Subtle background decorative elements */}
         <div className="absolute top-[-10%] right-[-10%] w-96 h-96 bg-teal-500/5 rounded-full blur-[120px]" />
         <div className="absolute bottom-[-10%] left-[-10%] w-96 h-96 bg-blue-500/5 rounded-full blur-[120px]" />
 
         <div className="w-full max-w-sm animate-in fade-in zoom-in duration-700 relative z-10">
           <div className="text-center mb-12">
-            <div className="inline-flex p-5 glass-panel rounded-3xl mb-8 border-white group hover:scale-105 transition-transform duration-500">
+            <div className="inline-flex p-5 glass-panel rounded-3xl mb-8 border-white dark:border-white/10 group hover:scale-105 transition-transform duration-500">
               <Logo className="w-14 h-14" />
             </div>
-            <h1 className="text-4xl font-black text-gray-900 tracking-tighter mb-3 uppercase">Identity</h1>
-            <p className="text-gray-400 text-[10px] font-black uppercase tracking-[0.5em] opacity-60">Initialize Access Portal</p>
+            <h1 className="text-4xl font-black text-gray-900 dark:text-white tracking-tighter mb-3 uppercase transition-colors">Identity</h1>
+            <p className="text-gray-400 dark:text-gray-500 text-[10px] font-black uppercase tracking-[0.5em] opacity-60">Initialize Access Portal</p>
           </div>
 
           <form onSubmit={handleManualIdentify} className="glass-panel relative rounded-[3rem] p-10 space-y-10 overflow-hidden shadow-[0_32px_128px_rgba(0,0,0,0.05)] border-white/60">
@@ -164,10 +164,10 @@ const Login: React.FC<LoginProps> = ({ onLogin, onIdentify, initialIdentity, onC
             Hub Terminal
           </button>
 
-          <div className="glass-panel relative rounded-[3rem] p-10 overflow-hidden shadow-[0_32px_128px_rgba(0,0,0,0.08)] border-white/60">
+          <div className="glass-panel relative rounded-[3rem] p-10 overflow-hidden shadow-[0_32px_128px_rgba(0,0,0,0.08)] border-white/60 dark:border-white/10">
             <div className="mb-12 text-center pt-2">
-              <h2 className="text-3xl font-black text-gray-900 uppercase tracking-tighter">Terminal Logic</h2>
-              <p className="text-gray-400 text-[10px] font-black uppercase tracking-[0.4em] mt-3 opacity-60">Secure Authentication Required</p>
+              <h2 className="text-3xl font-black text-gray-900 dark:text-white uppercase tracking-tighter transition-colors">Terminal Logic</h2>
+              <p className="text-gray-400 dark:text-gray-500 text-[10px] font-black uppercase tracking-[0.4em] mt-3 opacity-60">Secure Authentication Required</p>
             </div>
 
             <form onSubmit={handleAdminVerify} className="space-y-10">
@@ -180,7 +180,7 @@ const Login: React.FC<LoginProps> = ({ onLogin, onIdentify, initialIdentity, onC
                 autoFocus
               />
               {error && <p className="text-rose-500 text-[10px] font-black uppercase tracking-[0.2em] text-center">{error}</p>}
-              <PrimaryButton type="submit" className="bg-gray-900 text-white hover:bg-black shadow-lg shadow-gray-200">Unlock Core</PrimaryButton>
+              <PrimaryButton type="submit" className="bg-gray-900 dark:bg-white dark:text-gray-900 text-white hover:bg-black dark:hover:bg-gray-100 shadow-lg shadow-gray-200 dark:shadow-none transition-colors">Unlock Core</PrimaryButton>
             </form>
           </div>
         </div>
@@ -194,11 +194,11 @@ const Login: React.FC<LoginProps> = ({ onLogin, onIdentify, initialIdentity, onC
 
         <header className="absolute top-0 left-0 right-0 p-10 flex justify-between items-center z-10 w-full max-w-[1440px] mx-auto">
           <div className="flex items-center gap-4 group cursor-pointer transition-all">
-            <div className="glass-panel p-2 rounded-xl group-hover:scale-105 transition-all border-white shadow-sm">
+            <div className="glass-panel p-2 rounded-xl group-hover:scale-105 transition-all border-white dark:border-white/10 shadow-sm">
               <Logo className="w-8 h-8" />
             </div>
             <div>
-              <span className="block font-black text-gray-900 tracking-tighter text-xl leading-none">ALBAYAN</span>
+              <span className="block font-black text-gray-900 dark:text-white tracking-tighter text-xl leading-none">ALBAYAN</span>
               <span className="block text-teal-600 font-black tracking-[0.35em] text-[10px] mt-1 shrink-0 uppercase opacity-70">Library Systems</span>
             </div>
           </div>
@@ -213,7 +213,7 @@ const Login: React.FC<LoginProps> = ({ onLogin, onIdentify, initialIdentity, onC
 
         <main className="w-full max-w-xl text-center z-0">
           <div className="mb-20">
-            <h2 className="text-7xl md:text-8xl font-black text-gray-900 tracking-tighter mb-4 uppercase opacity-90 leading-none">CATALOG</h2>
+            <h2 className="text-7xl md:text-8xl font-black text-gray-900 dark:text-white tracking-tighter mb-4 uppercase opacity-90 leading-none transition-colors">CATALOG</h2>
             <div className="flex items-center justify-center gap-6 mt-4">
               <div className="h-[1px] w-12 bg-gray-200 rounded-full"></div>
               <p className="text-gray-300 text-[10px] font-black uppercase tracking-[0.6em] whitespace-nowrap">High Integrity Knowledge Hub</p>
@@ -236,7 +236,7 @@ const Login: React.FC<LoginProps> = ({ onLogin, onIdentify, initialIdentity, onC
 
           <div className="mt-20">
             <button onClick={onClearIdentity} className="text-[10px] font-black uppercase tracking-[0.25em] text-gray-400 hover:text-teal-600 transition-all">
-              Not {initialIdentity.name}? <span className="text-teal-600 border-b border-teal-600/20 pb-0.5 ml-2 hover:border-teal-600/50 transition-all">Switch Node</span>
+              Not {initialIdentity.name}? <span className="text-teal-600 border-b border-teal-600/20 pb-0.5 ml-2 hover:border-teal-600/50 transition-all dark:text-teal-500 dark:border-teal-500/20">Switch Node</span>
             </button>
           </div>
         </main>

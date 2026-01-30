@@ -3,7 +3,7 @@ import React from 'react';
 
 const Splash: React.FC = () => {
   return (
-    <div className="fixed inset-0 bg-gray-50/50 flex flex-col items-center justify-center z-[100] p-6">
+    <div className="fixed inset-0 bg-transparent flex flex-col items-center justify-center z-[100] p-6 transition-colors duration-500">
       <div className="absolute top-[-10%] right-[-10%] w-96 h-96 bg-teal-500/5 rounded-full blur-[120px]" />
       <div className="absolute bottom-[-10%] left-[-10%] w-96 h-96 bg-blue-500/5 rounded-full blur-[120px]" />
 
