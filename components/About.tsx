@@ -119,9 +119,9 @@ const About: React.FC<AboutProps> = ({ booksCount, studentsCount }) => {
 };
 
 const StatItem = ({ value, label }: { value: string, label: string }) => (
-    <div className="space-y-4 p-10 glass-panel rounded-[2.5rem] text-center border-white shadow-sm hover:glass-card-hover transition-all duration-500">
-        <p className="text-5xl font-black text-gray-900 tracking-tighter uppercase leading-none">{value}</p>
-        <p className="text-[10px] text-gray-400 font-black uppercase tracking-[0.4em] leading-none opacity-60">{label}</p>
+    <div className="space-y-6 p-12 glass-panel rounded-[3rem] text-center border-white shadow-[0_24px_64px_rgba(0,0,0,0.06)] hover:glass-card-hover transition-all duration-500 group">
+        <p className="text-6xl font-black text-gray-900 tracking-tighter uppercase leading-none group-hover:scale-110 transition-transform duration-500">{value}</p>
+        <p className="text-[10px] text-gray-400 font-black uppercase tracking-[0.5em] leading-none opacity-40">{label}</p>
     </div>
 );
 

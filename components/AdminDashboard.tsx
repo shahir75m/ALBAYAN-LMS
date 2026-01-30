@@ -378,7 +378,7 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
                         <div className="glass-card rounded-[2.5rem] overflow-hidden">
                             <div className="px-8 py-6 border-b border-gray-100 flex justify-between items-center bg-white/40 uppercase tracking-[0.2em] text-[10px] font-black text-gray-400">
                                 <h3>Pending Actions</h3>
-                                <span className="bg-amber-500/10 text-amber-600 border border-amber-500/20 px-3 py-1 rounded-full">{requests.filter(r => r.status === 'PENDING').length} To Do</span>
+                                <span className="bg-amber-500/10 text-amber-600 border border-amber-500/20 px-3 py-1 rounded-full shadow-[0_2px_8px_rgba(245,158,11,0.15)]">{requests.filter(r => r.status === 'PENDING').length} To Do</span>
                             </div>
                             <div className="divide-y divide-gray-100 max-h-[450px] overflow-y-auto no-scrollbar">
                                 {requests.filter(r => r.status === 'PENDING').map(req => (
@@ -484,7 +484,7 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
                                                 <td className="px-6 py-4 font-mono text-[10px] text-gray-400 uppercase tracking-widest">{user.id === '••••••••' ? '••••••••' : user.id}</td>
                                                 <td className="px-6 py-4 font-black text-gray-900 tracking-tight">{user.name}</td>
                                                 <td className="px-6 py-4">
-                                                    <span className={`px-2.5 py-1 rounded-lg text-[9px] font-black uppercase tracking-widest border ${user.role === 'ADMIN' ? 'bg-purple-500/10 text-purple-600 border-purple-500/20 shadow-sm' : user.role === 'USTHAD' ? 'bg-amber-500/10 text-amber-600 border-amber-500/20 shadow-sm' : 'bg-teal-500/10 text-teal-600 border-teal-500/20 shadow-sm'}`}>
+                                                    <span className={`px-2.5 py-1 rounded-lg text-[9px] font-black uppercase tracking-widest border ${user.role === 'ADMIN' ? 'bg-purple-500/10 text-purple-600 border-purple-500/20 shadow-[0_2px_8px_rgba(168,85,247,0.15)]' : user.role === 'USTHAD' ? 'bg-amber-500/10 text-amber-600 border-amber-500/20 shadow-[0_2px_8px_rgba(245,158,11,0.15)]' : 'bg-teal-500/10 text-teal-600 border-teal-500/20 shadow-[0_2px_8px_rgba(20,184,166,0.15)]'}`}>
                                                         {user.role}
                                                     </span>
                                                 </td>
@@ -707,18 +707,22 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
 const StatCard = ({ title, value, subtitle, icon, color }: any) => {
     const colors: Record<string, string> = { emerald: 'teal', blue: 'blue', amber: 'amber', red: 'rose' };
     const colorClass = colors[color];
+    const shadowColors: Record<string, string> = { emerald: 'rgba(20,184,166,0.2)', amber: 'rgba(245,158,11,0.2)', red: 'rgba(244,63,94,0.2)', blue: 'rgba(59,130,246,0.2)' };
 
     return (
-        <div className="glass-card p-8 rounded-[2.5rem] transition-all hover:glass-card-hover group border-white/60">
-            <div className="flex items-start justify-between mb-6">
-                <div className={`p-3.5 rounded-2xl bg-${colorClass}-500/10 border border-${colorClass}-500/20 text-${colorClass}-600 group-hover:scale-110 transition-transform duration-500`}>
-                    <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d={icon} /></svg>
+        <div className="glass-card p-10 rounded-[3rem] transition-all hover:glass-card-hover group border-white">
+            <div className="flex items-start justify-between mb-8">
+                <div
+                    className={`w-14 h-14 rounded-2xl bg-${colorClass}-500/10 border border-${colorClass}-500/20 text-${colorClass}-600 flex items-center justify-center group-hover:scale-110 transition-transform duration-500 shadow-sm`}
+                    style={{ boxShadow: `0 8px 24px ${shadowColors[color]}` }}
+                >
+                    <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d={icon} /></svg>
                 </div>
-                {subtitle && <span className="text-[10px] font-black text-gray-300 uppercase tracking-widest opacity-60">{subtitle}</span>}
+                {subtitle && <span className="text-[10px] font-black text-gray-400 uppercase tracking-widest opacity-60 bg-white/50 px-3 py-1 rounded-full border border-white shadow-sm">{subtitle}</span>}
             </div>
             <div>
-                <p className="text-[10px] font-black text-gray-400 uppercase tracking-[0.25em]">{title}</p>
-                <p className="text-4xl font-black text-gray-900 tracking-tight mt-2">{value}</p>
+                <p className="text-[10px] font-black text-gray-400 uppercase tracking-[0.3em] opacity-60 leading-none mb-3">{title}</p>
+                <p className="text-5xl font-black text-gray-900 tracking-tighter leading-none">{value}</p>
             </div>
         </div>
     );

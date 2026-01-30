@@ -6,7 +6,12 @@
   body {
     @apply text-gray-800 font-sans antialiased selection:bg-teal-100 selection:text-teal-900 overflow-x-hidden min-h-screen;
     font-family: 'Inter', 'Outfit', 'Noto Sans Malayalam', ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-    background: #f8fafc;
+    background-color: #f8fafc;
+    background-image:
+      radial-gradient(#e2e8f0 0.5px, transparent 0.5px),
+      radial-gradient(#e2e8f0 0.5px, #f8fafc 0.5px);
+    background-size: 24px 24px;
+    background-position: 0 0, 12px 12px;
     background-attachment: fixed;
   }
 
@@ -46,27 +51,29 @@
 
   /* Ultra-Minimal Glassmorphism Design System */
   .glass-panel {
-    @apply bg-white/60 backdrop-blur-2xl border border-white/40 shadow-[0_8px_32px_rgba(0, 0, 0, 0.03)] rounded-[2.5rem];
+    @apply bg-white/60 backdrop-blur-3xl border border-white/60 shadow-[0_32px_128px_rgba(0, 0, 0, 0.08)] rounded-[2.5rem] relative;
+    background-image: linear-gradient(135deg, rgba(255, 255, 255, 0.4) 0%, transparent 100%);
   }
 
   .glass-card {
-    @apply bg-white/70 backdrop-blur-xl border border-white/50 shadow-[0_4px_24px_rgba(0, 0, 0, 0.02)] transition-all duration-300;
+    @apply bg-white/80 backdrop-blur-2xl border border-white/60 shadow-[0_8px_32px_rgba(0, 0, 0, 0.06)] transition-all duration-300 relative overflow-hidden;
+    background-image: linear-gradient(135deg, rgba(255, 255, 255, 0.2) 0%, transparent 100%);
   }
 
   .glass-card-hover:hover {
-    @apply shadow-[0_12px_40px_rgba(0, 0, 0, 0.05)] -translate-y-1 bg-white/80;
+    @apply shadow-[0_24px_64px_rgba(0, 0, 0, 0.12)] -translate-y-1.5 bg-white/95;
   }
 
   .glass-inset {
-    @apply bg-gray-50/30 backdrop-blur-md border border-white/20 shadow-[inset_0_2px_4px_rgba(0, 0, 0, 0.02)];
+    @apply bg-gray-50/40 backdrop-blur-md border border-white/40 shadow-[inset_0_4px_8px_rgba(0, 0, 0, 0.04)];
   }
 
   .glass-button {
-    @apply bg-white/40 backdrop-blur-lg border border-white/30 shadow-[0_2px_10px_rgba(0, 0, 0, 0.02)] hover:bg-white/60 active:scale-95 transition-all duration-200 rounded-xl;
+    @apply bg-white/60 backdrop-blur-lg border border-white shadow-[0_4px_12px_rgba(0, 0, 0, 0.05)] hover:bg-white/80 active:scale-95 transition-all duration-200 rounded-xl;
   }
 
   .glass-input {
-    @apply bg-white/40 backdrop-blur-md border border-gray-100 focus:bg-white/60 focus:border-teal-500/30 focus:ring-4 focus:ring-teal-500/5 outline-none transition-all;
+    @apply bg-white/60 backdrop-blur-md border border-gray-100 shadow-sm focus:bg-white/80 focus:border-teal-500/40 focus:ring-8 focus:ring-teal-500/5 outline-none transition-all;
   }
 
   /* Compatibility mapping (for simpler refactoring) */
@@ -98,7 +105,11 @@
   }
 
   .zebra-row:nth-child(even) {
-    @apply bg-white/20;
+    @apply bg-gray-50/30 backdrop-blur-sm border-white/20;
+  }
+
+  .zebra-row:hover {
+    @apply bg-white/60 backdrop-blur-md shadow-sm transition-all duration-300;
   }
 
   /* Colorful accents for variety */

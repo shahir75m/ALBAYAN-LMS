@@ -71,26 +71,32 @@ const AnalyticsDashboard: React.FC<AnalyticsDashboardProps> = ({ books, users, h
         <div className="space-y-8 animate-in fade-in duration-700">
             {/* Top Row: KPIs */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-                <div className="glass-card p-10 rounded-[2.5rem] border-white/60 shadow-sm relative overflow-hidden group hover:glass-card-hover">
-                    <div className="absolute top-0 right-0 p-4 opacity-5 group-hover:scale-110 transition-transform duration-500">
-                        <svg className="w-16 h-16" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67z" /></svg>
+                <div className="glass-card p-10 rounded-[3rem] border-white shadow-[0_12px_48px_rgba(0,0,0,0.06)] relative overflow-hidden group hover:glass-card-hover">
+                    <div className="absolute top-0 right-0 p-6 opacity-10 group-hover:scale-110 transition-transform duration-500">
+                        <svg className="w-16 h-16 text-gray-500" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67z" /></svg>
                     </div>
-                    <p className="text-[10px] font-black text-gray-400 uppercase tracking-[0.3em] mb-4 opacity-60">Circulation Velocity</p>
-                    <p className="text-4xl font-black text-gray-900 tracking-tight">{(history.length / 30).toFixed(1)} <span className="text-[10px] text-gray-300 font-black uppercase tracking-widest ml-2">Daily Avg</span></p>
+                    <p className="text-[10px] font-black text-gray-400 uppercase tracking-[0.3em] mb-6 opacity-60">Circulation Velocity</p>
+                    <div className="flex items-center gap-4">
+                        <p className="text-5xl font-black text-gray-900 tracking-tighter">{(history.length / 30).toFixed(1)}</p>
+                        <span className="text-[9px] bg-gray-100 text-gray-500 font-black uppercase tracking-widest px-2 py-1 rounded-md border border-gray-200">Daily Avg</span>
+                    </div>
                 </div>
-                <div className="glass-card p-10 rounded-[2.5rem] border-white/60 shadow-sm relative overflow-hidden group hover:glass-card-hover">
-                    <div className="absolute top-0 right-0 p-4 opacity-5 group-hover:scale-110 transition-transform duration-500">
-                        <svg className="w-16 h-16" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm1-13h-2v2h-2v2h2v2h2v-2h2V9h-2V7z" /></svg>
+                <div className="glass-card p-10 rounded-[3rem] border-white shadow-[0_12px_48px_rgba(20,184,166,0.12)] relative overflow-hidden group hover:glass-card-hover">
+                    <div className="absolute top-0 right-0 p-6 opacity-10 group-hover:scale-110 transition-transform duration-500">
+                        <svg className="w-16 h-16 text-teal-500" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm1-13h-2v2h-2v2h2v2h2v-2h2V9h-2V7z" /></svg>
                     </div>
-                    <p className="text-[10px] font-black text-gray-400 uppercase tracking-[0.3em] mb-4 opacity-60">Revenue Performance</p>
-                    <p className="text-4xl font-black text-teal-600 tracking-tight">₹{fines.filter(f => f.status === 'PAID').reduce((acc, f) => acc + f.amount, 0)}</p>
+                    <p className="text-[10px] font-black text-gray-400 uppercase tracking-[0.3em] mb-6 opacity-60">Revenue Performance</p>
+                    <p className="text-5xl font-black text-teal-600 tracking-tighter">₹{fines.filter(f => f.status === 'PAID').reduce((acc, f) => acc + f.amount, 0)}</p>
                 </div>
-                <div className="glass-card p-10 rounded-[2.5rem] border-white/60 shadow-sm relative overflow-hidden group hover:glass-card-hover">
-                    <div className="absolute top-0 right-0 p-4 opacity-5 group-hover:scale-110 transition-transform duration-500">
-                        <svg className="w-16 h-16" fill="currentColor" viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z" /></svg>
+                <div className="glass-card p-10 rounded-[3rem] border-white shadow-[0_12px_48px_rgba(59,130,246,0.12)] relative overflow-hidden group hover:glass-card-hover">
+                    <div className="absolute top-0 right-0 p-6 opacity-10 group-hover:scale-110 transition-transform duration-500">
+                        <svg className="w-16 h-16 text-blue-500" fill="currentColor" viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z" /></svg>
                     </div>
-                    <p className="text-[10px] font-black text-gray-400 uppercase tracking-[0.3em] mb-4 opacity-60">Asset Utilization</p>
-                    <p className="text-4xl font-black text-blue-600 tracking-tight">{totalBooks > 0 ? ((issuedBooks / totalBooks) * 100).toFixed(0) : 0}% <span className="text-[10px] text-gray-300 font-black uppercase tracking-widest ml-2">Active</span></p>
+                    <p className="text-[10px] font-black text-gray-400 uppercase tracking-[0.3em] mb-6 opacity-60">Asset Utilization</p>
+                    <div className="flex items-center gap-4">
+                        <p className="text-5xl font-black text-blue-600 tracking-tighter">{totalBooks > 0 ? ((issuedBooks / totalBooks) * 100).toFixed(0) : 0}%</p>
+                        <span className="text-[9px] bg-blue-50 text-blue-500 font-black uppercase tracking-widest px-2 py-1 rounded-md border border-blue-100">Active</span>
+                    </div>
                 </div>
             </div>
 

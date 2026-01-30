@@ -5,13 +5,18 @@ import { downloadCatalogPDF } from '../utils/pdfGenerator';
 const StatCompact = ({ title, value, color }: any) => {
     const colors: Record<string, string> = { emerald: 'teal', amber: 'amber', red: 'rose', blue: 'blue' };
     const colorClass = colors[color];
+    const shadowColors: Record<string, string> = { emerald: 'rgba(20,184,166,0.2)', amber: 'rgba(245,158,11,0.2)', red: 'rgba(244,63,94,0.2)', blue: 'rgba(59,130,246,0.2)' };
+
     return (
-        <div className="glass-card p-8 rounded-[2.5rem] transition-all hover:glass-card-hover group border-white/60">
-            <h3 className="text-[10px] font-black text-gray-400 uppercase tracking-[0.25em] mb-4">{title}</h3>
+        <div className="glass-card p-10 rounded-[3rem] transition-all hover:glass-card-hover group border-white">
+            <h3 className="text-[10px] font-black text-gray-400 uppercase tracking-[0.3em] mb-6 opacity-60">{title}</h3>
             <div className="flex items-center justify-between">
-                <p className="text-4xl font-black text-gray-900 tracking-tight">{value}</p>
-                <div className={`p-2.5 rounded-xl bg-${colorClass}-500/10 border border-${colorClass}-500/20 text-${colorClass}-600 group-hover:scale-110 transition-transform duration-500`}>
-                    <div className="w-2 h-2 rounded-full bg-current shadow-[0_0_12px_rgba(var(--color-rgb),0.4)]" />
+                <p className="text-5xl font-black text-gray-900 tracking-tighter leading-none">{value}</p>
+                <div
+                    className={`w-14 h-14 rounded-2xl bg-${colorClass}-500/10 border border-${colorClass}-500/20 text-${colorClass}-600 flex items-center justify-center group-hover:scale-110 transition-transform duration-500 shadow-sm`}
+                    style={{ boxShadow: `0 8px 16px ${shadowColors[color]}` }}
+                >
+                    <div className="w-3 h-3 rounded-full bg-current animate-pulse shadow-[0_0_12px_rgba(current,0.4)]" />
                 </div>
             </div>
         </div>
@@ -142,7 +147,7 @@ const StudentDashboard: React.FC<StudentDashboardProps> = ({
                                                     <h4 className="font-black text-gray-900 text-sm leading-snug line-clamp-2 uppercase tracking-tight">{h.bookTitle}</h4>
                                                     <p className="text-[9px] text-gray-400 mt-2 uppercase tracking-widest font-black opacity-70">Issued: {new Date(h.borrowDate).toLocaleDateString()}</p>
                                                     <div className="mt-auto flex items-center justify-between">
-                                                        <span className="text-[8px] text-teal-600 font-black uppercase tracking-[0.2em] bg-teal-500/10 px-2 py-0.5 rounded-full border border-teal-500/20">In Care</span>
+                                                        <span className="text-[8px] text-teal-600 font-black uppercase tracking-[0.2em] bg-teal-500/10 px-3 py-1.5 rounded-full border border-teal-500/20 shadow-[0_2px_8px_rgba(20,184,166,0.15)]">In Care</span>
                                                         <div className="w-9 h-9 rounded-xl glass-button flex items-center justify-center text-gray-300 group-hover:text-teal-600 transition-all shadow-sm">
                                                             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253" /></svg>
                                                         </div>
@@ -231,7 +236,7 @@ const StudentDashboard: React.FC<StudentDashboardProps> = ({
                                     <div className="aspect-[3/4] relative overflow-hidden bg-gray-50/50 border-b border-gray-100/30">
                                         <img src={book.coverUrl} className="w-full h-full object-cover group-hover:scale-110 transition-all duration-700" alt={book.title} />
                                         <div className="absolute top-5 left-5">
-                                            <span className="text-[8px] font-black text-teal-600 bg-white/70 backdrop-blur-md px-3 py-1.5 rounded-xl border border-white/60 uppercase tracking-[0.2em] shadow-sm">
+                                            <span className="text-[8px] font-black text-teal-600 bg-white/80 backdrop-blur-md px-3 py-1.5 rounded-xl border border-white uppercase tracking-[0.2em] shadow-[0_4px_12px_rgba(0,0,0,0.06)]">
                                                 {book.category}
                                             </span>
                                         </div>
@@ -260,7 +265,7 @@ const StudentDashboard: React.FC<StudentDashboardProps> = ({
                                                     Active Asset
                                                 </div>
                                             ) : hasRequested ? (
-                                                <div className="w-full py-4 bg-amber-500/10 text-amber-600 text-[9px] font-black uppercase tracking-[0.3em] rounded-2xl border border-amber-500/20 flex flex-col items-center justify-center">
+                                                <div className="w-full py-4 bg-amber-500/10 text-amber-600 text-[9px] font-black uppercase tracking-[0.3em] rounded-2xl border border-amber-500/20 flex flex-col items-center justify-center shadow-[0_4px_12px_rgba(245,158,11,0.1)]">
                                                     <span>{isTaken ? `Hold #${myQueuePosition}` : 'Hold Active'}</span>
                                                 </div>
                                             ) : (
