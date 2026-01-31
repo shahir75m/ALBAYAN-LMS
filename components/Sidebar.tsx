@@ -47,11 +47,11 @@ const Sidebar: React.FC<SidebarProps> = ({
       )}
 
       <aside className={`
-        fixed md:static inset-y-0 left-0 z-[80]
-        w-72 bg-white/40 backdrop-blur-2xl border-r border-white/40 flex flex-col shrink-0
+        fixed lg:sticky top-0 left-0 z-[80]
+        w-72 lg:h-screen bg-white/10 backdrop-blur-2xl border-r border-white/20 flex flex-col shrink-0
         transition-all duration-500 ease-in-out shadow-[0_8px_32px_rgba(0,0,0,0.03)]
         ${isMobileOpen ? 'translate-x-0' : '-translate-x-full'}
-        md:translate-x-0
+        lg:translate-x-0
       `}>
         <div className="flex flex-col h-full py-10">
           <div className="px-8 flex-1 overflow-y-auto no-scrollbar">
@@ -73,7 +73,7 @@ const Sidebar: React.FC<SidebarProps> = ({
               </button>
             </div>
 
-            <nav className="space-y-3">
+            <nav className="space-y-3 pb-10">
               {navItems.map((item) => {
                 const isActive = activeTab === item.id;
                 return (
