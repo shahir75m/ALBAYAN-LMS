@@ -262,6 +262,21 @@ const App: React.FC = () => {
     await refreshAllData();
   };
 
+  const handleClearRequests = async () => {
+    await api.deleteAllRequests();
+    await refreshAllData();
+  };
+
+  const handleClearHistory = async () => {
+    await api.deleteAllHistory();
+    await refreshAllData();
+  };
+
+  const handleClearFines = async () => {
+    await api.deleteAllFines();
+    await refreshAllData();
+  };
+
   const handleBorrowRequest = async (bookId: string) => {
     if (!currentUser) return;
     const book = books.find(b => b.id === bookId);
@@ -374,6 +389,9 @@ const App: React.FC = () => {
                 onHandleRequest={handleRequestAction} onReturnBook={handleReturnBook} onPayFine={handlePayFine}
                 onBorrow={handleBorrowRequest}
                 onIssueBook={handleIssueBook}
+                onClearRequests={handleClearRequests}
+                onClearHistory={handleClearHistory}
+                onClearFines={handleClearFines}
                 globalStatus={{ msg: statusMsg, set: setStatusMsg }}
               />
             ) : (

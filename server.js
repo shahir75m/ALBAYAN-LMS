@@ -217,6 +217,10 @@ app.patch('/api/requests/:id', async (req, res) => {
   try { const request = await BorrowRequest.findOneAndUpdate({ id: req.params.id }, { status: req.body.status }, { new: true }); res.json(request); } catch (err) { res.status(400).json({ message: err.message }); }
 });
 
+app.delete('/api/requests', async (req, res) => {
+  try { await BorrowRequest.deleteMany({}); res.json({ message: 'All requests deleted' }); } catch (err) { res.status(500).json({ message: err.message }); }
+});
+
 app.get('/api/history', async (req, res) => {
   try { const history = await History.find().sort({ borrowDate: -1 }); res.json(history); } catch (err) { res.status(500).json({ message: err.message }); }
 });
@@ -229,6 +233,10 @@ app.patch('/api/history/:id', async (req, res) => {
   try { const record = await History.findOneAndUpdate({ id: req.params.id }, { returnDate: req.body.returnDate }, { new: true }); res.json(record); } catch (err) { res.status(400).json({ message: err.message }); }
 });
 
+app.delete('/api/history', async (req, res) => {
+  try { await History.deleteMany({}); res.json({ message: 'All history records deleted' }); } catch (err) { res.status(500).json({ message: err.message }); }
+});
+
 app.get('/api/fines', async (req, res) => {
   try { const fines = await Fine.find().sort({ timestamp: -1 }); res.json(fines); } catch (err) { res.status(500).json({ message: err.message }); }
 });
@@ -239,6 +247,10 @@ app.post('/api/fines', async (req, res) => {
 
 app.patch('/api/fines/:id', async (req, res) => {
   try { const fine = await Fine.findOneAndUpdate({ id: req.params.id }, { status: req.body.status }, { new: true }); res.json(fine); } catch (err) { res.status(400).json({ message: err.message }); }
+});
+
+app.delete('/api/fines', async (req, res) => {
+  try { await Fine.deleteMany({}); res.json({ message: 'All fines deleted' }); } catch (err) { res.status(500).json({ message: err.message }); }
 });
 
 // --- Static Frontend Serving ---

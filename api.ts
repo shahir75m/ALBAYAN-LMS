@@ -111,9 +111,14 @@ class ApiService {
       case 'DELETE': {
         const id = segments[2];
         const data = getData(key);
-        const filtered = data.filter((item: any) => item.id !== id);
-        setData(key, filtered);
-        return { message: 'Deleted successfully' };
+        if (id) {
+          const filtered = data.filter((item: any) => item.id !== id);
+          setData(key, filtered);
+          return { message: 'Deleted successfully' };
+        } else {
+          setData(key, []);
+          return { message: 'All deleted successfully' };
+        }
       }
 
       default:
@@ -132,12 +137,15 @@ class ApiService {
   async getRequests(): Promise<BorrowRequest[]> { return this.request<BorrowRequest[]>('/requests'); }
   async createRequest(request: BorrowRequest): Promise<BorrowRequest> { return this.request<BorrowRequest>('/requests', { method: 'POST', body: JSON.stringify(request) }); }
   async updateRequestStatus(id: string, status: 'APPROVED' | 'DENIED'): Promise<void> { await this.request<void>(`/requests/${id}`, { method: 'PATCH', body: JSON.stringify({ status }) }); }
+  async deleteAllRequests(): Promise<void> { await this.request<void>('/requests', { method: 'DELETE' }); }
   async getHistory(): Promise<HistoryRecord[]> { return this.request<HistoryRecord[]>('/history'); }
   async addHistoryRecord(record: HistoryRecord): Promise<void> { await this.request<void>('/history', { method: 'POST', body: JSON.stringify(record) }); }
   async updateHistoryRecord(record: HistoryRecord): Promise<void> { await this.request<void>(`/history/${record.id}`, { method: 'PATCH', body: JSON.stringify({ returnDate: record.returnDate }) }); }
+  async deleteAllHistory(): Promise<void> { await this.request<void>('/history', { method: 'DELETE' }); }
   async getFines(): Promise<Fine[]> { return this.request<Fine[]>('/fines'); }
   async createFine(fine: Fine): Promise<Fine> { return this.request<Fine>('/fines', { method: 'POST', body: JSON.stringify(fine) }); }
   async updateFineStatus(id: string, status: 'PENDING' | 'PAID'): Promise<void> { await this.request<void>(`/fines/${id}`, { method: 'PATCH', body: JSON.stringify({ status }) }); }
+  async deleteAllFines(): Promise<void> { await this.request<void>('/fines', { method: 'DELETE' }); }
   async uploadImage(file: File): Promise<string> {
     const formData = new FormData();
     formData.append('image', file);

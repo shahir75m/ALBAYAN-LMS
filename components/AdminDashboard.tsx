@@ -29,6 +29,9 @@ interface AdminDashboardProps {
     onPayFine: (id: string) => void;
     onBorrow: (bookId: string) => void;
     onIssueBook: (bookId: string, userId: string) => void;
+    onClearRequests: () => Promise<void>;
+    onClearHistory: () => Promise<void>;
+    onClearFines: () => Promise<void>;
     globalStatus: { msg: { text: string, type: 'success' | 'error' } | null, set: (text: string, type?: 'success' | 'error') => void };
 }
 
@@ -37,6 +40,7 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
     onAddBook, onUpdateBook, onDeleteBook, onBulkAddBooks,
     onAddUser, onUpdateUser, onDeleteUser, onBulkAddUsers,
     onHandleRequest, onReturnBook, onPayFine, onBorrow, onIssueBook,
+    onClearRequests, onClearHistory, onClearFines,
     globalStatus
 }) => {
     const [showBookForm, setShowBookForm] = useState(false);
@@ -574,13 +578,54 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
             {showUserForm && <UserForm onClose={() => setShowUserForm(false)} onSubmit={(u) => { editingUser ? onUpdateUser(u) : onAddUser(u); setShowUserForm(false); }} initialData={editingUser} />}
             {showPassModal && (
                 <div className="fixed inset-0 bg-gray-900/20 backdrop-blur-md flex items-center justify-center z-[9999] p-4">
-                    <div className="glass-card w-full max-w-md rounded-[2rem] p-8 space-y-6">
-                        <div className="flex justify-between items-center mb-2"><h3 className="font-black text-xl uppercase tracking-tight">Advanced Settings</h3><button onClick={() => setShowPassModal(false)} className="opacity-40 hover:opacity-100"><svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M6 18L18 6M6 6l12 12" /></svg></button></div>
-                        <div className="space-y-4 text-gray-900">
-                            <input type="password" placeholder="Current Password" value={currentPass} onChange={(e) => setCurrentPass(e.target.value)} className="glass-input rounded-xl px-4 py-3 text-sm" />
-                            <input type="password" placeholder="New Password" value={newPass} onChange={(e) => setNewPass(e.target.value)} className="glass-input rounded-xl px-4 py-3 text-sm" />
+                    <div className="glass-card w-full max-w-lg rounded-[2.5rem] p-10 space-y-8 animate-in zoom-in-95 duration-300">
+                        <div className="flex justify-between items-center mb-2">
+                            <h3 className="font-black text-2xl uppercase tracking-tighter">Advanced Terminal</h3>
+                            <button onClick={() => setShowPassModal(false)} className="opacity-40 hover:opacity-100 transition-opacity">
+                                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M6 18L18 6M6 6l12 12" /></svg>
+                            </button>
                         </div>
-                        <div className="flex justify-end gap-3 pt-4"><button onClick={() => setShowPassModal(false)} className="flex-1 py-3 text-sm font-black uppercase text-gray-400">Discard</button><button onClick={() => { if (currentPass === storedAdminPass) { localStorage.setItem('adminPassword', newPass); setStatusMsg('Password updated!'); setShowPassModal(false); } else setStatusMsg('Invalid current password!', 'error'); }} className="flex-1 bg-emerald-600 text-white py-3 rounded-xl text-xs font-black uppercase tracking-widest shadow-xl shadow-emerald-200">Save Hub</button></div>
+
+                        {/* Password Section */}
+                        <div className="space-y-4">
+                            <p className="text-[10px] font-black text-gray-400 uppercase tracking-[0.3em] mb-4">Security Protocol</p>
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <input type="password" placeholder="Current" value={currentPass} onChange={(e) => setCurrentPass(e.target.value)} className="glass-input rounded-2xl px-5 py-4 text-sm" />
+                                <input type="password" placeholder="New" value={newPass} onChange={(e) => setNewPass(e.target.value)} className="glass-input rounded-2xl px-5 py-4 text-sm" />
+                            </div>
+                            <button onClick={() => { if (currentPass === storedAdminPass) { localStorage.setItem('adminPassword', newPass); setStatusMsg('Protocol Updated'); setShowPassModal(false); } else setStatusMsg('Auth Failed', 'error'); }} className="w-full bg-emerald-600 text-white py-4 rounded-2xl text-[10px] font-black uppercase tracking-[0.2em] shadow-xl shadow-emerald-500/20 active:scale-95 transition-all">Update Access Key</button>
+                        </div>
+
+                        <div className="h-[1px] bg-white/10 rounded-full"></div>
+
+                        {/* Maintenance Section */}
+                        <div className="space-y-6">
+                            <p className="text-[10px] font-black text-rose-500 uppercase tracking-[0.3em] mb-4">System Maintenance (IRREVERSIBLE)</p>
+                            <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+                                <button
+                                    onClick={() => setConfirmDialog({ show: true, title: 'Wipe Requests', message: 'This will permanently delete ALL pending and processed borrow requests. Proceed?', onConfirm: async () => { await onClearRequests(); setStatusMsg('Requests Purged'); setShowPassModal(false); } })}
+                                    className="glass-button py-4 px-2 rounded-2xl text-[8px] font-black uppercase tracking-widest text-rose-500 border-rose-500/10 hover:bg-rose-500 hover:text-white transition-all"
+                                >
+                                    Clear Requests
+                                </button>
+                                <button
+                                    onClick={() => setConfirmDialog({ show: true, title: 'Wipe History', message: 'This will permanently delete ALL circulation and return local records. Proceed?', onConfirm: async () => { await onClearHistory(); setStatusMsg('History Purged'); setShowPassModal(false); } })}
+                                    className="glass-button py-4 px-2 rounded-2xl text-[8px] font-black uppercase tracking-widest text-rose-500 border-rose-500/10 hover:bg-rose-500 hover:text-white transition-all"
+                                >
+                                    Clear History
+                                </button>
+                                <button
+                                    onClick={() => setConfirmDialog({ show: true, title: 'Wipe Fines', message: 'This will permanently delete ALL fine records (Paid & Unpaid). Proceed?', onConfirm: async () => { await onClearFines(); setStatusMsg('Fines Purged'); setShowPassModal(false); } })}
+                                    className="glass-button py-4 px-2 rounded-2xl text-[8px] font-black uppercase tracking-widest text-rose-500 border-rose-500/10 hover:bg-rose-500 hover:text-white transition-all"
+                                >
+                                    Clear Fines
+                                </button>
+                            </div>
+                        </div>
+
+                        <div className="flex justify-center pt-2">
+                            <button onClick={() => setShowPassModal(false)} className="text-[10px] font-black uppercase tracking-[0.3em] text-gray-400 hover:text-gray-900 transition-colors">Terminate Session</button>
+                        </div>
                     </div>
                 </div>
             )}
