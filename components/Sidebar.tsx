@@ -62,7 +62,7 @@ const Sidebar: React.FC<SidebarProps> = ({
                 </div>
                 <div>
                   <span className="block font-black tracking-tight text-xl leading-none">BAYANUL</span>
-                  <span className="block font-bold tracking-[0.3em] text-[9px] mt-1.5 opacity-60">ULOOM</span>
+                  <span className="block font-black tracking-tight text-xl mt-1 opacity-60">ULOOM</span>
                 </div>
               </div>
               {/* Mobile Close Button */}

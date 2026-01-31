@@ -19,7 +19,7 @@ const Splash: React.FC = () => {
 
       <div className="text-center animate-in slide-in-from-bottom-6 duration-700 delay-300 relative z-10">
         <h1 className="text-3xl md:text-4xl font-black tracking-tighter uppercase leading-none">
-          ALBAYAN <span className="text-teal-600/40 opacity-70">HUB</span>
+          ALBAYAN <span className="text-teal-600/40 opacity-70">LMS</span>
         </h1>
         <p className="text-[10px] font-black tracking-[0.5em] uppercase mt-5 opacity-40">
           Synchronizing Core Services

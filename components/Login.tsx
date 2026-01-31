@@ -213,7 +213,7 @@ const Login: React.FC<LoginProps> = ({ onLogin, onIdentify, initialIdentity, onC
 
         <main className="w-full max-w-xl text-center z-0">
           <div className="mb-20">
-            <h2 className="text-7xl md:text-8xl font-black tracking-tighter mb-4 uppercase opacity-90 leading-none transition-colors">CATALOG</h2>
+            <h2 className="text-7xl md:text-8xl font-black tracking-tighter mb-4 uppercase opacity-90 leading-none transition-colors">ALBAYAN <span className="text-teal-600/30">LMS</span></h2>
             <div className="flex items-center justify-center gap-6 mt-4">
               <div className="h-[1px] w-12 bg-white/10 rounded-full"></div>
               <p className="text-[10px] font-black uppercase tracking-[0.6em] whitespace-nowrap opacity-30">High Integrity Knowledge Hub</p>
