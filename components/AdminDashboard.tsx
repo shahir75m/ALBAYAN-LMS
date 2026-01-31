@@ -384,7 +384,7 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
                                 <h3>Pending Actions</h3>
                                 <span className="bg-amber-500/10 text-amber-600 border border-amber-500/20 px-3 py-1 rounded-full shadow-[0_2px_8px_rgba(245,158,11,0.15)]">{requests.filter(r => r.status === 'PENDING').length} To Do</span>
                             </div>
-                            <div className="divide-y divide-gray-100 max-h-[450px] overflow-y-auto no-scrollbar">
+                            <div className="divide-y divide-white/5 max-h-[450px] overflow-y-auto no-scrollbar">
                                 {requests.filter(r => r.status === 'PENDING').map(req => (
                                     <div key={req.id} className="p-6 flex items-center justify-between hover:bg-white/5 transition-colors">
                                         <div>
@@ -413,7 +413,7 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
                                     <svg className="absolute right-4 top-1/2 -translate-y-1/2 w-3.5 h-3.5 opacity-40" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>
                                 </div>
                             </div>
-                            <div className="divide-y divide-gray-100 max-h-[450px] overflow-y-auto no-scrollbar">
+                            <div className="divide-y divide-white/5 max-h-[450px] overflow-y-auto no-scrollbar">
                                 {activeCirculation.map(h => (
                                     <div key={h.id} className="p-6 flex items-center justify-between hover:bg-white/5 transition-colors">
                                         <div className="overflow-hidden pr-4">
@@ -509,7 +509,7 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
                                     <thead className="glass-panel border-b border-zinc-500/10 text-zinc-500 text-[10px] font-bold uppercase tracking-wider">
                                         <tr><th className="px-6 py-4">Date</th><th className="px-6 py-4">User</th><th className="px-6 py-4">Book</th><th className="px-6 py-4">Status</th><th className="px-6 py-4 text-right">Actions</th></tr>
                                     </thead>
-                                    <tbody className="divide-y divide-gray-100">
+                                    <tbody className="divide-y divide-white/5">
                                         {requests.map(req => (
                                             <tr key={req.id} className="hover:bg-white/5 transition-all zebra-row">
                                                 <td className="px-6 py-4 opacity-40 font-mono text-[10px]">{new Date(req.timestamp).toLocaleDateString()}</td>
@@ -534,7 +534,7 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
                                     <thead className="glass-panel border-b border-zinc-500/10 text-zinc-500 text-[10px] font-bold uppercase tracking-wider">
                                         <tr><th className="px-6 py-4">Borrowed</th><th className="px-6 py-4">User</th><th className="px-6 py-4">Book</th><th className="px-6 py-4">Issued By</th><th className="px-6 py-4">Returned</th><th className="px-6 py-4">Status</th></tr>
                                     </thead>
-                                    <tbody className="divide-y divide-gray-100">
+                                    <tbody className="divide-y divide-white/5">
                                         {history.map(record => (
                                             <tr key={record.id} className="hover:bg-white/5 transition-all zebra-row">
                                                 <td className="px-6 py-4 opacity-40 font-mono text-[10px]">{new Date(record.borrowDate).toLocaleDateString()}</td>
@@ -553,7 +553,7 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
                                     <thead className="glass-panel border-b border-zinc-500/10 text-zinc-500 text-[10px] font-bold uppercase tracking-wider">
                                         <tr><th className="px-6 py-4">Date</th><th className="px-6 py-4">User</th><th className="px-6 py-4">Book</th><th className="px-6 py-4">Reason</th><th className="px-6 py-4 text-right">Amount</th><th className="px-6 py-4">Status</th><th className="px-6 py-4 text-right">Actions</th></tr>
                                     </thead>
-                                    <tbody className="divide-y divide-gray-100">
+                                    <tbody className="divide-y divide-white/5">
                                         {fines.map(fine => (
                                             <tr key={fine.id} className="hover:bg-white/5 transition-all zebra-row">
                                                 <td className="px-6 py-4 opacity-40 font-mono text-[10px]">{new Date(fine.timestamp).toLocaleDateString()}</td>
