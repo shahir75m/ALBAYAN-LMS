@@ -39,12 +39,11 @@
     @apply font-sans antialiased selection:bg-teal-100 selection:text-teal-900 overflow-x-hidden min-h-screen transition-colors duration-500;
     color: var(--text-main);
     background-color: var(--bg-main);
-    background-image:
-      radial-gradient(var(--bg-dot) 0.3px, transparent 0.3px),
-      radial-gradient(var(--bg-dot) 0.3px, var(--bg-main) 0.3px);
-    background-size: 24px 24px;
-    background-position: 0 0, 12px 12px;
+    background-image: url('/close-up-artistic-stucco-wall.jpg');
+    background-size: cover;
+    background-position: center;
     background-attachment: fixed;
+    background-repeat: no-repeat;
   }
 
   /* Smart Dark Mode Overrides */
@@ -100,24 +99,25 @@
 
   .glass-panel {
     background-color: var(--glass-bg);
-    @apply backdrop-blur-3xl border rounded-[2.5rem] relative;
+    @apply backdrop-blur-[40px] border rounded-[2.5rem] relative;
     border-color: var(--glass-border);
-    box-shadow: 0 32px 128px var(--shadow-color);
-    background-image: linear-gradient(135deg, rgba(255, 255, 255, 0.15) 0%, transparent 100%);
+    box-shadow: 0 32px 128px var(--shadow-color), inset 0 0 80px rgba(255, 255, 255, 0.05);
+    background-image: linear-gradient(135deg, rgba(255, 255, 255, 0.2) 0%, rgba(255, 255, 255, 0.05) 50%, transparent 100%);
   }
 
   .glass-card {
     background-color: var(--glass-card-bg);
-    @apply backdrop-blur-2xl border transition-all duration-300 relative overflow-hidden;
+    @apply backdrop-blur-[30px] border transition-all duration-500 relative overflow-hidden;
     border-color: var(--glass-border);
-    box-shadow: 0 8px 32px var(--shadow-card);
-    background-image: linear-gradient(135deg, rgba(255, 255, 255, 0.08) 0%, transparent 100%);
+    box-shadow: 0 8px 32px var(--shadow-card), inset 0 0 40px rgba(255, 255, 255, 0.03);
+    background-image: linear-gradient(135deg, rgba(255, 255, 255, 0.12) 0%, rgba(255, 255, 255, 0.02) 40%, transparent 100%);
   }
 
   .glass-card-hover:hover {
-    box-shadow: 0 24px 64px var(--shadow-color);
-    @apply -translate-y-1.5;
+    box-shadow: 0 32px 80px var(--shadow-color), inset 0 0 60px rgba(255, 255, 255, 0.1);
+    @apply -translate-y-2 scale-[1.01];
     background-color: var(--glass-card-hover-bg);
+    border-color: rgba(255, 255, 255, 0.4);
   }
 
   .glass-inset {

@@ -293,7 +293,7 @@ const App: React.FC = () => {
   }
 
   return (
-    <div className="flex flex-col lg:flex-row min-h-screen bg-[#f8f9fc] animate-in fade-in duration-500">
+    <div className="flex flex-col lg:flex-row min-h-screen bg-transparent animate-in fade-in duration-500">
       <Sidebar
         role={currentUser.role}
         activeTab={activeTab}
