@@ -155,7 +155,7 @@ const Login: React.FC<LoginProps> = ({ onLogin, onIdentify, initialIdentity, onC
 
   if (step === 'ADMIN_AUTH') {
     return (
-      <div className="min-h-screen grid items-center justify-center p-6 bg-gray-50/50 relative overflow-hidden">
+      <div className="min-h-screen grid items-center justify-center p-6 bg-transparent relative overflow-hidden">
         <div className="absolute top-[-10%] right-[-10%] w-96 h-96 bg-gray-500/5 rounded-full blur-[120px]" />
 
         <div className="w-full max-w-sm animate-in fade-in zoom-in duration-300 relative z-10">
@@ -190,7 +190,7 @@ const Login: React.FC<LoginProps> = ({ onLogin, onIdentify, initialIdentity, onC
 
   if (step === 'PORTAL' && initialIdentity) {
     return (
-      <div className="min-h-screen flex flex-col items-center justify-center p-6 animate-in fade-in duration-700 bg-gray-50/50">
+      <div className="min-h-screen flex flex-col items-center justify-center p-6 animate-in fade-in duration-700 bg-transparent">
 
         <header className="absolute top-0 left-0 right-0 p-10 flex justify-between items-center z-10 w-full max-w-[1440px] mx-auto">
           <div className="flex items-center gap-4 group cursor-pointer transition-all">

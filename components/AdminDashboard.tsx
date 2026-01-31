@@ -386,7 +386,7 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
                             </div>
                             <div className="divide-y divide-gray-100 max-h-[450px] overflow-y-auto no-scrollbar">
                                 {requests.filter(r => r.status === 'PENDING').map(req => (
-                                    <div key={req.id} className="p-6 flex items-center justify-between hover:bg-gray-50 transition-colors">
+                                    <div key={req.id} className="p-6 flex items-center justify-between hover:bg-white/5 transition-colors">
                                         <div>
                                             <p className="text-sm font-bold tracking-tight">{req.userName}</p>
                                             <p className="text-[10px] opacity-40 mt-1 uppercase font-black tracking-widest leading-none">Wants: <span className="text-teal-500">{req.bookTitle}</span></p>
@@ -439,7 +439,7 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
                         {filteredBooks.map(book => (
                             <div key={book.id} className="glass-card rounded-[2rem] overflow-hidden group hover:glass-card-hover transition-all border-white/60">
                                 <div className="flex h-48">
-                                    <div className="w-[35%] overflow-hidden bg-gray-50/50 relative border-r border-white/20">
+                                    <div className="w-[35%] overflow-hidden bg-black/5 relative border-r border-white/20">
                                         <img src={book.coverUrl} alt={book.title} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
                                     </div>
                                     <div className="w-[65%] p-6 flex flex-col">
@@ -477,7 +477,7 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
                                     <thead className="glass-panel border-b border-zinc-500/10 text-zinc-500 text-[10px] font-bold uppercase tracking-wider">
                                         <tr><th className="px-6 py-4">Profile</th><th className="px-6 py-4">ID</th><th className="px-6 py-4">Name</th><th className="px-6 py-4">Role</th><th className="px-6 py-4">Class</th><th className="px-6 py-4 text-right">Actions</th></tr>
                                     </thead>
-                                    <tbody className="divide-y divide-gray-100/50">
+                                    <tbody className="divide-y divide-white/5">
                                         {filteredUsers.map(user => (
                                             <tr key={user.id} className="hover:bg-white/10 transition-all group zebra-row">
                                                 <td className="px-6 py-4">
