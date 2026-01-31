@@ -57,12 +57,12 @@ const Sidebar: React.FC<SidebarProps> = ({
           <div className="px-8 flex-1 overflow-y-auto no-scrollbar">
             <div className="flex items-center justify-between mb-12">
               <div className="flex items-center gap-4 group cursor-pointer">
-                <div className="p-3 bg-white/50 backdrop-blur-md rounded-2xl border border-white/60 shadow-sm group-hover:scale-105 transition-all duration-500">
+                <div className="p-3 glass-card rounded-2xl border-white/20 shadow-sm group-hover:scale-105 transition-all duration-500">
                   <Logo className="w-8 h-8" />
                 </div>
                 <div>
-                  <span className="block text-gray-900 font-black tracking-tight text-xl leading-none">BAYANUL</span>
-                  <span className="block text-gray-400 font-bold tracking-[0.3em] text-[9px] mt-1.5 opacity-60">ULOOM</span>
+                  <span className="block font-black tracking-tight text-xl leading-none">BAYANUL</span>
+                  <span className="block font-bold tracking-[0.3em] text-[9px] mt-1.5 opacity-60">ULOOM</span>
                 </div>
               </div>
               {/* Mobile Close Button */}
@@ -85,13 +85,13 @@ const Sidebar: React.FC<SidebarProps> = ({
                         ? 'bg-teal-500/10 rounded-2xl border border-teal-500/20'
                         : 'text-gray-500 hover:bg-white/40 hover:rounded-2xl'}`}
                   >
-                    <div className={`transition-all duration-300 ${isActive ? 'text-teal-600' : 'text-gray-400 group-hover:text-gray-900'}`}>
+                    <div className={`transition-all duration-300 ${isActive ? 'text-teal-600' : 'opacity-40 group-hover:opacity-100'}`}>
                       <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={isActive ? 2 : 1.5} d={item.icon} />
                       </svg>
                     </div>
                     <span className={`text-[11px] font-black tracking-[0.15em] uppercase transition-all duration-300
-                      ${isActive ? 'text-teal-700' : 'group-hover:text-gray-900'}`}>
+                      ${isActive ? 'text-teal-700' : 'opacity-60 group-hover:opacity-100'}`}>
                       {item.label}
                     </span>
                     {isActive && (
@@ -105,16 +105,16 @@ const Sidebar: React.FC<SidebarProps> = ({
 
           <div className="px-8 pt-8 border-t border-white/40 mt-auto bg-white/5 backdrop-blur-sm">
             <div className="flex items-center gap-4 mb-6">
-              <div className="w-11 h-11 rounded-full bg-white/40 border border-white/60 flex items-center justify-center text-gray-500 font-bold overflow-hidden shrink-0 shadow-sm">
+              <div className="w-11 h-11 rounded-full bg-white/5 border border-white/10 flex items-center justify-center font-bold overflow-hidden shrink-0 shadow-sm">
                 {user.avatarUrl ? (
                   <img src={user.avatarUrl} alt={user.name} className="w-full h-full object-cover" />
                 ) : (
-                  <span className="text-sm">{user.name.charAt(0)}</span>
+                  <span className="text-sm opacity-60">{user.name.charAt(0)}</span>
                 )}
               </div>
               <div className="min-w-0">
-                <p className="text-xs font-black text-gray-900 truncate uppercase tracking-tight leading-none">{user.name}</p>
-                <p className="text-[9px] text-gray-400 font-bold uppercase tracking-[0.2em] mt-2 opacity-70">{role}</p>
+                <p className="text-xs font-black truncate uppercase tracking-tight leading-none">{user.name}</p>
+                <p className="text-[9px] font-bold uppercase tracking-[0.2em] mt-2 opacity-40">{role}</p>
               </div>
             </div>
 
@@ -122,7 +122,7 @@ const Sidebar: React.FC<SidebarProps> = ({
               {/* Theme Toggle */}
               <button
                 onClick={onToggleTheme}
-                className="w-full flex items-center justify-between py-3.5 px-1 text-[10px] font-black uppercase tracking-[0.3em] text-gray-400 hover:text-teal-500 transition-all group"
+                className="w-full flex items-center justify-between py-3.5 px-1 text-[10px] font-black uppercase tracking-[0.3em] opacity-40 hover:opacity-100 hover:text-teal-500 transition-all group"
               >
                 <div className="flex items-center gap-3">
                   <div className={`p-1.5 rounded-lg transition-all ${theme === 'dark' ? 'bg-amber-500/10 text-amber-500' : 'bg-blue-500/10 text-blue-500'}`}>
@@ -140,7 +140,7 @@ const Sidebar: React.FC<SidebarProps> = ({
               <button
                 onClick={(e) => { e.preventDefault(); e.stopPropagation(); onLogout(); }}
                 type="button"
-                className="w-full flex items-center gap-3 py-3 text-[10px] font-black uppercase tracking-[0.3em] text-gray-400 hover:text-rose-500 transition-all group"
+                className="w-full flex items-center gap-3 py-3 text-[10px] font-black uppercase tracking-[0.3em] opacity-40 hover:opacity-100 hover:text-rose-500 transition-all group"
               >
                 <svg className="w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
@@ -149,13 +149,13 @@ const Sidebar: React.FC<SidebarProps> = ({
               </button>
 
               <div className="flex items-center gap-5 pt-6 pb-2">
-                <a href="https://www.instagram.com/muttichira_dars/" target="_blank" rel="noopener noreferrer" className="text-gray-300 hover:text-teal-500 transition-all hover:scale-110">
+                <a href="https://www.instagram.com/muttichira_dars/" target="_blank" rel="noopener noreferrer" className="opacity-20 hover:opacity-100 hover:text-teal-500 transition-all hover:scale-110">
                   <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.981 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z" /></svg>
                 </a>
-                <a href="https://www.youtube.com/@muttichiradars" target="_blank" rel="noopener noreferrer" className="text-gray-300 hover:text-rose-500 transition-all hover:scale-110">
+                <a href="https://www.youtube.com/@muttichiradars" target="_blank" rel="noopener noreferrer" className="opacity-20 hover:opacity-100 hover:text-rose-500 transition-all hover:scale-110">
                   <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M23.498 6.186a3.016 3.016 0 00-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 00.502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 002.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 002.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z" /></svg>
                 </a>
-                <a href="https://sites.google.com/view/bayanululoomdars-usthad/home" target="_blank" rel="noopener noreferrer" className="text-gray-300 hover:text-teal-500 transition-all hover:scale-110">
+                <a href="https://sites.google.com/view/bayanululoomdars-usthad/home" target="_blank" rel="noopener noreferrer" className="opacity-20 hover:opacity-100 hover:text-teal-500 transition-all hover:scale-110">
                   <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9" /></svg>
                 </a>
               </div>

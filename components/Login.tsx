@@ -100,7 +100,7 @@ const Login: React.FC<LoginProps> = ({ onLogin, onIdentify, initialIdentity, onC
       <label className="block text-[10px] font-black uppercase tracking-[0.25em] text-gray-400 mb-3 group-focus-within:text-teal-600 transition-colors px-1 opacity-70">{label}</label>
       <input
         {...props}
-        className="glass-input w-full rounded-2xl text-sm py-4 px-6 outline-none transition-all placeholder:text-gray-300 font-bold tracking-tight shadow-sm border-gray-100/50"
+        className="glass-input w-full rounded-2xl text-sm py-4 px-6 outline-none transition-all placeholder:opacity-30 font-bold tracking-tight shadow-sm border-white/20"
       />
     </div>
   );
@@ -126,11 +126,11 @@ const Login: React.FC<LoginProps> = ({ onLogin, onIdentify, initialIdentity, onC
 
         <div className="w-full max-w-sm animate-in fade-in zoom-in duration-700 relative z-10">
           <div className="text-center mb-12">
-            <div className="inline-flex p-5 glass-panel rounded-3xl mb-8 border-white dark:border-white/10 group hover:scale-105 transition-transform duration-500">
+            <div className="inline-flex p-5 glass-card rounded-3xl mb-8 border-white/20 group hover:scale-105 transition-transform duration-500">
               <Logo className="w-14 h-14" />
             </div>
-            <h1 className="text-4xl font-black text-gray-900 dark:text-white tracking-tighter mb-3 uppercase transition-colors">Identity</h1>
-            <p className="text-gray-400 dark:text-gray-500 text-[10px] font-black uppercase tracking-[0.5em] opacity-60">Initialize Access Portal</p>
+            <h1 className="text-4xl font-black tracking-tighter mb-3 uppercase transition-colors">Identity</h1>
+            <p className="text-[10px] font-black uppercase tracking-[0.5em] opacity-40">Initialize Access Portal</p>
           </div>
 
           <form onSubmit={handleManualIdentify} className="glass-panel relative rounded-[3rem] p-10 space-y-10 overflow-hidden shadow-[0_32px_128px_rgba(0,0,0,0.05)] border-white/60">
@@ -164,10 +164,10 @@ const Login: React.FC<LoginProps> = ({ onLogin, onIdentify, initialIdentity, onC
             Hub Terminal
           </button>
 
-          <div className="glass-panel relative rounded-[3rem] p-10 overflow-hidden shadow-[0_32px_128px_rgba(0,0,0,0.08)] border-white/60 dark:border-white/10">
+          <div className="glass-card relative rounded-[3rem] p-10 overflow-hidden shadow-[0_32px_128px_rgba(0,0,0,0.08)] border-white/20">
             <div className="mb-12 text-center pt-2">
-              <h2 className="text-3xl font-black text-gray-900 dark:text-white uppercase tracking-tighter transition-colors">Terminal Logic</h2>
-              <p className="text-gray-400 dark:text-gray-500 text-[10px] font-black uppercase tracking-[0.4em] mt-3 opacity-60">Secure Authentication Required</p>
+              <h2 className="text-3xl font-black uppercase tracking-tighter transition-colors">Terminal Logic</h2>
+              <p className="text-[10px] font-black uppercase tracking-[0.4em] mt-3 opacity-40">Secure Authentication Required</p>
             </div>
 
             <form onSubmit={handleAdminVerify} className="space-y-10">
@@ -180,7 +180,7 @@ const Login: React.FC<LoginProps> = ({ onLogin, onIdentify, initialIdentity, onC
                 autoFocus
               />
               {error && <p className="text-rose-500 text-[10px] font-black uppercase tracking-[0.2em] text-center">{error}</p>}
-              <PrimaryButton type="submit" className="bg-gray-900 dark:bg-white dark:text-gray-900 text-white hover:bg-black dark:hover:bg-gray-100 shadow-lg shadow-gray-200 dark:shadow-none transition-colors">Unlock Core</PrimaryButton>
+              <PrimaryButton type="submit" className="bg-teal-600 text-white hover:bg-teal-700 transition-colors">Unlock Core</PrimaryButton>
             </form>
           </div>
         </div>
@@ -194,12 +194,12 @@ const Login: React.FC<LoginProps> = ({ onLogin, onIdentify, initialIdentity, onC
 
         <header className="absolute top-0 left-0 right-0 p-10 flex justify-between items-center z-10 w-full max-w-[1440px] mx-auto">
           <div className="flex items-center gap-4 group cursor-pointer transition-all">
-            <div className="glass-panel p-2 rounded-xl group-hover:scale-105 transition-all border-white dark:border-white/10 shadow-sm">
+            <div className="glass-card p-2 rounded-xl group-hover:scale-105 transition-all border-white/20 shadow-sm">
               <Logo className="w-8 h-8" />
             </div>
             <div>
-              <span className="block font-black text-gray-900 dark:text-white tracking-tighter text-xl leading-none">ALBAYAN</span>
-              <span className="block text-teal-600 font-black tracking-[0.35em] text-[10px] mt-1 shrink-0 uppercase opacity-70">Library Systems</span>
+              <span className="block font-black tracking-tighter text-xl leading-none">ALBAYAN</span>
+              <span className="block text-teal-600 font-black tracking-[0.35em] text-[10px] mt-1 shrink-0 uppercase opacity-60">Library Systems</span>
             </div>
           </div>
 
@@ -213,24 +213,24 @@ const Login: React.FC<LoginProps> = ({ onLogin, onIdentify, initialIdentity, onC
 
         <main className="w-full max-w-xl text-center z-0">
           <div className="mb-20">
-            <h2 className="text-7xl md:text-8xl font-black text-gray-900 dark:text-white tracking-tighter mb-4 uppercase opacity-90 leading-none transition-colors">CATALOG</h2>
+            <h2 className="text-7xl md:text-8xl font-black tracking-tighter mb-4 uppercase opacity-90 leading-none transition-colors">CATALOG</h2>
             <div className="flex items-center justify-center gap-6 mt-4">
-              <div className="h-[1px] w-12 bg-gray-200 rounded-full"></div>
-              <p className="text-gray-300 text-[10px] font-black uppercase tracking-[0.6em] whitespace-nowrap">High Integrity Knowledge Hub</p>
-              <div className="h-[1px] w-12 bg-gray-200 rounded-full"></div>
+              <div className="h-[1px] w-12 bg-white/10 rounded-full"></div>
+              <p className="text-[10px] font-black uppercase tracking-[0.6em] whitespace-nowrap opacity-30">High Integrity Knowledge Hub</p>
+              <div className="h-[1px] w-12 bg-white/10 rounded-full"></div>
             </div>
           </div>
 
           <button
             onClick={() => handleRoleCardClick('STUDENT')}
-            className="group relative w-full glass-panel rounded-[4rem] p-24 transition-all active:scale-[0.98] border-white/60 shadow-[0_48px_128px_rgba(0,0,0,0.06)] hover:shadow-[0_64px_160px_rgba(0,0,0,0.1)]"
+            className="group relative w-full glass-card rounded-[4rem] p-24 transition-all active:scale-[0.98] border-white/20 shadow-[0_48px_128px_rgba(0,0,0,0.06)] hover:shadow-[0_64px_160px_rgba(0,0,0,0.1)]"
           >
             <div className="flex flex-col items-center">
-              <div className="w-28 h-28 bg-gray-50/50 backdrop-blur-md rounded-[3rem] flex items-center justify-center mb-12 group-hover:scale-110 transition-transform duration-700 border border-white shadow-sm">
+              <div className="w-28 h-28 bg-white/5 backdrop-blur-md rounded-[3rem] flex items-center justify-center mb-12 group-hover:scale-110 transition-transform duration-700 border border-white/10 shadow-sm">
                 <Logo className="w-16 h-16 opacity-80" />
               </div>
-              <span className="text-3xl font-black text-gray-900 mb-2 uppercase tracking-tight">Access Portal</span>
-              <span className="text-[10px] font-black text-gray-400 uppercase tracking-[0.4em] group-hover:text-teal-600 transition-colors opacity-60">Enter Digital Repository</span>
+              <span className="text-3xl font-black mb-2 uppercase tracking-tight">Access Portal</span>
+              <span className="text-[10px] font-black opacity-40 uppercase tracking-[0.4em] group-hover:text-teal-600 transition-colors">Enter Digital Repository</span>
             </div>
           </button>
 
@@ -272,34 +272,34 @@ const Login: React.FC<LoginProps> = ({ onLogin, onIdentify, initialIdentity, onC
             </span>
           </div>
 
-          <h2 className="text-5xl font-black text-gray-900 mb-12 uppercase tracking-tight pr-10 leading-none">Access Registry</h2>
+          <h2 className="text-5xl font-black mb-12 uppercase tracking-tight pr-10 leading-none">Access Registry</h2>
 
           <div className="mb-12 relative group">
             <svg className="absolute left-6 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-300 group-focus-within:text-teal-600 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>
             <input
               autoFocus
               placeholder="Query Node Name or ID..."
-              className="w-full glass-input rounded-[2.5rem] py-7 pl-16 pr-8 text-lg outline-none transition-all font-black placeholder:text-gray-300 border-gray-100 shadow-sm"
+              className="w-full glass-input rounded-[2.5rem] py-7 pl-16 pr-8 text-lg outline-none transition-all font-black placeholder:opacity-20 border-white/10 shadow-sm"
               value={userSearch}
               onChange={(e) => setUserSearch(e.target.value)}
             />
           </div>
 
-          <div className="flex-1 overflow-y-auto glass-panel rounded-[3.5rem] overflow-hidden no-scrollbar border-white/60 shadow-[0_32px_128px_rgba(0,0,0,0.05)]">
+          <div className="flex-1 overflow-y-auto glass-card rounded-[3.5rem] overflow-hidden no-scrollbar border-white/20 shadow-[0_32px_128px_rgba(0,0,0,0.05)]">
             {filteredUsers.length > 0 ? (
-              <div className="divide-y divide-gray-100/50">
+              <div className="divide-y divide-white/5">
                 {filteredUsers.map(user => (
                   <button
                     key={user.id}
                     onClick={() => onLogin(user)}
-                    className="w-full flex items-center gap-8 p-10 hover:bg-white/60 transition-all text-left group active:scale-[0.99] border-b border-gray-50/50 last:border-0"
+                    className="w-full flex items-center gap-8 p-10 hover:bg-white/5 transition-all text-left group active:scale-[0.99] border-b border-white/5 last:border-0"
                   >
-                    <div className="w-16 h-16 rounded-[1.8rem] bg-white group-hover:scale-110 transition-all flex items-center justify-center text-gray-300 group-hover:text-teal-600 shadow-sm border border-gray-100 overflow-hidden shrink-0">
+                    <div className="w-16 h-16 rounded-[1.8rem] bg-white/10 group-hover:scale-110 transition-all flex items-center justify-center text-gray-400 group-hover:text-teal-600 shadow-sm border border-white/10 overflow-hidden shrink-0">
                       {user.avatarUrl ? <img src={user.avatarUrl} className="w-full h-full object-cover" /> : <span className="text-xl font-black">{user.name.charAt(0)}</span>}
                     </div>
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center gap-5">
-                        <p className="text-xl font-black text-gray-900 group-hover:text-teal-600 transition-colors uppercase tracking-tight leading-none">{user.name}</p>
+                        <p className="text-xl font-black group-hover:text-teal-600 transition-colors uppercase tracking-tight leading-none">{user.name}</p>
                         <span className={`px-3 py-1.5 rounded-xl text-[8px] font-black uppercase tracking-[0.2em] border shadow-sm ${user.role === 'ADMIN' ? 'bg-purple-500/10 text-purple-600 border-purple-500/20' : user.role === 'USTHAD' ? 'bg-amber-500/10 text-amber-600 border-amber-500/20' : 'bg-teal-500/10 text-teal-600 border-teal-500/20'}`}>
                           {user.role}
                         </span>

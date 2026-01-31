@@ -71,31 +71,31 @@ const AnalyticsDashboard: React.FC<AnalyticsDashboardProps> = ({ books, users, h
         <div className="space-y-8 animate-in fade-in duration-700">
             {/* Top Row: KPIs */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-                <div className="glass-card p-10 rounded-[3rem] border-white shadow-[0_12px_48px_rgba(0,0,0,0.06)] relative overflow-hidden group hover:glass-card-hover">
+                <div className="glass-card p-10 rounded-[3rem] border-white/20 shadow-[0_12px_48px_rgba(0,0,0,0.06)] relative overflow-hidden group hover:glass-card-hover">
                     <div className="absolute top-0 right-0 p-6 opacity-10 group-hover:scale-110 transition-transform duration-500">
-                        <svg className="w-16 h-16 text-gray-500" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67z" /></svg>
+                        <svg className="w-16 h-16 opacity-40" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67z" /></svg>
                     </div>
-                    <p className="text-[10px] font-black text-gray-400 uppercase tracking-[0.3em] mb-6 opacity-60">Circulation Velocity</p>
+                    <p className="text-[10px] font-black opacity-40 uppercase tracking-[0.3em] mb-6">Circulation Velocity</p>
                     <div className="flex items-center gap-4">
-                        <p className="text-5xl font-black text-gray-900 tracking-tighter">{(history.length / 30).toFixed(1)}</p>
-                        <span className="text-[9px] bg-gray-100 text-gray-500 font-black uppercase tracking-widest px-2 py-1 rounded-md border border-gray-200">Daily Avg</span>
+                        <p className="text-5xl font-black tracking-tighter">{(history.length / 30).toFixed(1)}</p>
+                        <span className="text-[9px] bg-white/10 opacity-40 font-black uppercase tracking-widest px-2 py-1 rounded-md border border-white/10">Daily Avg</span>
                     </div>
                 </div>
-                <div className="glass-card p-10 rounded-[3rem] border-white shadow-[0_12px_48px_rgba(20,184,166,0.12)] relative overflow-hidden group hover:glass-card-hover">
+                <div className="glass-card p-10 rounded-[3rem] border-white/20 shadow-[0_12px_48px_rgba(20,184,166,0.12)] relative overflow-hidden group hover:glass-card-hover">
                     <div className="absolute top-0 right-0 p-6 opacity-10 group-hover:scale-110 transition-transform duration-500">
                         <svg className="w-16 h-16 text-teal-500" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm1-13h-2v2h-2v2h2v2h2v-2h2V9h-2V7z" /></svg>
                     </div>
-                    <p className="text-[10px] font-black text-gray-400 uppercase tracking-[0.3em] mb-6 opacity-60">Revenue Performance</p>
+                    <p className="text-[10px] font-black opacity-40 uppercase tracking-[0.3em] mb-6">Revenue Performance</p>
                     <p className="text-5xl font-black text-teal-600 tracking-tighter">₹{fines.filter(f => f.status === 'PAID').reduce((acc, f) => acc + f.amount, 0)}</p>
                 </div>
-                <div className="glass-card p-10 rounded-[3rem] border-white shadow-[0_12px_48px_rgba(59,130,246,0.12)] relative overflow-hidden group hover:glass-card-hover">
+                <div className="glass-card p-10 rounded-[3rem] border-white/20 shadow-[0_12px_48px_rgba(59,130,246,0.12)] relative overflow-hidden group hover:glass-card-hover">
                     <div className="absolute top-0 right-0 p-6 opacity-10 group-hover:scale-110 transition-transform duration-500">
                         <svg className="w-16 h-16 text-blue-500" fill="currentColor" viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z" /></svg>
                     </div>
-                    <p className="text-[10px] font-black text-gray-400 uppercase tracking-[0.3em] mb-6 opacity-60">Asset Utilization</p>
+                    <p className="text-[10px] font-black opacity-40 uppercase tracking-[0.3em] mb-6">Asset Utilization</p>
                     <div className="flex items-center gap-4">
                         <p className="text-5xl font-black text-blue-600 tracking-tighter">{totalBooks > 0 ? ((issuedBooks / totalBooks) * 100).toFixed(0) : 0}%</p>
-                        <span className="text-[9px] bg-blue-50 text-blue-500 font-black uppercase tracking-widest px-2 py-1 rounded-md border border-blue-100">Active</span>
+                        <span className="text-[9px] bg-blue-500/10 text-blue-500 font-black uppercase tracking-widest px-2 py-1 rounded-md border border-blue-500/20">Active</span>
                     </div>
                 </div>
             </div>
@@ -103,8 +103,8 @@ const AnalyticsDashboard: React.FC<AnalyticsDashboardProps> = ({ books, users, h
             {/* Middle Row: Trends & Distribution */}
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
                 {/* Borrowing Trends Chart */}
-                <div className="glass-panel p-10 rounded-[2.5rem] shadow-[0_32px_128px_rgba(0,0,0,0.04)] border-white/60">
-                    <h3 className="text-[10px] font-black text-gray-400 uppercase tracking-[0.3em] mb-12 opacity-60 text-center">Circulation Dynamics (7D Forecast)</h3>
+                <div className="glass-card p-10 rounded-[2.5rem] shadow-[0_32px_128px_rgba(0,0,0,0.04)] border-white/20">
+                    <h3 className="text-[10px] font-black opacity-40 uppercase tracking-[0.3em] mb-12 text-center">Circulation Dynamics (7D Forecast)</h3>
                     <div className="h-80 w-full">
                         <ResponsiveContainer width="100%" height="100%">
                             <AreaChart data={borrowingData} margin={{ top: 20, right: 30, left: 0, bottom: 0 }}>
@@ -118,9 +118,9 @@ const AnalyticsDashboard: React.FC<AnalyticsDashboardProps> = ({ books, users, h
                                 <XAxis dataKey="name" stroke="#cbd5e1" fontSize={10} axisLine={false} tickLine={false} tick={{ fontWeight: 'black' }} />
                                 <YAxis stroke="#cbd5e1" fontSize={10} axisLine={false} tickLine={false} tick={{ fontWeight: 'black' }} />
                                 <Tooltip
-                                    contentStyle={{ backgroundColor: 'rgba(255, 255, 255, 0.8)', backdropFilter: 'blur(24px)', border: '1px solid rgba(255,255,255,0.6)', borderRadius: '24px', fontSize: '10px', boxShadow: '0 32px 64px -16px rgba(0,0,0,0.08)' }}
+                                    contentStyle={{ backgroundColor: 'rgba(255, 255, 255, 0.05)', backdropFilter: 'blur(24px)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '24px', fontSize: '10px', boxShadow: '0 32px 64px -16px rgba(0,0,0,0.08)' }}
                                     itemStyle={{ fontWeight: 'black', textTransform: 'uppercase', fontSize: '9px', letterSpacing: '0.1em' }}
-                                    labelStyle={{ fontWeight: 'black', marginBottom: '8px', color: '#1e293b', textTransform: 'uppercase' }}
+                                    labelStyle={{ fontWeight: 'black', marginBottom: '8px', color: 'inherit', textTransform: 'uppercase', opacity: 0.6 }}
                                 />
                                 <Area type="monotone" dataKey="borrowed" stroke="#2563eb" fillOpacity={1} fill="url(#colorBorrowed)" strokeWidth={4} dot={{ r: 5, fill: '#fff', strokeWidth: 3, stroke: '#2563eb' }} activeDot={{ r: 8, strokeWidth: 0, fill: '#2563eb' }} />
                                 <Area type="monotone" dataKey="returned" stroke="#10b981" fillOpacity={0} strokeWidth={4} strokeDasharray="12 6" opacity={0.3} />
@@ -130,8 +130,8 @@ const AnalyticsDashboard: React.FC<AnalyticsDashboardProps> = ({ books, users, h
                 </div>
 
                 {/* Category Pie Chart */}
-                <div className="glass-panel p-10 rounded-[2.5rem] shadow-[0_32px_128px_rgba(0,0,0,0.04)] border-white/60">
-                    <h3 className="text-[10px] font-black text-gray-400 uppercase tracking-[0.3em] mb-12 opacity-60 text-center">Topic Classification Analysis</h3>
+                <div className="glass-card p-10 rounded-[2.5rem] shadow-[0_32px_128px_rgba(0,0,0,0.04)] border-white/20">
+                    <h3 className="text-[10px] font-black opacity-40 uppercase tracking-[0.3em] mb-12 text-center">Topic Classification Analysis</h3>
                     <div className="h-80 w-full">
                         <ResponsiveContainer width="100%" height="100%">
                             <PieChart>
@@ -158,7 +158,7 @@ const AnalyticsDashboard: React.FC<AnalyticsDashboardProps> = ({ books, users, h
                                     verticalAlign="middle"
                                     iconSize={12}
                                     iconType="circle"
-                                    formatter={(value) => <span style={{ color: '#94a3b8', fontSize: '9px', fontWeight: 'black', textTransform: 'uppercase', letterSpacing: '0.15em' }}>{value}</span>}
+                                    formatter={(value) => <span style={{ opacity: 0.4, fontSize: '9px', fontWeight: 'black', textTransform: 'uppercase', letterSpacing: '0.15em' }}>{value}</span>}
                                 />
                             </PieChart>
                         </ResponsiveContainer>
@@ -169,8 +169,8 @@ const AnalyticsDashboard: React.FC<AnalyticsDashboardProps> = ({ books, users, h
             {/* Bottom Row: Top Readers & Inventory */}
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
                 {/* Top Readers Bar Chart */}
-                <div className="lg:col-span-2 glass-panel p-10 rounded-[2.5rem] shadow-[0_32px_128px_rgba(0,0,0,0.04)] border-white/60">
-                    <h3 className="text-[10px] font-black text-gray-400 uppercase tracking-[0.3em] mb-12 opacity-60">High Performance Readers</h3>
+                <div className="lg:col-span-2 glass-card p-10 rounded-[2.5rem] shadow-[0_32px_128px_rgba(0,0,0,0.04)] border-white/20">
+                    <h3 className="text-[10px] font-black opacity-40 uppercase tracking-[0.3em] mb-12">High Performance Readers</h3>
                     <div className="h-64 w-full">
                         <ResponsiveContainer width="100%" height="100%">
                             <BarChart data={topReadersData} layout="vertical" margin={{ left: 20 }}>
@@ -178,8 +178,8 @@ const AnalyticsDashboard: React.FC<AnalyticsDashboardProps> = ({ books, users, h
                                 <XAxis type="number" hide />
                                 <YAxis dataKey="name" type="category" stroke="#94a3b8" fontSize={11} width={100} axisLine={false} tickLine={false} tick={{ fontWeight: 'black', fontSize: '9px' }} />
                                 <Tooltip
-                                    cursor={{ fill: '#f8fafc', opacity: 0.5 }}
-                                    contentStyle={{ backgroundColor: 'rgba(255, 255, 255, 0.8)', backdropFilter: 'blur(20px)', border: '1px solid rgba(255,255,255,0.6)', borderRadius: '20px', fontSize: '10px' }}
+                                    cursor={{ fill: 'rgba(255,255,255,0.05)', opacity: 0.5 }}
+                                    contentStyle={{ backgroundColor: 'rgba(255, 255, 255, 0.05)', backdropFilter: 'blur(20px)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '20px', fontSize: '10px' }}
                                 />
                                 <Bar dataKey="count" fill="#3b82f6" radius={[0, 12, 12, 0]} barSize={28} opacity={0.7} />
                             </BarChart>
@@ -188,8 +188,8 @@ const AnalyticsDashboard: React.FC<AnalyticsDashboardProps> = ({ books, users, h
                 </div>
 
                 {/* Inventory Health Gauge (Using Pie as Gauge) */}
-                <div className="glass-panel p-10 rounded-[2.5rem] shadow-[0_32px_128px_rgba(0,0,0,0.04)] border-white/60 flex flex-col items-center justify-center text-center">
-                    <h3 className="text-[10px] font-black text-gray-400 uppercase tracking-[0.3em] mb-12 opacity-60">System Integrity Health</h3>
+                <div className="glass-card p-10 rounded-[2.5rem] shadow-[0_32px_128px_rgba(0,0,0,0.04)] border-white/20 flex flex-col items-center justify-center text-center">
+                    <h3 className="text-[10px] font-black opacity-40 uppercase tracking-[0.3em] mb-12">System Integrity Health</h3>
                     <div className="h-48 w-full relative">
                         <ResponsiveContainer width="100%" height="100%">
                             <PieChart>
@@ -211,18 +211,18 @@ const AnalyticsDashboard: React.FC<AnalyticsDashboardProps> = ({ books, users, h
                             </PieChart>
                         </ResponsiveContainer>
                         <div className="absolute inset-0 flex flex-col items-center justify-end pb-4">
-                            <p className="text-4xl font-black text-gray-900 tracking-tighter">{totalBooks > 0 ? ((availableBooks / totalBooks) * 100).toFixed(0) : 0}%</p>
-                            <p className="text-[9px] text-gray-300 font-black uppercase tracking-[0.4em] mt-2 mb-2">Operational</p>
+                            <p className="text-4xl font-black tracking-tighter">{totalBooks > 0 ? ((availableBooks / totalBooks) * 100).toFixed(0) : 0}%</p>
+                            <p className="text-[9px] opacity-40 font-black uppercase tracking-[0.4em] mt-2 mb-2">Operational</p>
                         </div>
                     </div>
                     <div className="grid grid-cols-2 gap-4 mt-12 w-full">
-                        <div className="p-6 bg-white/40 border border-white/80 rounded-3xl shadow-sm">
-                            <p className="text-[9px] text-gray-400 font-black uppercase tracking-[0.2em] mb-2 opacity-60">In Stock</p>
-                            <p className="text-gray-900 font-black text-xl tracking-tight">{availableBooks}</p>
+                        <div className="p-6 glass-card border border-white/10 rounded-3xl shadow-sm">
+                            <p className="text-[9px] opacity-40 font-black uppercase tracking-[0.2em] mb-2">In Stock</p>
+                            <p className="font-black text-xl tracking-tight">{availableBooks}</p>
                         </div>
-                        <div className="p-6 bg-white/40 border border-white/80 rounded-3xl shadow-sm">
-                            <p className="text-[9px] text-gray-400 font-black uppercase tracking-[0.2em] mb-2 opacity-60">On Loan</p>
-                            <p className="text-gray-900 font-black text-xl tracking-tight">{issuedBooks}</p>
+                        <div className="p-6 glass-card border border-white/10 rounded-3xl shadow-sm">
+                            <p className="text-[9px] opacity-40 font-black uppercase tracking-[0.2em] mb-2">On Loan</p>
+                            <p className="font-black text-xl tracking-tight">{issuedBooks}</p>
                         </div>
                     </div>
                 </div>

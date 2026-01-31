@@ -87,11 +87,11 @@ const BookForm: React.FC<BookFormProps> = ({ onClose, onSubmit, initialData }) =
   };
 
   return (
-    <div className="fixed inset-0 bg-white/20 backdrop-blur-2xl flex items-center justify-center z-[9999] p-4">
-      <div className="glass-panel w-full max-w-lg rounded-[3rem] overflow-hidden animate-in zoom-in-95 duration-300 flex flex-col max-h-[95vh] shadow-[0_32px_128px_rgba(0,0,0,0.1)] border-white/60">
-        <div className="px-10 py-8 border-b border-gray-100/50 bg-white/10 flex justify-between items-center shrink-0">
-          <h3 className="font-black text-[11px] text-gray-900 uppercase tracking-[0.25em]">{initialData ? 'Update Resource Specifications' : 'Initialize New Resource Entry'}</h3>
-          <button onClick={onClose} className="w-10 h-10 rounded-2xl glass-button flex items-center justify-center text-gray-400 hover:text-rose-500 transition-all border-white shadow-sm">
+    <div className="fixed inset-0 bg-white/10 backdrop-blur-2xl flex items-center justify-center z-[9999] p-4">
+      <div className="glass-card w-full max-w-lg rounded-[3rem] overflow-hidden animate-in zoom-in-95 duration-300 flex flex-col max-h-[95vh] shadow-[0_32px_128px_rgba(0,0,0,0.1)] border-white/20">
+        <div className="px-10 py-8 border-b border-white/10 glass-panel flex justify-between items-center shrink-0">
+          <h3 className="font-black text-[11px] uppercase tracking-[0.25em] opacity-60">{initialData ? 'Update Resource Specifications' : 'Initialize New Resource Entry'}</h3>
+          <button onClick={onClose} className="w-10 h-10 rounded-2xl glass-button flex items-center justify-center text-gray-400 hover:text-rose-500 transition-all border-white/10 shadow-sm">
             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M6 18L18 6M6 6l12 12" /></svg>
           </button>
         </div>
@@ -112,7 +112,7 @@ const BookForm: React.FC<BookFormProps> = ({ onClose, onSubmit, initialData }) =
               <div className="relative flex gap-4">
                 <input
                   ref={isbnInputRef}
-                  className="glass-input flex-1 rounded-2xl px-6 py-4 text-sm outline-none transition-all font-bold placeholder:text-gray-300 border-gray-100/50 shadow-sm"
+                  className="glass-input flex-1 rounded-2xl px-6 py-4 text-sm outline-none transition-all font-bold placeholder:opacity-30 border-white/10 shadow-sm"
                   value={formData.isbn}
                   onKeyDown={handleIsbnKeyDown}
                   onChange={e => setFormData({ ...formData, isbn: e.target.value })}
@@ -133,7 +133,7 @@ const BookForm: React.FC<BookFormProps> = ({ onClose, onSubmit, initialData }) =
                 <label className="block text-[10px] font-black text-gray-400 uppercase tracking-[0.25em] mb-3 px-1 opacity-60">Primary Resource Title</label>
                 <input
                   required
-                  className="glass-input w-full rounded-2xl px-6 py-4 text-sm font-black tracking-tight"
+                  className="glass-input w-full rounded-2xl px-6 py-4 text-sm font-black tracking-tight border-white/10"
                   value={formData.title}
                   onChange={e => setFormData({ ...formData, title: e.target.value })}
                   placeholder="Engineering Mathematics..."
@@ -143,7 +143,7 @@ const BookForm: React.FC<BookFormProps> = ({ onClose, onSubmit, initialData }) =
                 <label className="block text-[10px] font-black text-gray-400 uppercase tracking-[0.25em] mb-3 px-1 opacity-60">Intellectual Contributor (Author)</label>
                 <input
                   required
-                  className="glass-input w-full rounded-2xl px-6 py-4 text-sm font-black tracking-tight"
+                  className="glass-input w-full rounded-2xl px-6 py-4 text-sm font-black tracking-tight border-white/10"
                   value={formData.author}
                   onChange={e => setFormData({ ...formData, author: e.target.value })}
                   placeholder="Name of Author or Agency"
@@ -153,7 +153,7 @@ const BookForm: React.FC<BookFormProps> = ({ onClose, onSubmit, initialData }) =
                 <label className="block text-[10px] font-black text-gray-400 uppercase tracking-[0.25em] mb-3 px-1 opacity-60">System ID</label>
                 <input
                   required
-                  className="glass-input w-full rounded-2xl px-6 py-4 font-black text-xs tracking-[0.2em]"
+                  className="glass-input w-full rounded-2xl px-6 py-4 font-black text-xs tracking-[0.2em] border-white/10"
                   value={formData.id}
                   onChange={e => setFormData({ ...formData, id: e.target.value })}
                 />
@@ -163,7 +163,7 @@ const BookForm: React.FC<BookFormProps> = ({ onClose, onSubmit, initialData }) =
                 <input
                   required
                   list="categories"
-                  className="glass-input w-full rounded-2xl px-6 py-4 text-sm font-black"
+                  className="glass-input w-full rounded-2xl px-6 py-4 text-sm font-black border-white/10"
                   value={formData.category}
                   onChange={e => setFormData({ ...formData, category: e.target.value })}
                 />
@@ -173,7 +173,7 @@ const BookForm: React.FC<BookFormProps> = ({ onClose, onSubmit, initialData }) =
                 <input
                   type="number"
                   min="1"
-                  className="glass-input w-full rounded-2xl px-6 py-4 text-sm font-black"
+                  className="glass-input w-full rounded-2xl px-6 py-4 text-sm font-black border-white/10"
                   value={formData.totalCopies}
                   onChange={e => {
                     const newVal = parseInt(e.target.value) || 0;
@@ -193,7 +193,7 @@ const BookForm: React.FC<BookFormProps> = ({ onClose, onSubmit, initialData }) =
                 <input
                   type="number"
                   step="0.01"
-                  className="glass-input w-full rounded-2xl px-6 py-4 text-sm font-black text-teal-600"
+                  className="glass-input w-full rounded-2xl px-6 py-4 text-sm font-black text-teal-600 border-white/10"
                   value={formData.price}
                   onChange={e => setFormData({ ...formData, price: parseFloat(e.target.value) || 0 })}
                 />
@@ -202,8 +202,8 @@ const BookForm: React.FC<BookFormProps> = ({ onClose, onSubmit, initialData }) =
 
             <div>
               <label className="block text-[10px] font-black text-gray-400 uppercase tracking-[0.25em] mb-4 px-1 opacity-60">Cover Artwork Profile</label>
-              <div className="flex gap-8 items-center bg-gray-50/30 p-5 rounded-3xl border border-gray-100/50">
-                <div className="w-16 h-24 bg-white rounded-2xl overflow-hidden shrink-0 shadow-sm border border-gray-100">
+              <div className="flex gap-8 items-center bg-white/5 p-5 rounded-3xl border border-white/10">
+                <div className="w-16 h-24 bg-white/10 rounded-2xl overflow-hidden shrink-0 shadow-sm border border-white/10">
                   <img src={formData.coverUrl} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" onError={(e) => (e.currentTarget.src = 'https://picsum.photos/seed/book/400/600')} alt="Cover Preview" />
                 </div>
                 <div className="flex-1 space-y-4">

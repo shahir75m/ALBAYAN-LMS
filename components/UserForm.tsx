@@ -38,11 +38,11 @@ const UserForm: React.FC<UserFormProps> = ({ onClose, onSubmit, initialData }) =
   };
 
   return (
-    <div className="fixed inset-0 bg-white/20 backdrop-blur-2xl flex items-center justify-center z-[100] p-4">
-      <div className="glass-panel w-full max-w-lg rounded-[3rem] overflow-hidden animate-in zoom-in-95 duration-300 shadow-[0_32px_128px_rgba(0,0,0,0.1)] border-white/60">
-        <div className="px-10 py-8 border-b border-gray-100/50 bg-white/10 flex justify-between items-center shadow-sm">
-          <h3 className="font-black text-[11px] text-gray-900 uppercase tracking-[0.25em]">{initialData ? 'Modify Node Profile' : 'Initialize New Access Node'}</h3>
-          <button onClick={onClose} className="w-10 h-10 rounded-2xl glass-button flex items-center justify-center text-gray-400 hover:text-rose-500 transition-all border-white shadow-sm">
+    <div className="fixed inset-0 bg-white/10 backdrop-blur-2xl flex items-center justify-center z-[100] p-4">
+      <div className="glass-card w-full max-w-lg rounded-[3rem] overflow-hidden animate-in zoom-in-95 duration-300 shadow-[0_32px_128px_rgba(0,0,0,0.1)] border-white/20">
+        <div className="px-10 py-8 border-b border-white/10 glass-panel flex justify-between items-center shadow-sm">
+          <h3 className="font-black text-[11px] uppercase tracking-[0.25em] opacity-60">{initialData ? 'Modify Node Profile' : 'Initialize New Access Node'}</h3>
+          <button onClick={onClose} className="w-10 h-10 rounded-2xl glass-button flex items-center justify-center text-gray-400 hover:text-rose-500 transition-all border-white/10 shadow-sm">
             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M6 18L18 6M6 6l12 12" /></svg>
           </button>
         </div>
@@ -51,13 +51,13 @@ const UserForm: React.FC<UserFormProps> = ({ onClose, onSubmit, initialData }) =
           <div className="flex justify-center">
             <div
               onClick={() => fileInputRef.current?.click()}
-              className="w-36 h-36 rounded-[3rem] bg-gray-50/50 flex items-center justify-center cursor-pointer overflow-hidden group transition-all relative border-2 border-dashed border-gray-200 hover:border-teal-500/50 hover:bg-teal-500/5 shadow-sm"
+              className="w-36 h-36 rounded-[3rem] bg-white/5 flex items-center justify-center cursor-pointer overflow-hidden group transition-all relative border-2 border-dashed border-white/10 hover:border-teal-500/50 hover:bg-teal-500/5 shadow-sm"
             >
               {formData.avatarUrl ? (
                 <img src={formData.avatarUrl} alt="Avatar" className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
               ) : (
                 <div className="text-center">
-                  <div className="w-12 h-12 bg-white rounded-2xl shadow-sm flex items-center justify-center mx-auto mb-4 border border-gray-100 group-hover:scale-110 transition-transform">
+                  <div className="w-12 h-12 bg-white/10 rounded-2xl shadow-sm flex items-center justify-center mx-auto mb-4 border border-white/10 group-hover:scale-110 transition-transform">
                     <svg className="w-6 h-6 text-gray-400 group-hover:text-teal-600 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" />
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 13a3 3 0 11-6 0 3 3 0 016 0z" />
@@ -75,7 +75,7 @@ const UserForm: React.FC<UserFormProps> = ({ onClose, onSubmit, initialData }) =
               <label className="block text-[10px] font-black text-gray-400 uppercase tracking-[0.25em] mb-3 px-1 opacity-60">Full Identity Name</label>
               <input
                 required
-                className="glass-input w-full rounded-2xl px-6 py-4 text-sm font-black tracking-tight border-gray-100/50 shadow-sm"
+                className="glass-input w-full rounded-2xl px-6 py-4 text-sm font-black tracking-tight border-white/10 shadow-sm"
                 value={formData.name}
                 onChange={e => setFormData({ ...formData, name: e.target.value })}
                 placeholder="User Full Name"
@@ -96,7 +96,7 @@ const UserForm: React.FC<UserFormProps> = ({ onClose, onSubmit, initialData }) =
                 <label className="block text-[10px] font-black text-gray-400 uppercase tracking-[0.25em] mb-3 px-1 opacity-60">Access Permissions</label>
                 <div className="relative">
                   <select
-                    className="glass-input w-full rounded-2xl px-6 py-4 text-sm font-black cursor-pointer appearance-none border-gray-100/50 shadow-sm"
+                    className="glass-input w-full rounded-2xl px-6 py-4 text-sm font-black cursor-pointer appearance-none border-white/10 shadow-sm"
                     value={formData.role}
                     onChange={e => setFormData({ ...formData, role: e.target.value as Role })}
                   >
@@ -112,7 +112,7 @@ const UserForm: React.FC<UserFormProps> = ({ onClose, onSubmit, initialData }) =
               <div>
                 <label className="block text-[10px] font-black text-gray-400 uppercase tracking-[0.25em] mb-3 px-1 opacity-60">Classification</label>
                 <input
-                  className="glass-input w-full rounded-2xl px-6 py-4 text-sm font-black border-gray-100/50 shadow-sm"
+                  className="glass-input w-full rounded-2xl px-6 py-4 text-sm font-black border-white/10 shadow-sm"
                   placeholder="e.g. Unit 4B"
                   value={formData.class}
                   onChange={e => setFormData({ ...formData, class: e.target.value })}

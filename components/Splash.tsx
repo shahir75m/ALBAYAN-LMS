@@ -8,7 +8,7 @@ const Splash: React.FC = () => {
       <div className="absolute bottom-[-10%] left-[-10%] w-96 h-96 bg-blue-500/5 rounded-full blur-[120px]" />
 
       <div className="relative flex flex-col items-center animate-in fade-in zoom-in-90 duration-1000">
-        <div className="p-8 glass-panel rounded-[3.5rem] mb-12 border-white shadow-[0_32px_128px_rgba(0,0,0,0.05)] border-white/60">
+        <div className="p-8 glass-card rounded-[3.5rem] mb-12 border-white/20 shadow-[0_32px_128px_rgba(0,0,0,0.05)]">
           <img
             src="/icon-logo-removebg-preview (1).png"
             alt="Albayan Library Logo"
@@ -18,15 +18,15 @@ const Splash: React.FC = () => {
       </div>
 
       <div className="text-center animate-in slide-in-from-bottom-6 duration-700 delay-300 relative z-10">
-        <h1 className="text-3xl md:text-4xl font-black text-gray-900 tracking-tighter uppercase leading-none">
+        <h1 className="text-3xl md:text-4xl font-black tracking-tighter uppercase leading-none">
           ALBAYAN <span className="text-teal-600/40 opacity-70">HUB</span>
         </h1>
-        <p className="text-gray-400 text-[10px] font-black tracking-[0.5em] uppercase mt-5 opacity-60">
+        <p className="text-[10px] font-black tracking-[0.5em] uppercase mt-5 opacity-40">
           Synchronizing Core Services
         </p>
       </div>
 
-      <div className="mt-20 w-72 h-1 bg-gray-100/50 rounded-full overflow-hidden border border-gray-50/50 relative z-10">
+      <div className="mt-20 w-72 h-1 bg-white/5 rounded-full overflow-hidden border border-white/10 relative z-10">
         <div className="h-full bg-teal-500/40 animate-loading-line rounded-full shadow-[0_0_8px_rgba(20,184,166,0.3)]"></div>
       </div>
 

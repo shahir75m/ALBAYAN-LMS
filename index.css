@@ -5,23 +5,23 @@
 :root {
   --bg-main: #f1f5f9;
   --bg-dot: #cbd5e1;
-  --glass-bg: rgba(255, 255, 255, 0.45);
-  --glass-card-bg: rgba(255, 255, 255, 0.7);
-  --glass-card-hover-bg: rgba(255, 255, 255, 0.9);
+  --glass-bg: rgba(255, 255, 255, 0.3);
+  --glass-card-bg: rgba(255, 255, 255, 0.4);
+  --glass-card-hover-bg: rgba(255, 255, 255, 0.6);
   --glass-border: rgba(255, 255, 255, 0.5);
-  --text-main: #111827;
-  --text-muted: #64748b;
+  --text-main: #0f172a;
+  --text-muted: #475569;
   --shadow-color: rgba(0, 0, 0, 0.08);
-  --shadow-card: rgba(0, 0, 0, 0.06);
+  --shadow-card: rgba(0, 0, 0, 0.05);
   --accent-light: rgba(20, 184, 166, 0.1);
 }
 
 .dark {
   --bg-main: #020617;
   --bg-dot: #1e293b;
-  --glass-bg: rgba(15, 23, 42, 0.6);
-  --glass-card-bg: rgba(30, 41, 59, 0.7);
-  --glass-card-hover-bg: rgba(51, 65, 85, 0.9);
+  --glass-bg: rgba(15, 23, 42, 0.5);
+  --glass-card-bg: rgba(30, 41, 59, 0.5);
+  --glass-card-hover-bg: rgba(51, 65, 85, 0.7);
   --glass-border: rgba(255, 255, 255, 0.08);
   --text-main: #f8fafc;
   --text-muted: #94a3b8;
@@ -47,17 +47,26 @@
   }
 
   /* Smart Dark Mode Overrides */
-  .dark .text-gray-900 {
+  .dark .text-gray-900,
+  .dark .text-zinc-900 {
     color: var(--text-main) !important;
   }
 
   .dark .text-gray-800,
-  .dark .text-gray-700 {
+  .dark .text-gray-700,
+  .dark .text-zinc-800,
+  .dark .text-zinc-700 {
     color: #e2e8f0 !important;
   }
 
+  .dark .text-gray-600,
   .dark .text-gray-500,
-  .dark .text-gray-400 {
+  .dark .text-gray-400,
+  .dark .text-gray-300,
+  .dark .text-zinc-600,
+  .dark .text-zinc-500,
+  .dark .text-zinc-400,
+  .dark .text-zinc-300 {
     color: var(--text-muted) !important;
   }
 
@@ -168,11 +177,13 @@
   }
 
   .zebra-row:nth-child(even) {
-    @apply bg-gray-50/30 backdrop-blur-sm border-white/20;
+    background-color: rgba(255, 255, 255, 0.03);
+    @apply backdrop-blur-sm border-white/5;
   }
 
   .zebra-row:hover {
-    @apply bg-white/60 backdrop-blur-md shadow-sm transition-all duration-300;
+    background-color: rgba(255, 255, 255, 0.08);
+    @apply backdrop-blur-md shadow-sm transition-all duration-300;
   }
 
   .accent-blue {

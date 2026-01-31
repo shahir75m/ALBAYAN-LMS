@@ -301,7 +301,7 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
                                 type="text"
                                 placeholder={activeTab === 'users' ? "Search name, ID or class..." : activeTab === 'history' ? "Search circulation records..." : activeTab === 'books' ? "Search title, author or ISBN..." : "Search archives..."}
                                 value={search} onChange={(e) => setSearch(e.target.value)}
-                                className="glass-input rounded-2xl pl-12 pr-6 py-3.5 text-sm text-gray-800 w-full shadow-sm"
+                                className="glass-input rounded-2xl pl-12 pr-6 py-3.5 text-sm w-full shadow-sm"
                             />
                         </div>
                         {activeTab === 'books' && (
@@ -376,7 +376,7 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
                     <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
                         {/* Confirmations and Returns panels */}
                         <div className="glass-card rounded-[2.5rem] overflow-hidden">
-                            <div className="px-8 py-6 border-b border-gray-100 flex justify-between items-center bg-white/40 uppercase tracking-[0.2em] text-[10px] font-black text-gray-400">
+                            <div className="px-8 py-6 border-b border-white/20 flex justify-between items-center glass-panel uppercase tracking-[0.2em] text-[10px] font-black opacity-60">
                                 <h3>Pending Actions</h3>
                                 <span className="bg-amber-500/10 text-amber-600 border border-amber-500/20 px-3 py-1 rounded-full shadow-[0_2px_8px_rgba(245,158,11,0.15)]">{requests.filter(r => r.status === 'PENDING').length} To Do</span>
                             </div>
@@ -384,8 +384,8 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
                                 {requests.filter(r => r.status === 'PENDING').map(req => (
                                     <div key={req.id} className="p-6 flex items-center justify-between hover:bg-gray-50 transition-colors">
                                         <div>
-                                            <p className="text-sm font-bold text-gray-800 tracking-tight">{req.userName}</p>
-                                            <p className="text-[10px] text-gray-400 mt-1 uppercase font-black tracking-widest leading-none">Wants: <span className="text-teal-500">{req.bookTitle}</span></p>
+                                            <p className="text-sm font-bold tracking-tight">{req.userName}</p>
+                                            <p className="text-[10px] opacity-40 mt-1 uppercase font-black tracking-widest leading-none">Wants: <span className="text-teal-500">{req.bookTitle}</span></p>
                                         </div>
                                         <div className="flex gap-3">
                                             <button onClick={() => onHandleRequest(req.id, 'APPROVE')} className="w-9 h-9 rounded-xl glass-button flex items-center justify-center text-teal-600 hover:bg-teal-500 hover:text-white transition-all">
@@ -402,19 +402,19 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
                         </div>
 
                         <div className="glass-card rounded-[2.5rem] overflow-hidden">
-                            <div className="px-8 py-6 border-b border-gray-100 bg-white/40 flex items-center justify-between uppercase tracking-[0.2em] text-[10px] font-black text-gray-400">
+                            <div className="px-8 py-6 border-b border-white/20 glass-panel flex items-center justify-between uppercase tracking-[0.2em] text-[10px] font-black opacity-60">
                                 <h3>Active Returns</h3>
                                 <div className="relative">
-                                    <input type="text" placeholder="Scan or search..." value={returnSearch} onChange={(e) => setReturnSearch(e.target.value)} className="w-48 glass-input rounded-full px-5 py-2 text-[10px] pr-10 border-gray-200" />
+                                    <input type="text" placeholder="Scan or search..." value={returnSearch} onChange={(e) => setReturnSearch(e.target.value)} className="w-48 glass-input rounded-full px-5 py-2 text-[10px] pr-10 border-white/10" />
                                     <svg className="absolute right-4 top-1/2 -translate-y-1/2 w-3.5 h-3.5 opacity-40" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>
                                 </div>
                             </div>
                             <div className="divide-y divide-gray-100 max-h-[450px] overflow-y-auto no-scrollbar">
                                 {activeCirculation.map(h => (
-                                    <div key={h.id} className="p-6 flex items-center justify-between hover:bg-gray-50 transition-colors">
+                                    <div key={h.id} className="p-6 flex items-center justify-between hover:bg-white/5 transition-colors">
                                         <div className="overflow-hidden pr-4">
-                                            <p className="text-sm font-bold text-gray-800 truncate tracking-tight">{h.bookTitle}</p>
-                                            <p className="text-[10px] text-gray-400 font-black uppercase tracking-widest mt-1 truncate">By {h.userName}</p>
+                                            <p className="text-sm font-bold truncate tracking-tight">{h.bookTitle}</p>
+                                            <p className="text-[10px] opacity-40 font-black uppercase tracking-widest mt-1 truncate">By {h.userName}</p>
                                         </div>
                                         <button onClick={() => { setSelectedReturn(h); setShowFineModal(true); setHasIssue(false); setFineAmount(0); setFineReason(''); }} className="glass-button p-2.5 text-teal-600 hover:text-teal-700">
                                             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 15l-3-3m0 0l3-3m-3 3h8M3 12a9 9 0 1118 0 9 9 0 01-18 0z" /></svg>
@@ -443,8 +443,8 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
                                             <span className="text-[8px] font-black text-teal-600 bg-teal-500/10 border border-teal-500/20 px-2.5 py-1 rounded-full uppercase tracking-[0.15em]">{book.category}</span>
                                             <p className="text-[9px] text-gray-300 font-bold tracking-widest uppercase opacity-60">#{book.id}</p>
                                         </div>
-                                        <h4 className="text-sm font-black text-gray-900 leading-snug mb-1 line-clamp-2 pr-4">{book.title}</h4>
-                                        <p className="text-[10px] text-gray-400 font-bold tracking-[0.15em] uppercase opacity-70">by {book.author}</p>
+                                        <h4 className="text-sm font-black leading-snug mb-1 line-clamp-2 pr-4">{book.title}</h4>
+                                        <p className="text-[10px] opacity-40 font-bold tracking-[0.15em] uppercase">by {book.author}</p>
                                         <div className="mt-auto flex justify-between items-center pt-4 border-t border-white/40">
                                             <div className="flex items-center gap-2">
                                                 <div className={`w-1.5 h-1.5 rounded-full ${book.availableCopies === 0 ? 'bg-rose-400' : 'bg-teal-400'}`}></div>
@@ -465,24 +465,24 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
 
             {/* Other Records Tabs */}
             {(activeTab === 'users' || activeTab === 'requests' || activeTab === 'history' || activeTab === 'fines') && (
-                <div className="bg-white/50 border border-gray-100 rounded-2xl overflow-hidden shadow-sm">
+                <div className="glass-card rounded-2xl overflow-hidden shadow-sm">
                     <div className="overflow-x-auto no-scrollbar">
                         <table className="w-full text-left text-sm">
                             {activeTab === 'users' && (
                                 <>
-                                    <thead className="bg-gray-50 border-b border-gray-100 text-gray-500 text-[10px] font-bold uppercase tracking-wider">
+                                    <thead className="glass-panel border-b border-zinc-500/10 text-zinc-500 text-[10px] font-bold uppercase tracking-wider">
                                         <tr><th className="px-6 py-4">Profile</th><th className="px-6 py-4">ID</th><th className="px-6 py-4">Name</th><th className="px-6 py-4">Role</th><th className="px-6 py-4">Class</th><th className="px-6 py-4 text-right">Actions</th></tr>
                                     </thead>
                                     <tbody className="divide-y divide-gray-100/50">
                                         {filteredUsers.map(user => (
-                                            <tr key={user.id} className="hover:bg-white/40 transition-all group zebra-row">
+                                            <tr key={user.id} className="hover:bg-white/10 transition-all group zebra-row">
                                                 <td className="px-6 py-4">
-                                                    <div className="w-9 h-9 rounded-full bg-white/60 border border-white/80 overflow-hidden flex items-center justify-center text-[10px] font-black text-gray-400 shadow-sm ring-1 ring-gray-100">
+                                                    <div className="w-9 h-9 rounded-full bg-white/20 border border-white/40 overflow-hidden flex items-center justify-center text-[10px] font-black text-gray-400 shadow-sm ring-1 ring-white/10">
                                                         {user.avatarUrl ? <img src={user.avatarUrl} className="w-full h-full object-cover" /> : user.name.charAt(0)}
                                                     </div>
                                                 </td>
-                                                <td className="px-6 py-4 font-mono text-[10px] text-gray-400 uppercase tracking-widest">{user.id === '••••••••' ? '••••••••' : user.id}</td>
-                                                <td className="px-6 py-4 font-black text-gray-900 tracking-tight">{user.name}</td>
+                                                <td className="px-6 py-4 font-mono text-[10px] opacity-40 uppercase tracking-widest">{user.id === '••••••••' ? '••••••••' : user.id}</td>
+                                                <td className="px-6 py-4 font-black tracking-tight">{user.name}</td>
                                                 <td className="px-6 py-4">
                                                     <span className={`px-2.5 py-1 rounded-lg text-[9px] font-black uppercase tracking-widest border ${user.role === 'ADMIN' ? 'bg-purple-500/10 text-purple-600 border-purple-500/20 shadow-[0_2px_8px_rgba(168,85,247,0.15)]' : user.role === 'USTHAD' ? 'bg-amber-500/10 text-amber-600 border-amber-500/20 shadow-[0_2px_8px_rgba(245,158,11,0.15)]' : 'bg-teal-500/10 text-teal-600 border-teal-500/20 shadow-[0_2px_8px_rgba(20,184,166,0.15)]'}`}>
                                                         {user.role}
@@ -502,15 +502,15 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
                             )}
                             {activeTab === 'requests' && (
                                 <>
-                                    <thead className="bg-zinc-900/20 border-b border-zinc-900/50 text-zinc-500 text-[10px] font-bold uppercase tracking-wider">
+                                    <thead className="glass-panel border-b border-zinc-500/10 text-zinc-500 text-[10px] font-bold uppercase tracking-wider">
                                         <tr><th className="px-6 py-4">Date</th><th className="px-6 py-4">User</th><th className="px-6 py-4">Book</th><th className="px-6 py-4">Status</th><th className="px-6 py-4 text-right">Actions</th></tr>
                                     </thead>
                                     <tbody className="divide-y divide-gray-100">
                                         {requests.map(req => (
-                                            <tr key={req.id} className="hover:bg-gray-50 transition-all zebra-row">
-                                                <td className="px-6 py-4 text-gray-500 font-mono text-[10px]">{new Date(req.timestamp).toLocaleDateString()}</td>
-                                                <td className="px-6 py-4 font-medium text-gray-900">{req.userName}</td>
-                                                <td className="px-6 py-4 text-gray-600 text-xs">{req.bookTitle}</td>
+                                            <tr key={req.id} className="hover:bg-white/5 transition-all zebra-row">
+                                                <td className="px-6 py-4 opacity-40 font-mono text-[10px]">{new Date(req.timestamp).toLocaleDateString()}</td>
+                                                <td className="px-6 py-4 font-medium">{req.userName}</td>
+                                                <td className="px-6 py-4 opacity-60 text-xs">{req.bookTitle}</td>
                                                 <td className="px-6 py-4"><span className={`px-2 py-0.5 rounded text-[9px] font-bold uppercase tracking-wider border ${req.status === 'PENDING' ? 'accent-amber border-amber-100' : req.status === 'APPROVED' ? 'accent-emerald border-emerald-100' : 'accent-rose border-rose-100'}`}>{req.status}</span></td>
                                                 <td className="px-6 py-4 text-right">
                                                     {req.status === 'PENDING' && (
@@ -527,16 +527,16 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
                             )}
                             {activeTab === 'history' && (
                                 <>
-                                    <thead className="bg-zinc-900/20 border-b border-zinc-900/50 text-zinc-500 text-[10px] font-bold uppercase tracking-wider">
+                                    <thead className="glass-panel border-b border-zinc-500/10 text-zinc-500 text-[10px] font-bold uppercase tracking-wider">
                                         <tr><th className="px-6 py-4">Borrowed</th><th className="px-6 py-4">User</th><th className="px-6 py-4">Book</th><th className="px-6 py-4">Issued By</th><th className="px-6 py-4">Returned</th><th className="px-6 py-4">Status</th></tr>
                                     </thead>
                                     <tbody className="divide-y divide-gray-100">
                                         {history.map(record => (
-                                            <tr key={record.id} className="hover:bg-gray-50 transition-all zebra-row">
-                                                <td className="px-6 py-4 text-gray-500 font-mono text-[10px]">{new Date(record.borrowDate).toLocaleDateString()}</td>
-                                                <td className="px-6 py-4 font-medium text-gray-900">{record.userName}</td>
-                                                <td className="px-6 py-4 text-gray-600 text-xs">{record.bookTitle}</td>
-                                                <td className="px-6 py-4 text-gray-500 text-xs">{record.issuedBy || '---'}</td>
+                                            <tr key={record.id} className="hover:bg-white/5 transition-all zebra-row">
+                                                <td className="px-6 py-4 opacity-40 font-mono text-[10px]">{new Date(record.borrowDate).toLocaleDateString()}</td>
+                                                <td className="px-6 py-4 font-medium">{record.userName}</td>
+                                                <td className="px-6 py-4 opacity-60 text-xs">{record.bookTitle}</td>
+                                                <td className="px-6 py-4 opacity-40 text-xs">{record.issuedBy || '---'}</td>
                                                 <td className="px-6 py-4 text-gray-400 font-mono text-[10px]">{record.returnDate ? new Date(record.returnDate).toLocaleDateString() : '---'}</td>
                                                 <td className="px-6 py-4"><span className={`px-2 py-0.5 rounded text-[9px] font-bold uppercase tracking-wider border ${record.returnDate ? 'bg-gray-50 text-gray-400 border-gray-100' : 'accent-blue border-blue-100'}`}>{record.returnDate ? 'Returned' : 'In Use'}</span></td>
                                             </tr>
@@ -546,16 +546,16 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
                             )}
                             {activeTab === 'fines' && (
                                 <>
-                                    <thead className="bg-gray-50 border-b border-gray-100 text-gray-500 text-[10px] font-bold uppercase tracking-wider">
+                                    <thead className="glass-panel border-b border-zinc-500/10 text-zinc-500 text-[10px] font-bold uppercase tracking-wider">
                                         <tr><th className="px-6 py-4">Date</th><th className="px-6 py-4">User</th><th className="px-6 py-4">Book</th><th className="px-6 py-4">Reason</th><th className="px-6 py-4 text-right">Amount</th><th className="px-6 py-4">Status</th><th className="px-6 py-4 text-right">Actions</th></tr>
                                     </thead>
                                     <tbody className="divide-y divide-gray-100">
                                         {fines.map(fine => (
-                                            <tr key={fine.id} className="hover:bg-gray-50 transition-all zebra-row">
-                                                <td className="px-6 py-4 text-gray-500 font-mono text-[10px]">{new Date(fine.timestamp).toLocaleDateString()}</td>
-                                                <td className="px-6 py-4 font-medium text-gray-900">{fine.userName}</td>
-                                                <td className="px-6 py-4 text-gray-600 text-xs">{fine.bookTitle}</td>
-                                                <td className="px-6 py-4 text-gray-500 text-xs">{fine.reason}</td>
+                                            <tr key={fine.id} className="hover:bg-white/5 transition-all zebra-row">
+                                                <td className="px-6 py-4 opacity-40 font-mono text-[10px]">{new Date(fine.timestamp).toLocaleDateString()}</td>
+                                                <td className="px-6 py-4 font-medium">{fine.userName}</td>
+                                                <td className="px-6 py-4 opacity-60 text-xs">{fine.bookTitle}</td>
+                                                <td className="px-6 py-4 opacity-40 text-xs">{fine.reason}</td>
                                                 <td className="px-6 py-4 text-right font-mono text-xs text-emerald-600 font-bold">₹{fine.amount}</td>
                                                 <td className="px-6 py-4"><span className={`px-2 py-0.5 rounded text-[9px] font-bold uppercase tracking-wider border ${fine.status === 'PAID' ? 'accent-emerald border-emerald-100' : 'accent-rose border-rose-100'}`}>{fine.status}</span></td>
                                                 <td className="px-6 py-4 text-right">{fine.status === 'PENDING' && <button onClick={() => onPayFine(fine.id)} className="px-3 py-1 bg-emerald-50 hover:bg-emerald-100 rounded text-[9px] font-bold text-emerald-600 uppercase tracking-wider border border-emerald-100 transition-all">Mark Paid</button>}</td>
@@ -574,9 +574,9 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
             {showUserForm && <UserForm onClose={() => setShowUserForm(false)} onSubmit={(u) => { editingUser ? onUpdateUser(u) : onAddUser(u); setShowUserForm(false); }} initialData={editingUser} />}
             {showPassModal && (
                 <div className="fixed inset-0 bg-gray-900/20 backdrop-blur-md flex items-center justify-center z-[9999] p-4">
-                    <div className="glass-panel w-full max-w-md rounded-[2rem] p-8 space-y-6">
-                        <div className="flex justify-between items-center mb-2"><h3 className="font-black text-xl text-gray-900 uppercase tracking-tight">Advanced Settings</h3><button onClick={() => setShowPassModal(false)} className="text-gray-400 hover:text-gray-900"><svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M6 18L18 6M6 6l12 12" /></svg></button></div>
-                        <div className="space-y-4">
+                    <div className="glass-card w-full max-w-md rounded-[2rem] p-8 space-y-6">
+                        <div className="flex justify-between items-center mb-2"><h3 className="font-black text-xl uppercase tracking-tight">Advanced Settings</h3><button onClick={() => setShowPassModal(false)} className="opacity-40 hover:opacity-100"><svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M6 18L18 6M6 6l12 12" /></svg></button></div>
+                        <div className="space-y-4 text-gray-900">
                             <input type="password" placeholder="Current Password" value={currentPass} onChange={(e) => setCurrentPass(e.target.value)} className="glass-input rounded-xl px-4 py-3 text-sm" />
                             <input type="password" placeholder="New Password" value={newPass} onChange={(e) => setNewPass(e.target.value)} className="glass-input rounded-xl px-4 py-3 text-sm" />
                         </div>
@@ -587,10 +587,10 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
 
             {showFineModal && selectedReturn && (
                 <div className="fixed inset-0 bg-gray-900/20 backdrop-blur-md flex items-center justify-center z-[9999] p-4">
-                    <div className="glass-panel w-full max-w-md rounded-[2.5rem] p-10 space-y-8 animate-in zoom-in-95 duration-300">
+                    <div className="glass-card w-full max-w-md rounded-[2.5rem] p-10 space-y-8 animate-in zoom-in-95 duration-300 border-white/20 shadow-2xl">
                         <div className="text-center">
-                            <h3 className="text-2xl font-black text-gray-900 uppercase tracking-tight">Confirm Return</h3>
-                            <p className="text-[10px] text-gray-400 font-bold uppercase tracking-widest mt-2">{selectedReturn.bookTitle} • {selectedReturn.userName}</p>
+                            <h3 className="text-2xl font-black uppercase tracking-tight">Confirm Return</h3>
+                            <p className="text-[10px] opacity-40 font-bold uppercase tracking-widest mt-2">{selectedReturn.bookTitle} • {selectedReturn.userName}</p>
                         </div>
                         <div className="flex items-center justify-between p-5 bg-gray-50 rounded-2xl border border-gray-100"><span className="text-sm font-black text-gray-700 uppercase tracking-tighter">Are there any issues?</span><button onClick={() => setHasIssue(!hasIssue)} className={`w-14 h-7 rounded-full relative transition-all duration-300 ${hasIssue ? 'bg-rose-600 shadow-lg shadow-rose-200' : 'bg-gray-200'}`}><div className={`absolute top-1 w-5 h-5 bg-white rounded-full transition-all duration-300 shadow-sm ${hasIssue ? 'left-8' : 'left-1'}`}></div></button></div>
                         {hasIssue && (
@@ -610,8 +610,8 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
                         <div className="w-16 h-16 bg-rose-500/10 border border-rose-500/20 rounded-2xl flex items-center justify-center mx-auto mb-8 shadow-sm">
                             <svg className="w-8 h-8 text-rose-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" /></svg>
                         </div>
-                        <h3 className="text-xl font-black text-gray-900 uppercase tracking-tight">{confirmDialog.title}</h3>
-                        <p className="text-xs text-gray-400 mt-4 leading-relaxed font-bold tracking-wide uppercase opacity-70">{confirmDialog.message}</p>
+                        <h3 className="text-xl font-black uppercase tracking-tight">{confirmDialog.title}</h3>
+                        <p className="text-xs opacity-40 mt-4 leading-relaxed font-bold tracking-wide uppercase">{confirmDialog.message}</p>
                         <div className="mt-10 flex gap-4">
                             <button onClick={() => setConfirmDialog({ ...confirmDialog, show: false })} className="flex-1 py-4 text-[10px] font-black uppercase tracking-[0.2em] text-gray-400 hover:text-gray-900 transition-colors">Discard</button>
                             <button onClick={() => { confirmDialog.onConfirm(); setConfirmDialog({ ...confirmDialog, show: false }); }} className="flex-1 bg-gray-900 text-white py-4 rounded-2xl text-[10px] font-black uppercase tracking-[0.2em] shadow-lg shadow-gray-200 hover:bg-black transition-all">Confirm</button>
@@ -628,16 +628,16 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
                             <img src={selectedBookDetail.coverUrl} className="w-full h-full object-cover" />
                         </div>
                         <div className="flex-1 p-8 md:p-14 overflow-y-auto no-scrollbar relative">
-                            <button onClick={() => setSelectedBookDetail(null)} className="absolute top-8 right-8 w-10 h-10 flex items-center justify-center glass-button rounded-xl text-gray-400 hover:text-gray-900 transition-all"><svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /></svg></button>
+                            <button onClick={() => setSelectedBookDetail(null)} className="absolute top-8 right-8 w-10 h-10 flex items-center justify-center glass-button rounded-xl opacity-40 hover:opacity-100 transition-all"><svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /></svg></button>
 
                             <span className="text-[10px] font-black text-teal-600 bg-teal-500/10 px-4 py-1.5 rounded-full border border-teal-500/20 uppercase tracking-widest">{selectedBookDetail.category}</span>
-                            <h2 className="text-4xl font-black text-gray-900 mt-6 uppercase tracking-tight leading-none">{selectedBookDetail.title}</h2>
-                            <p className="text-gray-400 text-lg mt-3 font-bold uppercase tracking-wide opacity-70">by {selectedBookDetail.author}</p>
+                            <h2 className="text-4xl font-black mt-6 uppercase tracking-tight leading-none">{selectedBookDetail.title}</h2>
+                            <p className="opacity-40 text-lg mt-3 font-bold uppercase tracking-wide">by {selectedBookDetail.author}</p>
 
-                            <div className="grid grid-cols-3 gap-10 my-10 py-8 border-y border-gray-100/50">
-                                <div><p className="text-[10px] font-black text-gray-300 uppercase tracking-widest mb-3 opacity-60">Identity</p><p className="text-xs text-gray-800 font-black tracking-widest">ISBN: {selectedBookDetail.isbn}</p><p className="text-[10px] text-gray-400 font-bold tracking-widest mt-1 uppercase">ID: #{selectedBookDetail.id}</p></div>
-                                <div><p className="text-[10px] font-black text-gray-300 uppercase tracking-widest mb-3 opacity-60">Availability</p><p className="text-sm text-gray-900 font-black tracking-tight">{selectedBookDetail.availableCopies} <span className="text-[10px] text-gray-400 uppercase">/ {selectedBookDetail.totalCopies} Copies</span></p></div>
-                                <div><p className="text-[10px] font-black text-gray-300 uppercase tracking-widest mb-3 opacity-60">Inventory Value</p><p className="text-sm text-teal-600 font-black tracking-tight">₹{selectedBookDetail.price}</p></div>
+                            <div className="grid grid-cols-3 gap-10 my-10 py-8 border-y border-white/10">
+                                <div><p className="text-[10px] font-black opacity-20 uppercase tracking-widest mb-3">Identity</p><p className="text-xs font-black tracking-widest">ISBN: {selectedBookDetail.isbn}</p><p className="text-[10px] opacity-40 font-bold tracking-widest mt-1 uppercase">ID: #{selectedBookDetail.id}</p></div>
+                                <div><p className="text-[10px] font-black opacity-20 uppercase tracking-widest mb-3">Availability</p><p className="text-sm font-black tracking-tight">{selectedBookDetail.availableCopies} <span className="text-[10px] opacity-40 uppercase">/ {selectedBookDetail.totalCopies} Copies</span></p></div>
+                                <div><p className="text-[10px] font-black opacity-20 uppercase tracking-widest mb-3">Inventory Value</p><p className="text-sm text-teal-600 font-black tracking-tight">₹{selectedBookDetail.price}</p></div>
                             </div>
 
                             <div className="space-y-8">
@@ -650,7 +650,7 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
                                                 placeholder="Enter Member Name or ID..."
                                                 value={issueSearch}
                                                 onChange={(e) => setIssueSearch(e.target.value)}
-                                                className="w-full glass-input rounded-2xl px-6 py-4 text-sm text-gray-900 outline-none transition-all font-black tracking-tight border-gray-100"
+                                                className="w-full glass-input rounded-2xl px-6 py-4 text-sm outline-none transition-all font-black tracking-tight border-white/10"
                                             />
                                             {issueSearch && (
                                                 <div className="absolute top-full left-0 right-0 mt-3 glass-panel rounded-2xl shadow-2xl z-[100] max-h-60 overflow-y-auto no-scrollbar border-white/80">
@@ -658,10 +658,10 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
                                                         <button
                                                             key={u.id}
                                                             onClick={() => { setIssuingToUserId(u.id); setIssueSearch(u.name); }}
-                                                            className="w-full px-6 py-4 text-left hover:bg-teal-50/50 transition-all border-b border-gray-50 last:border-0 group"
+                                                            className="w-full px-6 py-4 text-left hover:bg-teal-500/5 transition-all border-b border-white/5 last:border-0 group"
                                                         >
-                                                            <div className="font-black text-gray-900 text-sm group-hover:text-teal-600 transition-colors uppercase tracking-tight">{u.name}</div>
-                                                            <div className="text-[9px] text-gray-400 font-bold uppercase tracking-widest mt-1 opacity-60">ID: {u.id} • {u.role}</div>
+                                                            <div className="font-black text-sm group-hover:text-teal-600 transition-colors uppercase tracking-tight">{u.name}</div>
+                                                            <div className="text-[9px] opacity-40 font-bold uppercase tracking-widest mt-1">ID: {u.id} • {u.role}</div>
                                                         </button>
                                                     ))}
                                                 </div>
@@ -689,7 +689,7 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
                                 <div className="flex flex-col md:flex-row gap-4">
                                     <button
                                         onClick={() => { onIssueBook(selectedBookDetail.id, (localStorage.getItem('albayan_active_session') ? JSON.parse(localStorage.getItem('albayan_active_session')!).id : 'Admin')); setSelectedBookDetail(null); }}
-                                        className="flex-1 py-5 glass-button text-gray-900 font-black uppercase text-[10px] tracking-[0.25em] rounded-2xl hover:bg-teal-50/50 transition-all shadow-sm border-white/60"
+                                        className="flex-1 py-5 glass-button font-black uppercase text-[10px] tracking-[0.25em] rounded-2xl hover:bg-teal-500/5 transition-all shadow-sm border-white/20"
                                     >
                                         Self Checkout
                                     </button>
@@ -721,8 +721,8 @@ const StatCard = ({ title, value, subtitle, icon, color }: any) => {
                 {subtitle && <span className="text-[10px] font-black text-gray-400 uppercase tracking-widest opacity-60 bg-white/50 px-3 py-1 rounded-full border border-white shadow-sm">{subtitle}</span>}
             </div>
             <div>
-                <p className="text-[10px] font-black text-gray-400 uppercase tracking-[0.3em] opacity-60 leading-none mb-3">{title}</p>
-                <p className="text-5xl font-black text-gray-900 tracking-tighter leading-none">{value}</p>
+                <p className="text-[10px] font-black opacity-40 uppercase tracking-[0.3em] leading-none mb-3">{title}</p>
+                <p className="text-5xl font-black tracking-tighter leading-none">{value}</p>
             </div>
         </div>
     );
